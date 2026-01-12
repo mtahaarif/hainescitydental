@@ -1,38 +1,23 @@
-'use client';
+import { getAllContent } from '@/lib/content';
 
-import { memo } from 'react';
+interface StaffMember {
+  name: string;
+  role: string;
+  bio: string;
+  image: string;
+}
 
-const staffData = [
-  {
-    id: 1,
-    name: "Danyelle",
-    role: "Office Manager",
-    image: "/Danyelle.jpg",
-    bio: "13+ years in dentistry with Expanded Functions and Radiology licenses from University of Florida. Team leader for 10+ years."
-  },
-  {
-    id: 2,
-    name: "Debbie",
-    role: "Dental Hygienist RDH",
-    image: "/Debbie.jpg",
-    bio: "25+ years experience. Valencia Community College graduate (2002). Dedicated to preventive care and patient education."
-  },
-  {
-    id: 3,
-    name: "Dani",
-    role: "Dental Hygienist RDH, BASDH",
-    image: "/Dani.jpg",
-    bio: "At Haines City Dental since 2008. Valencia College and St. Petersburg College graduate with Bachelor's in Dental Hygiene."
-  }
-];
-
-export default memo(function Staff() {
+export default async function Staff() {
+  const staffMembers = (await getAllContent('staff')) as StaffMember[];
+  // Show only first 3 staff members for the home page preview
+  const previewStaff = staffMembers.slice(0, 3);
+  
   return (
     <div className="py-12">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {staffData.map((member) => (
+        {previewStaff.map((member, index) => (
           <div
-            key={member.id}
+            key={index}
             className="glass-light rounded-2xl p-6 hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
           >
             <div className="w-full h-56 bg-gradient-to-br from-dental-blue-100 to-cyan-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden text-gray-500 text-sm font-medium">
@@ -46,4 +31,4 @@ export default memo(function Staff() {
       </div>
     </div>
   );
-});
+}

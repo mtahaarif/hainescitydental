@@ -1,0 +1,127 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  # News Articles
+  - name: "news"
+    label: "News Articles"
+    folder: "content/news"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Date", name: "date", widget: "datetime", required: false }
+      - { label: "Category", name: "category", widget: "select", options: ["training", "community", "conference", "mission"] }
+      - { label: "Images", name: "images", widget: "list", field: { label: "Image", name: "image", widget: "image" } }
+      - { label: "Publish Date", name: "publishDate", widget: "datetime", default: "" }
+
+  # Doctors
+  - name: "doctors"
+    label: "Doctors"
+    folder: "content/doctors"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Name", name: "name", widget: "string" }
+      - { label: "Title/Degree", name: "title", widget: "string" }
+      - { label: "Photo", name: "image", widget: "image" }
+      - { label: "Order", name: "order", widget: "number", default: 1 }
+      - label: "Bio Sections"
+        name: "bioSections"
+        widget: "list"
+        fields:
+          - { label: "Section Title", name: "title", widget: "string" }
+          - { label: "Content", name: "content", widget: "text" }
+
+  # Staff Members
+  - name: "staff"
+    label: "Staff Members"
+    folder: "content/staff"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Name", name: "name", widget: "string" }
+      - { label: "Role/Position", name: "role", widget: "string" }
+      - { label: "Photo", name: "image", widget: "image" }
+      - { label: "Biography", name: "bio", widget: "text" }
+      - { label: "Order", name: "order", widget: "number", default: 1 }
+
+  # Services
+  - name: "services"
+    label: "Dental Services"
+    folder: "content/services"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Service Name", name: "title", widget: "string" }
+      - { label: "Subtitle", name: "subtitle", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Service Image", name: "image", widget: "image" }
+      - { label: "Icon", name: "icon", widget: "select", options: ["Star", "Heart", "Zap", "Shield", "Clock", "DollarSign"] }
+      - { label: "Order", name: "order", widget: "number", default: 1 }
+      - label: "Key Points"
+        name: "points"
+        widget: "list"
+        field: { label: "Point", name: "point", widget: "string" }
+
+  # Site Settings
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - label: "Contact Information"
+        name: "contact"
+        file: "content/settings/contact.json"
+        fields:
+          - { label: "Practice Name", name: "practiceName", widget: "string", default: "Haines City Dental" }
+          - { label: "Address Line 1", name: "address1", widget: "string" }
+          - { label: "Address Line 2", name: "address2", widget: "string" }
+          - { label: "City", name: "city", widget: "string" }
+          - { label: "State", name: "state", widget: "string" }
+          - { label: "Zip Code", name: "zipCode", widget: "string" }
+          - { label: "Phone (Main)", name: "phone", widget: "string" }
+          - { label: "Phone (Toll-Free)", name: "phoneTollFree", widget: "string", required: false }
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Hours", name: "hours", widget: "text" }
+          
+      - label: "About Information"
+        name: "about"
+        file: "content/settings/about.json"
+        fields:
+          - { label: "Founded Year", name: "foundedYear", widget: "string", default: "November 2006" }
+          - { label: "Mission Statement", name: "mission", widget: "text" }
+          - { label: "Values Statement", name: "values", widget: "text" }
+          - { label: "Commitment Statement", name: "commitment", widget: "text" }
+          - label: "Statistics"
+            name: "stats"
+            widget: "object"
+            fields:
+              - { label: "Years Experience", name: "yearsExperience", widget: "string", default: "20+" }
+              - { label: "Happy Patients", name: "happyPatients", widget: "string", default: "5000+" }
+              - { label: "Services Count", name: "servicesCount", widget: "string", default: "7" }
+
+      - label: "Homepage Hero"
+        name: "hero"
+        file: "content/settings/hero.json"
+        fields:
+          - { label: "Main Heading", name: "heading", widget: "string" }
+          - { label: "Description", name: "description", widget: "text" }
+          - { label: "Primary Button Text", name: "primaryButtonText", widget: "string", default: "Schedule Appointment" }
+          - { label: "Secondary Button Text", name: "secondaryButtonText", widget: "string", default: "Explore Services" }
+
+  # Testimonials
+  - name: "testimonials"
+    label: "Patient Testimonials"
+    folder: "content/testimonials"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Patient Name", name: "name", widget: "string" }
+      - { label: "Patient Since", name: "role", widget: "string", hint: "e.g., 'Patient since 2018'" }
+      - { label: "Testimonial", name: "content", widget: "text" }
+      - { label: "Rating", name: "rating", widget: "number", default: 5, min: 1, max: 5 }
+      - { label: "Order", name: "order", widget: "number", default: 1 }
