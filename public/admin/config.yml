@@ -1,9 +1,12 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: mtahaarif/hainecitydental
   branch: main
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
+
+local_backend: true
 
 collections:
   # News Articles
