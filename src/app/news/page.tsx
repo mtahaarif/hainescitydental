@@ -1,7 +1,3 @@
-'use client';
-
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
 import Image from 'next/image';
 import { Calendar, Newspaper, Globe, Award } from 'lucide-react';
 
@@ -85,71 +81,35 @@ const categoryConfig = {
 };
 
 export default function NewsPage() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.4, 0, 0.2, 1],
-      },
-    },
-  };
-
   return (
-    <div ref={ref} className="min-h-screen pt-8 pb-16">
+    <div className="min-h-screen pt-8 pb-16">
       {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 text-center"
-      >
-<h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 text-center">
+        <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
           News & <span className="gradient-text">Community</span>
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
           Highlights from our doctors, team, and community service events.
         </p>
-      </motion.div>
+      </div>
 
       {/* News Grid */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate={isInView ? 'visible' : 'hidden'}
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8"
-      >
-        {newsItems.map((item) => {
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        {newsItems.map((item, index) => {
           const CategoryIcon = categoryConfig[item.category].icon;
           return (
-            <motion.article
+            <article
               key={item.id}
-              variants={itemVariants}
-              whileHover={{ y: -5 }}
-              className="glass-light p-6 sm:p-8 transition-all duration-500 hover:shadow-[0_0_40px_rgba(59,130,246,0.25)]"
+              className="glass-light p-6 sm:p-8 transition-all duration-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.25)] hover:-translate-y-1"
+              style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4">
                 <div className="flex items-center gap-4">
-                  <motion.div
-                    className={`p-3 rounded-2xl bg-gradient-to-br ${categoryConfig[item.category].color} text-white`}
-                    whileHover={{ scale: 1.1, rotate: 5 }}
+                  <div
+                    className={`p-3 rounded-2xl bg-gradient-to-br ${categoryConfig[item.category].color} text-white transition-transform hover:scale-110`}
                   >
                     <CategoryIcon className="w-5 h-5" />
-                  </motion.div>
+                  </div>
                   <div>
                     <span className="text-xs font-semibold uppercase tracking-wider text-dental-blue-600">
                       {categoryConfig[item.category].label}
@@ -171,14 +131,10 @@ export default function NewsPage() {
 
               {item.images.length > 0 && (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                  {item.images.map((img, idx) => (
-                    <motion.div
+                  {item.images.map((img) => (
+                    <div
                       key={img}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: idx * 0.1 }}
-                      className="relative aspect-square rounded-2xl overflow-hidden glass transition-all duration-500 hover:shadow-[0_0_30px_rgba(59,130,246,0.25)]"
-                      whileHover={{ scale: 1.05 }}
+                      className="relative aspect-square rounded-2xl overflow-hidden glass transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.25)] hover:scale-105"
                     >
                       <Image
                         src={`/${img}.${img.includes('FLAMOM') || img.includes('FNDC') ? 'png' : 'jpg'}`}
@@ -186,14 +142,14 @@ export default function NewsPage() {
                         fill
                         className="object-cover"
                       />
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
               )}
-            </motion.article>
+            </article>
           );
         })}
-      </motion.div>
+      </div>
     </div>
   );
 }

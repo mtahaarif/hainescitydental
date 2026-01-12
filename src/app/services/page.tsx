@@ -1,7 +1,6 @@
 'use client';
 
-import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { 
@@ -128,12 +127,9 @@ const categories: Category[] = [
   },
 ];
 
-export default function ServicesPage() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
+function ServicesContent() {
   const searchParams = useSearchParams();
   const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
 
   useEffect(() => {
     const tab = searchParams.get('tab');
@@ -144,193 +140,141 @@ export default function ServicesPage() {
   }, [searchParams]);
 
   const prev = () => {
-    setDirection(-1);
     setActiveIndex((i) => (i - 1 + categories.length) % categories.length);
   };
 
   const next = () => {
-    setDirection(1);
     setActiveIndex((i) => (i + 1) % categories.length);
-  };
-
-  const goToSlide = (index: number) => {
-    setDirection(index > activeIndex ? 1 : -1);
-    setActiveIndex(index);
   };
 
   const currentService = categories[activeIndex];
   const Icon = currentService.icon;
 
-  const slideVariants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 500 : -500,
-      opacity: 0,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-    },
-    exit: (direction: number) => ({
-      x: direction > 0 ? -500 : 500,
-      opacity: 0,
-    }),
-  };
-
   return (
-    <div ref={ref} className="min-h-screen pt-8 pb-16">
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 text-center"
-      >
-<h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-          Comprehensive <span className="gradient-text">Dental Services</span>
-        </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          From routine care to advanced treatments, we offer a full spectrum of dental services.
-        </p>
-      </motion.div>
-
+    <>
       {/* Service Tabs */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8"
-      >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
         <div className="flex flex-wrap justify-center gap-2">
           {categories.map((category, index) => (
-            <motion.button
+            <button
               key={category.id}
-              onClick={() => goToSlide(index)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+              onClick={() => setActiveIndex(index)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 active:scale-95 ${
                 index === activeIndex
                   ? 'bg-dental-blue-500 text-white shadow-lg'
                   : 'glass hover:bg-dental-blue-50 text-gray-700'
               }`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
             >
               {category.title}
-            </motion.button>
+            </button>
           ))}
         </div>
-      </motion.div>
+      </div>
 
       {/* Service Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="glass-strong p-8 sm:p-12 relative overflow-hidden min-h-[600px]">
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.div
-              key={activeIndex}
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-              className="grid lg:grid-cols-2 gap-12 items-center"
-            >
-              {/* Image */}
-              <motion.div
-                className="relative h-80 lg:h-[450px] rounded-2xl overflow-hidden"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                <Image
-                  src={currentService.image}
-                  alt={currentService.title}
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-              </motion.div>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Image */}
+            <div className="relative h-80 lg:h-[450px] rounded-2xl overflow-hidden transition-transform duration-300 hover:scale-[1.02]">
+              <Image
+                src={currentService.image}
+                alt={currentService.title}
+                fill
+                className="object-cover"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+            </div>
 
-              {/* Content */}
-              <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <motion.div
-                    className="w-16 h-16 rounded-2xl bg-gradient-to-br from-dental-blue-400 to-dental-blue-600 flex items-center justify-center"
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                  >
-                    <Icon className="w-8 h-8 text-white" />
-                  </motion.div>
-                  <div>
-                    <h2 className="text-3xl font-bold text-gray-900">{currentService.title}</h2>
-                    <p className="text-dental-blue-600 font-medium">{currentService.subtitle}</p>
-                  </div>
+            {/* Content */}
+            <div className="space-y-6">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-dental-blue-400 to-dental-blue-600 flex items-center justify-center transition-transform hover:scale-110 hover:rotate-3">
+                  <Icon className="w-8 h-8 text-white" />
                 </div>
-
-                <p className="text-gray-600 leading-relaxed text-lg">
-                  {currentService.description}
-                </p>
-
-                <ul className="space-y-3">
-                  {currentService.points.map((point, idx) => (
-                    <motion.li
-                      key={idx}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.3 + idx * 0.1 }}
-                      className="flex items-start gap-3"
-                    >
-                      <span className="w-2 h-2 rounded-full bg-dental-blue-500 mt-2 flex-shrink-0" />
-                      <span className="text-gray-700">{point}</span>
-                    </motion.li>
-                  ))}
-                </ul>
-
-                <motion.a
-                  href="tel:+18634228338"
-                  className="btn-primary inline-flex items-center gap-2"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Schedule Consultation
-                </motion.a>
+                <div>
+                  <h2 className="text-3xl font-bold text-gray-900">{currentService.title}</h2>
+                  <p className="text-dental-blue-600 font-medium">{currentService.subtitle}</p>
+                </div>
               </div>
-            </motion.div>
-          </AnimatePresence>
+
+              <p className="text-gray-600 leading-relaxed text-lg">
+                {currentService.description}
+              </p>
+
+              <ul className="space-y-3">
+                {currentService.points.map((point, idx) => (
+                  <li key={idx} className="flex items-start gap-3">
+                    <span className="w-2 h-2 rounded-full bg-dental-blue-500 mt-2 flex-shrink-0" />
+                    <span className="text-gray-700">{point}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <a
+                href="tel:+18634228338"
+                className="btn-primary inline-flex items-center gap-2 transition-transform hover:scale-105 active:scale-95"
+              >
+                Schedule Consultation
+              </a>
+            </div>
+          </div>
 
           {/* Navigation */}
-          <motion.button
+          <button
             onClick={prev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 glass-light rounded-full shadow-lg"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 glass-light rounded-full shadow-lg transition-transform hover:scale-110 active:scale-90"
+            aria-label="Previous service"
           >
             <ChevronLeft className="w-6 h-6 text-dental-blue-600" />
-          </motion.button>
+          </button>
           
-          <motion.button
+          <button
             onClick={next}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 glass-light rounded-full shadow-lg"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 glass-light rounded-full shadow-lg transition-transform hover:scale-110 active:scale-90"
+            aria-label="Next service"
           >
             <ChevronRight className="w-6 h-6 text-dental-blue-600" />
-          </motion.button>
+          </button>
         </div>
 
         {/* Dots */}
         <div className="flex justify-center gap-3 mt-8">
           {categories.map((_, index) => (
-            <motion.button
+            <button
               key={index}
-              onClick={() => goToSlide(index)}
-              className={`h-2.5 rounded-full transition-all duration-300 ${
+              onClick={() => setActiveIndex(index)}
+              className={`h-2.5 rounded-full transition-all duration-300 hover:scale-125 ${
                 index === activeIndex
                   ? 'w-9 bg-dental-blue-500'
                   : 'w-3 bg-dental-blue-200 hover:bg-dental-blue-300'
               }`}
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.8 }}
+              aria-label={`Go to service ${index + 1}`}
             />
           ))}
         </div>
       </div>
+    </>
+  );
+}
+
+export default function ServicesPage() {
+  return (
+    <div className="min-h-screen pt-8 pb-16">
+      {/* Header */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 text-center">
+        <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+          Comprehensive <span className="gradient-text">Dental Services</span>
+        </h1>
+        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          From routine care to advanced treatments, we offer a full spectrum of dental services.
+        </p>
+      </div>
+
+      <Suspense fallback={<div className="text-center py-12">Loading services...</div>}>
+        <ServicesContent />
+      </Suspense>
     </div>
   );
 }

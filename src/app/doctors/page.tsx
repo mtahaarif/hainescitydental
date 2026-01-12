@@ -1,9 +1,8 @@
 'use client';
 
-import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight, Users, GraduationCap, Award, Heart } from 'lucide-react';
+import { ChevronLeft, ChevronRight, GraduationCap, Award, Heart, Users } from 'lucide-react';
 
 interface DoctorSection {
   title: string;
@@ -78,221 +77,137 @@ const doctors: Doctor[] = [
 ];
 
 export default function DoctorsPage() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeBioSection, setActiveBioSection] = useState(0);
-  const [direction, setDirection] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveBioSection((prev) => {
-        const isLastSection = prev === doctors[activeIndex].bioSections.length - 1;
-        if (isLastSection) {
-          setDirection(1);
-          setActiveIndex((prevDoctor) => (prevDoctor + 1) % doctors.length);
-          return 0;
-        }
-        return prev + 1;
-      });
-    }, 5000);
-
-    return () => clearInterval(timer);
-  }, [activeIndex]);
 
   const prevDoctor = () => {
-    setDirection(-1);
     setActiveIndex((prev) => (prev - 1 + doctors.length) % doctors.length);
     setActiveBioSection(0);
   };
 
   const nextDoctor = () => {
-    setDirection(1);
     setActiveIndex((prev) => (prev + 1) % doctors.length);
     setActiveBioSection(0);
   };
 
   const currentDoctor = doctors[activeIndex];
-
-  const slideVariants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 300 : -300,
-      opacity: 0,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-    },
-    exit: (direction: number) => ({
-      x: direction > 0 ? -300 : 300,
-      opacity: 0,
-    }),
-  };
-
   const sectionIcons = [GraduationCap, Award, Heart, Users, Heart];
 
   return (
-    <div ref={ref} className="min-h-screen pt-8 pb-16">
+    <div className="min-h-screen pt-8 pb-16">
       {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 text-center"
-      >
-<h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 text-center">
+        <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
           Meet The <span className="gradient-text">Doctors</span>
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
           Our experienced dentists are committed to providing exceptional care with a personal touch.
         </p>
-      </motion.div>
+      </div>
 
       {/* Doctor Carousel */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="glass-strong p-8 sm:p-12 relative overflow-hidden"
-        >
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.div
-              key={activeIndex}
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-              className="grid lg:grid-cols-2 gap-12 items-start"
-            >
-              {/* Image */}
-              <div className="flex flex-col items-center">
-                <motion.div
-                  className="relative w-64 h-64 sm:w-80 sm:h-80 rounded-full overflow-hidden border-4 border-dental-blue-100 shadow-2xl"
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Image
-                    src={currentDoctor.image}
-                    alt={currentDoctor.name}
-                    fill
-                    className="object-cover"
-                  />
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                  className="text-center mt-6"
-                >
-                  <h2 className="text-3xl font-bold text-gray-900">{currentDoctor.name}</h2>
-                  <p className="text-dental-blue-600 text-xl font-medium">{currentDoctor.title}</p>
-                </motion.div>
+        <div className="glass-strong p-8 sm:p-12 relative overflow-hidden">
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
+            {/* Image */}
+            <div className="flex flex-col items-center">
+              <div className="relative w-64 h-64 sm:w-80 sm:h-80 rounded-full overflow-hidden border-4 border-dental-blue-100 shadow-2xl hover:scale-[1.02] transition-transform duration-300">
+                <Image
+                  src={currentDoctor.image}
+                  alt={currentDoctor.name}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+              <div className="text-center mt-6">
+                <h2 className="text-3xl font-bold text-gray-900">{currentDoctor.name}</h2>
+                <p className="text-dental-blue-600 text-xl font-medium">{currentDoctor.title}</p>
+              </div>
+            </div>
+
+            {/* Bio Content */}
+            <div className="space-y-6">
+              {/* Bio Section Tabs */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                {currentDoctor.bioSections.map((section, idx) => {
+                  const SectionIcon = sectionIcons[idx % sectionIcons.length];
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveBioSection(idx)}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 active:scale-95 ${
+                        idx === activeBioSection
+                          ? 'bg-dental-blue-500 text-white shadow-lg'
+                          : 'glass hover:bg-dental-blue-50 text-gray-700'
+                      }`}
+                    >
+                      <SectionIcon className="w-4 h-4" />
+                      {section.title}
+                    </button>
+                  );
+                })}
               </div>
 
               {/* Bio Content */}
-              <div className="space-y-6">
-                {/* Bio Section Tabs */}
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {currentDoctor.bioSections.map((section, idx) => {
-                    const SectionIcon = sectionIcons[idx % sectionIcons.length];
-                    return (
-                      <motion.button
-                        key={idx}
-                        onClick={() => setActiveBioSection(idx)}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                          idx === activeBioSection
-                            ? 'bg-dental-blue-500 text-white shadow-lg'
-                            : 'glass hover:bg-dental-blue-50 text-gray-700'
-                        }`}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <SectionIcon className="w-4 h-4" />
-                        {section.title}
-                      </motion.button>
-                    );
-                  })}
-                </div>
-
-                {/* Bio Content */}
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeBioSection}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                    className="glass-light p-8 min-h-[200px]"
-                  >
-                    <h3 className="text-xl font-bold text-dental-blue-600 mb-4">
-                      {currentDoctor.bioSections[activeBioSection].title}
-                    </h3>
-                    <p className="text-gray-700 leading-relaxed text-lg">
-                      {currentDoctor.bioSections[activeBioSection].content}
-                    </p>
-                  </motion.div>
-                </AnimatePresence>
-
-                {/* Bio Progress */}
-                <div className="flex gap-2">
-                  {currentDoctor.bioSections.map((_, idx) => (
-                    <motion.div
-                      key={idx}
-                      className={`h-1 rounded-full flex-1 ${
-                        idx === activeBioSection ? 'bg-dental-blue-500' : 'bg-dental-blue-100'
-                      }`}
-                      initial={{ scaleX: 0 }}
-                      animate={{ scaleX: 1 }}
-                      transition={{ duration: 0.3 }}
-                    />
-                  ))}
-                </div>
+              <div className="glass-light p-8 min-h-[200px] transition-all duration-300">
+                <h3 className="text-xl font-bold text-dental-blue-600 mb-4">
+                  {currentDoctor.bioSections[activeBioSection].title}
+                </h3>
+                <p className="text-gray-700 leading-relaxed text-lg">
+                  {currentDoctor.bioSections[activeBioSection].content}
+                </p>
               </div>
-            </motion.div>
-          </AnimatePresence>
+
+              {/* Bio Progress */}
+              <div className="flex gap-2">
+                {currentDoctor.bioSections.map((_, idx) => (
+                  <div
+                    key={idx}
+                    className={`h-1 rounded-full flex-1 transition-colors duration-300 ${
+                      idx === activeBioSection ? 'bg-dental-blue-500' : 'bg-dental-blue-100'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
 
           {/* Navigation */}
-          <motion.button
+          <button
             onClick={prevDoctor}
-            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 glass-light rounded-full shadow-lg"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 glass-light rounded-full shadow-lg hover:scale-110 active:scale-90 transition-transform"
+            aria-label="Previous doctor"
           >
             <ChevronLeft className="w-6 h-6 text-dental-blue-600" />
-          </motion.button>
+          </button>
           
-          <motion.button
+          <button
             onClick={nextDoctor}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 glass-light rounded-full shadow-lg"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 glass-light rounded-full shadow-lg hover:scale-110 active:scale-90 transition-transform"
+            aria-label="Next doctor"
           >
             <ChevronRight className="w-6 h-6 text-dental-blue-600" />
-          </motion.button>
-        </motion.div>
+          </button>
+        </div>
 
         {/* Doctor Selection Dots */}
         <div className="flex justify-center gap-4 mt-8">
           {doctors.map((doctor, index) => (
-            <motion.button
+            <button
               key={doctor.id}
               onClick={() => {
-                setDirection(index > activeIndex ? 1 : -1);
                 setActiveIndex(index);
                 setActiveBioSection(0);
               }}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
+              className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 active:scale-95 ${
                 index === activeIndex
                   ? 'bg-dental-blue-500 text-white shadow-lg'
                   : 'glass hover:bg-dental-blue-50 text-gray-700'
               }`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
             >
               {doctor.name}
-            </motion.button>
+            </button>
           ))}
         </div>
       </div>
