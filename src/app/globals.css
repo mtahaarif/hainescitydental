@@ -1,0 +1,315 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    --glass-shadow: rgba(14, 165, 233, 0.1);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #0ea5e9 #e0f2fe;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply text-gray-900 m-0 min-h-screen;
+    background: 
+      radial-gradient(ellipse at 0% 0%, rgba(186, 230, 253, 0.4) 0%, transparent 50%),
+      radial-gradient(ellipse at 100% 0%, rgba(147, 197, 253, 0.3) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 100%, rgba(224, 242, 254, 0.5) 0%, transparent 50%),
+      linear-gradient(180deg, #f0f9ff 0%, #ffffff 50%, #f8fafc 100%);
+    background-attachment: fixed;
+    overscroll-behavior-y: none;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Prevent zoom on input focus for iOS */
+  @media screen and (max-width: 768px) {
+    input, select, textarea {
+      font-size: 16px !important;
+    }
+  }
+
+  a {
+    @apply font-medium text-dental-blue-600 no-underline;
+  }
+
+  a:hover {
+    @apply text-dental-blue-700;
+  }
+
+  h1 {
+    @apply text-3xl sm:text-4xl lg:text-5xl font-bold;
+  }
+
+  h2 {
+    @apply text-2xl sm:text-3xl font-bold;
+  }
+
+  h3 {
+    @apply text-xl sm:text-2xl font-semibold;
+  }
+
+  button {
+    @apply px-6 py-3 font-medium rounded-2xl transition-all duration-500 ease-out;
+    min-height: 44px; /* Minimum touch target size */
+  }
+
+  button:active {
+    @apply scale-95;
+  }
+
+  /* Better touch targets for mobile */
+  @media (pointer: coarse) {
+    a, button, input, select, textarea {
+      min-height: 44px;
+    }
+    
+    input[type="checkbox"], input[type="radio"] {
+      min-width: 20px;
+      min-height: 20px;
+    }
+  }
+}
+
+@layer components {
+  .glass {
+    @apply backdrop-blur-xl rounded-3xl;
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.7) 0%, 
+      rgba(255, 255, 255, 0.5) 50%,
+      rgba(224, 242, 254, 0.4) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 
+      0 8px 32px rgba(14, 165, 233, 0.08),
+      0 4px 16px rgba(0, 0, 0, 0.04),
+      inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  }
+
+  .glass-light {
+    @apply backdrop-blur-xl rounded-3xl;
+    background: linear-gradient(145deg, 
+      rgba(255, 255, 255, 0.85) 0%, 
+      rgba(255, 255, 255, 0.75) 50%,
+      rgba(240, 249, 255, 0.7) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 
+      0 10px 40px rgba(14, 165, 233, 0.1),
+      0 4px 20px rgba(0, 0, 0, 0.05),
+      inset 0 1px 2px rgba(255, 255, 255, 0.9),
+      inset 0 -1px 1px rgba(14, 165, 233, 0.03);
+  }
+
+  .glass-strong {
+    @apply backdrop-blur-2xl rounded-3xl;
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.92) 0%, 
+      rgba(255, 255, 255, 0.85) 50%,
+      rgba(224, 242, 254, 0.8) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 
+      0 20px 60px rgba(14, 165, 233, 0.12),
+      0 8px 30px rgba(0, 0, 0, 0.06),
+      inset 0 2px 4px rgba(255, 255, 255, 1),
+      inset 0 -2px 2px rgba(14, 165, 233, 0.05);
+  }
+
+  .glass-card {
+    @apply backdrop-blur-lg rounded-2xl;
+    background: linear-gradient(160deg, 
+      rgba(255, 255, 255, 0.8) 0%, 
+      rgba(248, 250, 252, 0.7) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 
+      0 4px 24px rgba(14, 165, 233, 0.08),
+      inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  }
+
+  .glass-hover {
+    @apply transition-all duration-500 ease-out;
+  }
+
+  .glass-hover:hover {
+    box-shadow: 
+      0 20px 50px rgba(14, 165, 233, 0.2),
+      0 8px 24px rgba(0, 0, 0, 0.08),
+      inset 0 1px 2px rgba(255, 255, 255, 1);
+    border-color: rgba(14, 165, 233, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .btn-primary {
+    @apply px-6 py-3 font-medium rounded-2xl transition-all duration-500 ease-out hover:shadow-xl active:scale-95 text-white backdrop-blur-sm;
+    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 50%, #0369a1 100%);
+    box-shadow: 
+      0 10px 30px rgba(14, 165, 233, 0.3),
+      inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 50%, #0284c7 100%);
+    box-shadow: 
+      0 15px 40px rgba(14, 165, 233, 0.4),
+      inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 font-medium rounded-2xl transition-all duration-500 ease-out active:scale-95 text-dental-blue-700 backdrop-blur-sm;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(14, 165, 233, 0.2);
+    box-shadow: 0 4px 16px rgba(14, 165, 233, 0.1);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(240, 249, 255, 0.9);
+    border-color: rgba(14, 165, 233, 0.3);
+    box-shadow: 0 8px 24px rgba(14, 165, 233, 0.15);
+    transform: translateY(-1px);
+  }
+
+  /* Shimmer effect for loading states */
+  .shimmer {
+    background: linear-gradient(90deg, 
+      rgba(255, 255, 255, 0) 0%, 
+      rgba(255, 255, 255, 0.5) 50%, 
+      rgba(255, 255, 255, 0) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
+
+  /* Magnetic hover effect */
+  .magnetic-hover {
+    transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%);
+  }
+
+  /* Glow effect */
+  .glow {
+    box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
+  }
+
+  .glow-strong {
+    box-shadow: 0 0 40px rgba(14, 165, 233, 0.4);
+  }
+}
+
+@layer utilities {
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(224, 242, 254, 0.5);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, 
+      rgba(56, 189, 248, 0.8) 0%, 
+      rgba(14, 165, 233, 0.9) 50%, 
+      rgba(3, 105, 161, 0.8) 100%);
+    border-radius: 9999px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(4px);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, 
+      rgba(14, 165, 233, 0.9) 0%, 
+      rgba(3, 105, 161, 1) 50%, 
+      rgba(12, 61, 102, 0.9) 100%);
+  }
+
+  /* Selection styling */
+  ::selection {
+    background: rgba(14, 165, 233, 0.2);
+    color: #0c3d66;
+  }
+
+  /* Safe area padding for mobile devices with notches */
+  .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .safe-area-inset-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  /* Hide scrollbar on mobile for cleaner look */
+  @media (max-width: 768px) {
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      border: none;
+    }
+  }
+
+  /* Focus visible styles for accessibility */
+  .focus-ring:focus-visible {
+    @apply outline-none ring-2 ring-dental-blue-500 ring-offset-2;
+  }
+
+  /* Reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Print styles */
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+    
+    body {
+      background: white !important;
+    }
+    
+    .glass, .glass-light, .glass-strong, .glass-card {
+      background: white !important;
+      box-shadow: none !important;
+      border: 1px solid #e5e7eb !important;
+    }
+  }
+
+  /* Loading skeleton animation */
+  .skeleton {
+    @apply bg-gray-200 animate-pulse rounded;
+  }
+
+  /* Touch-friendly spacing on mobile */
+  @media (pointer: coarse) {
+    .touch-spacing > * + * {
+      margin-top: 1rem;
+    }
+  }
+}
