@@ -5,8 +5,9 @@ backend:
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
-
 local_backend: true
+
+logo_url: "https://hainescitydental.vercel.app/logo.png"
 
 collections:
   # News Articles
@@ -125,6 +126,22 @@ collections:
     fields:
       - { label: "Patient Name", name: "name", widget: "string" }
       - { label: "Patient Since", name: "role", widget: "string", hint: "e.g., 'Patient since 2018'" }
+      - { label: "Testimonial", name: "body", widget: "text", required: true }
+      - { label: "Rating", name: "rating", widget: "number", min: 1, max: 5, default: 5 }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Order", name: "order", widget: "number", default: 1 }
+
+  # Media Gallery
+  - name: "media"
+    label: "Image Gallery"
+    folder: "public/uploads"
+    create: true
+    slug: "{{filename}}"
+    fields:
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Alt Text", name: "alt", widget: "string" }
+      - { label: "Category", name: "category", widget: "select", options: ["doctors", "staff", "services", "news", "hero", "testimonials", "other"] }
+
       - { label: "Testimonial", name: "content", widget: "text" }
       - { label: "Rating", name: "rating", widget: "number", default: 5, min: 1, max: 5 }
       - { label: "Order", name: "order", widget: "number", default: 1 }

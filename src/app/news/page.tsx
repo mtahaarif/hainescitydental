@@ -1,77 +1,6 @@
 import Image from 'next/image';
 import { Calendar, Newspaper, Globe, Award } from 'lucide-react';
-
-interface NewsItem {
-  id: string;
-  title: string;
-  description: string;
-  date?: string;
-  images: string[];
-  category: 'training' | 'community' | 'conference' | 'mission';
-}
-
-const newsItems: NewsItem[] = [
-  {
-    id: 'implant-marathon',
-    title: 'Dr. Khan in Santo Domingo taking Implant Marathon course with a team of doctors',
-    description: 'Hands-on implant marathon training alongside a multidisciplinary team in Santo Domingo.',
-    date: 'July 2014',
-    images: ['DSC04404', 'DSC04448'],
-    category: 'training',
-  },
-  {
-    id: 'implant-surgery-dominican',
-    title: 'Dr. Khan performing implant surgery on a patient from Dominican Republic',
-    description: 'Live surgical placement and restoration for a Dominican Republic patient.',
-    images: ['DSC04408', 'DSC04406'],
-    category: 'training',
-  },
-  {
-    id: 'diploma-interamericana',
-    title: 'Dr. Khan receiving a diploma from La Universidad Interamericana',
-    description: 'Recognition following intensive implant surgery participation in Santo Domingo.',
-    images: ['DSC04405', 'DSC04514'],
-    category: 'training',
-  },
-  {
-    id: 'fndc-2014',
-    title: 'Haines City Team at Florida National Dental Conference 2014',
-    description: 'Team engagement and continuing education at FNDC 2014.',
-    date: '2014',
-    images: ['FNDC2014A'],
-    category: 'conference',
-  },
-  {
-    id: 'fla-mom-2014',
-    title: 'Dr. Park volunteering at Florida Mission of Mercy (Tampa Fairgrounds)',
-    description: 'FLA-MOM served more than 1600 people and delivered over $1 million in free care.',
-    date: 'March 28, 2014',
-    images: ['FLAMOM02', 'FLAMOM03', 'FLAMOM04', 'FLAMOM05'],
-    category: 'mission',
-  },
-  {
-    id: 'national-guard-2013',
-    title: 'Dr. Khan serving at Florida National Guard in Lakeland, Florida',
-    description: 'Supporting care for service members; committed to serving our war heroes.',
-    date: 'October 2013',
-    images: ['IMAG0381', 'IMAG0379', 'IMAG0375'],
-    category: 'community',
-  },
-  {
-    id: 'special-olympics-boston',
-    title: 'Dr. Khan volunteering with Special Olympics in Boston',
-    description: 'Community dental support for Special Olympics participants.',
-    images: ['chp-community1'],
-    category: 'community',
-  },
-  {
-    id: 'peru-visit',
-    title: 'Dr. Park on her visit to Peru',
-    description: 'Dental outreach and cultural immersion during a visit to Peru.',
-    images: ['Peru03', 'Peru01'],
-    category: 'mission',
-  },
-];
+import { getAllContent } from '@/lib/content';
 
 const categoryConfig = {
   training: { icon: Award, color: 'from-blue-500 to-cyan-500', label: 'Training' },
@@ -80,8 +9,18 @@ const categoryConfig = {
   mission: { icon: Globe, color: 'from-orange-500 to-amber-500', label: 'Mission' },
 };
 
-export default function NewsPage() {
-  return (
+interface NewsItem {
+  slug: string;
+  id: string;
+  title: string;
+  date: string;
+  category: 'training' | 'community' | 'conference' | 'mission';
+  images: string[];
+  content?: string;
+}
+
+export default async function NewsPage() {
+  const newsItems = (await getAllContent('news')) as NewsItem[];
     <div className="min-h-screen pt-8 pb-16">
       {/* Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 text-center">
