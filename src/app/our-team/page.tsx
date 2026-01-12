@@ -1,19 +1,10 @@
-'use client';
-
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Doctors from '@/components/Doctors';
 import Staff from '@/components/Staff';
 
 export default function OurTeamPage() {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="pb-16"
-    >
+    <div className="pb-16">
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 text-center">
         <p className="text-sm font-semibold text-dental-blue-600 uppercase tracking-wide">Meet Our Team</p>
         <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mt-2">Compassionate Dental Professionals</h1>
@@ -43,6 +34,6 @@ export default function OurTeamPage() {
           <Staff />
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
