@@ -5,24 +5,24 @@ import { memo } from 'react';
 const staffData = [
   {
     id: 1,
-    name: "Emma Rodriguez",
-    role: "Dental Hygienist",
-    image: "/images/staff1.jpg",
-    bio: "Dedicated to patient education and preventive care"
+    name: "Danyelle",
+    role: "Office Manager",
+    image: "/Danyelle.jpg",
+    bio: "13+ years in dentistry with Expanded Functions and Radiology licenses from University of Florida. Team leader for 10+ years."
   },
   {
     id: 2,
-    name: "David Thompson",
-    role: "Dental Assistant",
-    image: "/images/staff2.jpg",
-    bio: "Ensures smooth operations and patient comfort"
+    name: "Debbie",
+    role: "Dental Hygienist RDH",
+    image: "/Debbie.jpg",
+    bio: "25+ years experience. Valencia Community College graduate (2002). Dedicated to preventive care and patient education."
   },
   {
     id: 3,
-    name: "Lisa Anderson",
-    role: "Office Manager",
-    image: "/images/staff3.jpg",
-    bio: "Manages appointments and patient relations"
+    name: "Dani",
+    role: "Dental Hygienist RDH, BASDH",
+    image: "/Dani.jpg",
+    bio: "At Haines City Dental since 2008. Valencia College and St. Petersburg College graduate with Bachelor's in Dental Hygiene."
   }
 ];
 
@@ -33,14 +33,14 @@ export default memo(function Staff() {
         {staffData.map((member) => (
           <div
             key={member.id}
-            className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300"
+            className="glass-light rounded-2xl p-6 hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
           >
-            <div className="w-full h-48 bg-gradient-to-br from-green-100 to-green-200 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
-              <span className="text-green-600 text-sm font-medium">{member.name}</span>
+            <div className="w-full h-56 bg-gradient-to-br from-dental-blue-100 to-cyan-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden text-gray-500 text-sm font-medium">
+              {member.name}
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">{member.name}</h3>
-            <p className="text-green-600 font-medium mb-2">{member.role}</p>
-            <p className="text-gray-600 text-sm">{member.bio}</p>
+            <h3 className="text-xl font-bold text-gray-900 mb-1">{member.name}</h3>
+            <p className="text-dental-blue-600 font-semibold mb-3">{member.role}</p>
+            <p className="text-gray-600 text-sm leading-relaxed">{member.bio}</p>
           </div>
         ))}
       </div>
