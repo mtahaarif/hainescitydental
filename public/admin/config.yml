@@ -2,12 +2,15 @@ backend:
   name: github
   repo: mtahaarif/hainecitydental
   branch: main
+  
+local_backend:
+  url: http://localhost:3000
+  allowed_hosts:
+    - localhost
+    - 127.0.0.1
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
-local_backend: true
-
-logo_url: "https://hainescitydental.vercel.app/logo.png"
 
 collections:
   # News Articles
