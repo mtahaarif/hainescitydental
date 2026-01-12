@@ -21,10 +21,11 @@ All changes are automatically saved to GitHub and the website rebuilds within 2-
 ## 🔑 Accessing the CMS
 
 1. **Go to:** `https://hainescitydental.vercel.app/admin`
-2. **Login with GitHub:**
-   - Use your GitHub account credentials
-   - Click "Login with GitHub" and authorize access
-   - Once authenticated, you'll see the admin dashboard with all content collections
+2. **Enter the CMS credentials:**
+   - **Username:** `hainescitydental123`
+   - **Password:** `hainescitydental123`
+   - Click **Sign in**
+3. After signing in, you'll be taken to the CMS dashboard with all content collections
 
 ---
 
@@ -274,10 +275,10 @@ Upload images for:
 5. Testimonial appears on homepage
 
 ### "Can't Login"
-- Make sure you have a GitHub account
-- Check GitHub notifications for any permission requests
-- Try logging out of GitHub and back in
-- Clear browser cache and try again
+- Confirm the username/password: `hainescitydental123` / `hainescitydental123`
+- Re-enter both fields carefully (case-sensitive)
+- Clear browser cache or try an incognito/private window
+- If still blocked, ask the site administrator to reset or rotate the CMS password
 
 ### "Changes Not Appearing"
 - Wait 5-10 minutes for rebuild to complete
@@ -326,19 +327,18 @@ Upload images for:
 
 ## 🔐 Security & Access
 
-- **Never share** your GitHub login credentials
+- **Never share** the CMS username/password publicly
+- **Rotate the password** if staff changes or if you suspect sharing
 - **Only authorized staff** should have admin access
-- **Log out** when finished editing
-- **Use strong password** for your GitHub account
-- Admin panel only accessible to authenticated GitHub users
-- All changes are tracked and can be reverted if needed
+- **Log out/close the tab** when finished editing
+- All changes are tracked in GitHub history and can be reverted if needed
 
 ---
 
 ## 📊 What You Can Track
 
 The CMS automatically tracks:
-- Who made changes (GitHub username)
+- Who made changes (Git commit author)
 - When changes were made
 - What was changed
 - History of all edits (can revert if needed)

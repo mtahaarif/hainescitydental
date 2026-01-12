@@ -144,7 +144,3 @@ collections:
       - { label: "Image", name: "image", widget: "image" }
       - { label: "Alt Text", name: "alt", widget: "string" }
       - { label: "Category", name: "category", widget: "select", options: ["doctors", "staff", "services", "news", "hero", "testimonials", "other"] }
-
-      - { label: "Testimonial", name: "content", widget: "text" }
-      - { label: "Rating", name: "rating", widget: "number", default: 5, min: 1, max: 5 }
-      - { label: "Order", name: "order", widget: "number", default: 1 }

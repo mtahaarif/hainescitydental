@@ -15,12 +15,15 @@ interface NewsItem {
   title: string;
   date: string;
   category: 'training' | 'community' | 'conference' | 'mission';
-  images: string[];
+  images?: string[];
+  description?: string;
   content?: string;
 }
 
 export default async function NewsPage() {
   const newsItems = (await getAllContent('news')) as NewsItem[];
+  
+  return (
     <div className="min-h-screen pt-8 pb-16">
       {/* Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 text-center">
@@ -59,16 +62,18 @@ export default async function NewsPage() {
                 {item.date && (
                   <div className="flex items-center gap-2 text-sm text-dental-blue-700">
                     <Calendar className="w-4 h-4" />
-                    <span>{item.date}</span>
+                    <span>{typeof item.date === 'string' ? item.date : new Date(item.date).toLocaleDateString()}</span>
                   </div>
                 )}
               </div>
 
-              <p className="text-gray-700 leading-relaxed mb-6">
-                {item.description}
-              </p>
+              {item.description && (
+                <p className="text-gray-700 leading-relaxed mb-6">
+                  {item.description}
+                </p>
+              )}
 
-              {item.images.length > 0 && (
+              {item.images && item.images.length > 0 && (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                   {item.images.map((img) => (
                     <div
