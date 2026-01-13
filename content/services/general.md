@@ -1,17 +1,46 @@
 ---
 id: general
 title: General Dentistry
-subtitle: Complete Oral Care
+subtitle: Comprehensive Dental Care for Your Whole Family
 order: 2
-image: /generaldentisry.webp
-icon: Heart
+image: /generaldentistry.webp
+icon: Shield
 ---
 
-Comprehensive dental care for patients of all ages. We provide everything from preventive cleanings to advanced restorative treatments, all designed to maintain your optimal oral health in a comfortable environment.
+Our office provides a comprehensive dental care plan with a wide range of dental procedures. We make our dental fees very affordable so anyone can get dental care.
 
-## Services Include:
+## Composite Fillings / White Bonding
 
-- **Regular Cleanings & Exams** - Preventive care every 6 months to catch issues early
-- **Composite White Fillings** - Aesthetic, tooth-colored restorations for cavities
-- **Root Canal Therapy** - Advanced treatment to save infected or diseased teeth
-- **Oral Cancer Screening** - Early detection of cancerous lesions during exams
+Tooth-colored fillings that blend naturally with your teeth, providing durable restoration for cavities and minor damage.
+
+## Porcelain Fused to Metal Crowns / Caps
+
+Strong, durable crowns combining the strength of metal with the natural appearance of porcelain.
+
+## Porcelain Fused to Metal Bridges
+
+Fixed dental bridges that replace missing teeth, restoring your smile and bite functionality.
+
+## Composite Onlays / Inlays
+
+Conservative restorations that preserve more of your natural tooth structure than traditional crowns.
+
+## Endodontics / Root Canal
+
+Root canal therapy to save infected or damaged teeth, eliminating pain and preserving your natural tooth.
+
+## Full Arch Dentures
+
+Complete denture solutions for patients missing all teeth in an arch, restoring function and aesthetics.
+
+## Partial Dentures
+
+Removable partial dentures that replace multiple missing teeth while maintaining your remaining natural teeth.
+
+## Comprehensive Dental Examinations
+
+Thorough evaluations including digital x-rays and oral cancer screenings to maintain your optimal oral health.
+
+## Emergency Dental Care
+
+Prompt treatment for dental emergencies including severe pain, broken teeth, and dental trauma.

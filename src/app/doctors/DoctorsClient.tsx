@@ -51,7 +51,7 @@ export default function DoctorsClient({ doctors }: DoctorsClientProps) {
 
       {/* Doctor Carousel */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="glass-strong p-8 sm:p-12 relative overflow-hidden">
+        <div className="glass-strong p-8 sm:p-12 relative overflow-hidden h-[500px]">
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             {/* Image */}
             <div className="flex flex-col items-center">

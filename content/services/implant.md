@@ -1,17 +1,32 @@
 ---
 id: implant
-title: Implant Dentistry
-subtitle: Restore Your Smile
+title: Implant Dentistry  
+subtitle: Permanent Solutions for Missing Teeth
 order: 3
-image: /implantdentistry.webp
-icon: Zap
+image: /implants.webp
+icon: Anchor
 ---
 
-Missing teeth? Dental implants provide a permanent, natural-looking solution that looks, feels, and functions like your real teeth. Whether you're missing one tooth or an entire arch, we have the expertise to restore your smile with lasting results.
+Dental implants are the gold standard for tooth replacement, providing a permanent solution that looks, feels, and functions like natural teeth.
 
-## Services Include:
+## Single Implant
 
-- **Single Tooth Implants** - Perfect for isolated missing teeth with custom crowns
-- **Full Arch Implants** - Solution for multiple missing or all teeth
-- **Implant-Supported Dentures** - Combines implants with prosthetics for stability
-- **95%+ Success Rate** - Can last a lifetime with proper care
+Replace individual missing teeth with titanium implants topped with custom porcelain crowns for a natural appearance and feel.
+
+## Full Arch Implants
+
+Complete arch restoration using multiple implants to support a full set of replacement teeth, offering superior stability and comfort.
+
+## Implant Supported Dentures
+
+Dentures securely anchored by dental implants, eliminating slipping and providing significantly improved chewing ability compared to traditional dentures.
+
+## Benefits of Dental Implants
+
+- **Permanent Solution**: With proper care, implants can last a lifetime
+- **Natural Appearance**: Custom designed to match your natural teeth
+- **Preserve Bone**: Prevents jawbone deterioration that occurs with missing teeth
+- **Improved Function**: Restore full chewing capacity and clear speech
+- **No Impact on Adjacent Teeth**: Unlike bridges, implants don't require altering neighboring teeth
+
+Our doctors have extensive training in implant placement and restoration, ensuring optimal results for your smile.

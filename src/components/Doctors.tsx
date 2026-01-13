@@ -19,19 +19,19 @@ export default async function Doctors() {
   
   return (
     <div className="py-12">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
         {doctors.map((doctor, index) => (
           <div
             key={index}
             className="glass-light rounded-2xl p-6 hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
           >
-            <div className="w-full h-64 bg-gradient-to-br from-dental-blue-100 to-cyan-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
+            <div className="w-full h-80 bg-gradient-to-br from-dental-blue-100 to-cyan-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
               <Image
                 src={doctor.image}
                 alt={doctor.name}
-                width={300}
-                height={300}
-                className="w-full h-full object-cover"
+                width={400}
+                height={400}
+                className="w-full h-full object-contain"
               />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-1">{doctor.name}</h3>

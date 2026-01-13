@@ -173,8 +173,8 @@ function ServicesContent() {
 
       {/* Service Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="glass-strong p-8 sm:p-12 relative overflow-hidden min-h-[600px]">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="glass-strong p-8 sm:p-12 relative overflow-hidden h-[600px]">
+          <div className="grid lg:grid-cols-2 gap-12 items-center h-full">
             {/* Image */}
             <div className="relative h-80 lg:h-[450px] rounded-2xl overflow-hidden transition-transform duration-300 hover:scale-[1.02]">
               <Image

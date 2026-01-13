@@ -8,24 +8,35 @@ import type { ISourceOptions } from '@tsparticles/engine';
 export default function ParticleBackground() {
   const [init, setInit] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isLowEndDevice, setIsLowEndDevice] = useState(false);
 
   useEffect(() => {
-    // Check if mobile for performance optimization
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+    // Check if mobile and low-end device
+    const checkDevice = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      
+      // Check for low memory device or reduced motion preference
+      const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const isLowMemory = (navigator as any).deviceMemory && (navigator as any).deviceMemory <= 4;
+      
+      setIsLowEndDevice(isReducedMotion || isLowMemory);
     };
     
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
     
-    initParticlesEngine(async (engine) => {
-      await loadSlim(engine);
-    }).then(() => {
-      setInit(true);
-    });
+    // Skip particle initialization on low-end devices
+    if (!isLowEndDevice) {
+      initParticlesEngine(async (engine) => {
+        await loadSlim(engine);
+      }).then(() => {
+        setInit(true);
+      });
+    }
 
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+    return () => window.removeEventListener('resize', checkDevice);
+  }, [isLowEndDevice]);
 
   const options: ISourceOptions = useMemo(
     () => ({
@@ -34,15 +45,15 @@ export default function ParticleBackground() {
           value: 'transparent',
         },
       },
-      fpsLimit: isMobile ? 30 : 60,
+      fpsLimit: isMobile ? 20 : 40, // Reduced FPS for better performance
       interactivity: {
         events: {
           onClick: {
-            enable: !isMobile,
+            enable: false, // Disabled for performance
             mode: 'push',
           },
           onHover: {
-            enable: !isMobile,
+            enable: !isMobile && !isLowEndDevice, // Disabled on mobile/low-end
             mode: 'grab',
           },
         },
@@ -65,7 +76,7 @@ export default function ParticleBackground() {
         links: {
           color: '#0ea5e9',
           distance: 150,
-          enable: !isMobile,
+          enable: !isMobile && !isLowEndDevice, // Disabled on mobile/low-end
           opacity: 0.15,
           width: 1,
         },
@@ -76,7 +87,7 @@ export default function ParticleBackground() {
             default: 'bounce',
           },
           random: true,
-          speed: isMobile ? 0.5 : 0.8,
+          speed: isMobile ? 0.3 : 0.5, // Further reduced speed
           straight: false,
         },
         number: {
@@ -85,12 +96,12 @@ export default function ParticleBackground() {
             height: 800,
             width: 800,
           },
-          value: isMobile ? 15 : 35,
+          value: isMobile ? 8 : 20, // Significantly reduced particles
         },
         opacity: {
           value: { min: 0.1, max: 0.3 },
           animation: {
-            enable: !isMobile,
+            enable: false, // Disabled for better performance
             speed: 0.5,
             sync: false,
           },
@@ -99,16 +110,16 @@ export default function ParticleBackground() {
           type: 'circle',
         },
         size: {
-          value: { min: 1, max: isMobile ? 3 : 4 },
+          value: { min: 1, max: isMobile ? 2 : 3 },
         },
       },
       detectRetina: true,
-      smooth: true,
+      smooth: false, // Disabled for better performance
     }),
-    [isMobile]
+    [isMobile, isLowEndDevice]
   );
 
-  if (!init) return null;
+  if (!init || isLowEndDevice) return null;
 
   return (
     <Particles

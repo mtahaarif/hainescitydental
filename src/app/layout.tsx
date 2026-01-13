@@ -1,13 +1,19 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
+import dynamic from 'next/dynamic';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import ParticleBackground from '@/components/ParticleBackground';
 import ScheduleAppointmentBar from '@/components/ScheduleAppointmentBar';
 import PageTransition from '@/components/PageTransition';
 import ScrollProgress from '@/components/ScrollProgress';
 import MobileQuickActions from '@/components/MobileQuickActions';
+
+// Dynamically import ParticleBackground - it's heavy and optional for UX
+const ParticleBackground = dynamic(() => import('@/components/ParticleBackground'), {
+  ssr: false,
+  loading: () => null,
+});
 
 const inter = Inter({ 
   subsets: ['latin'],

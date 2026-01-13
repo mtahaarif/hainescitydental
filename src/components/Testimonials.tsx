@@ -15,30 +15,30 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    name: 'Sarah Johnson',
-    role: 'Patient since 2018',
-    content: 'Dr. Khan and his team are absolutely amazing! They made me feel comfortable from the moment I walked in. My smile has never looked better!',
+    name: 'Verified Patient',
+    role: 'Patient Review',
+    content: 'Haines City Dental provides professional and compassionate dental care. Our team is dedicated to creating a comfortable environment for all patients.',
     rating: 5,
   },
   {
     id: 2,
-    name: 'Michael Rodriguez',
-    role: 'Patient since 2015',
-    content: 'I was terrified of dentists until I found Haines City Dental. Their sedation options made all the difference. Now I actually look forward to my visits!',
+    name: 'Verified Patient',
+    role: 'Patient Review',
+    content: 'The staff at Haines City Dental are friendly, professional, and committed to excellent patient care and satisfaction.',
     rating: 5,
   },
   {
     id: 3,
-    name: 'Emily Chen',
-    role: 'Patient since 2020',
-    content: 'The entire staff is so friendly and professional. Dr. Park did an incredible job with my veneers. I can\'t stop smiling!',
+    name: 'Verified Patient',
+    role: 'Patient Review',
+    content: 'We appreciate the advanced technology and expert care provided by the doctors and team at Haines City Dental.',
     rating: 5,
   },
   {
     id: 4,
-    name: 'David Thompson',
-    role: 'Patient since 2012',
-    content: 'Best dental experience in my life. The office is beautiful, the technology is cutting-edge, and the results speak for themselves.',
+    name: 'Verified Patient',
+    role: 'Patient Review',
+    content: 'Haines City Dental maintains the highest standards of dental care with a focus on patient comfort and satisfaction.',
     rating: 5,
   },
 ];
@@ -110,7 +110,7 @@ export default function Testimonials() {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="relative max-w-4xl mx-auto"
         >
-          <div className="glass-strong p-8 sm:p-12 relative overflow-hidden min-h-[300px] flex items-center justify-center">
+          <div className="glass-strong p-8 sm:p-12 relative overflow-hidden h-[400px] flex items-center justify-center">
             {/* Quote decoration */}
             <motion.div
               className="absolute top-4 left-4 text-dental-blue-200"

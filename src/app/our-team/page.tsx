@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Doctors from '@/components/Doctors';
 import Staff from '@/components/Staff';
+import TeamCarouselServer from '@/components/TeamCarouselServer';
 
 export default function OurTeamPage() {
   return (
@@ -11,16 +12,18 @@ export default function OurTeamPage() {
         <p className="text-lg text-gray-600 max-w-3xl mx-auto mt-4">
           Get to know the doctors and staff who make Haines City Dental a welcoming place for every patient.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-          <Link href="/doctors" className="btn-primary inline-flex items-center justify-center gap-2">
-            Meet the Doctors
-          </Link>
-          <Link href="/staff" className="btn-secondary inline-flex items-center justify-center gap-2">
-            Meet the Staff
-          </Link>
-        </div>
       </section>
 
+      {/* All Team Members Carousel */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+        <div className="glass-strong p-6 sm:p-8 rounded-3xl shadow-xl">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Complete Team Directory</h2>
+          <p className="text-gray-600 mb-6">Browse all of our doctors and staff members in one place.</p>
+          <TeamCarouselServer />
+        </div>
+      </div>
+
+      {/* Detailed Sections */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-14 space-y-12">
         <div className="glass-strong p-6 sm:p-8 rounded-3xl shadow-xl">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Our Doctors</h2>
