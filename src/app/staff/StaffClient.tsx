@@ -42,7 +42,7 @@ export default function StaffClient({ staffMembers }: StaffClientProps) {
 
       {/* Staff Carousel */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="glass-strong p-8 sm:p-12 relative overflow-hidden h-[500px]">
+        <div className="glass-strong p-8 sm:p-12 relative overflow-hidden h-[580px]">
           <div className="flex flex-col items-center text-center">
             {/* Image */}
             <div className="relative w-48 h-48 sm:w-64 sm:h-64 rounded-full overflow-hidden border-4 border-dental-blue-100 shadow-2xl mb-8 hover:scale-[1.02] transition-transform duration-300">

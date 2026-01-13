@@ -23,6 +23,13 @@ interface NewsItem {
 export default async function NewsPage() {
   const newsItems = (await getAllContent('news')) as NewsItem[];
   
+  // Sort news items by date, newest first
+  const sortedNews = newsItems.sort((a, b) => {
+    const dateA = new Date(a.date).getTime();
+    const dateB = new Date(b.date).getTime();
+    return dateB - dateA; // Descending order (newest first)
+  });
+  
   return (
     <div className="min-h-screen pt-8 pb-16">
       {/* Header */}
@@ -37,7 +44,7 @@ export default async function NewsPage() {
 
       {/* News Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        {newsItems.map((item, index) => {
+        {sortedNews.map((item, index) => {
           const CategoryIcon = categoryConfig[item.category].icon;
           return (
             <article
