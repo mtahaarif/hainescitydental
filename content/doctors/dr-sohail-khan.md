@@ -1,7 +1,7 @@
 ---
 name: "Dr. Sohail Khan"
 title: "DMD"
-image: "/dr-sohail-khan.jpg"
+image: "/Khan-9570.jpg"
 order: 1
 bioSections:
   - title: "Education"

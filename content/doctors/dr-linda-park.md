@@ -1,7 +1,7 @@
 ---
 name: "Dr. Linda Park"
 title: "DDS"
-image: "/dr-linda-park.jpg"
+image: "/DSC_0626.jpg"
 order: 2
 bioSections:
   - title: "Education"
