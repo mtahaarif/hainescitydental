@@ -10,6 +10,7 @@ interface Slide {
   title: string;
   subtitle: string;
   image: string;
+  imageMobile: string;
   color: string;
 }
 
@@ -20,13 +21,15 @@ export default function UniversalSlider() {
       title: 'Comprehensive Dental Care',
       subtitle: 'State-of-the-art treatments for your smile',
       image: '/banner31-1297x300.jpg',
+      imageMobile: '/banner31-4-3.jpg',
       color: 'from-dental-blue-400 to-dental-blue-700',
     },
     {
       id: 'team',
       title: 'Expert Dental Professionals',
       subtitle: 'Your health and comfort are our priority',
-      image: '/banner51-1297x300.jpg',
+      image: '/banner41-1297x300.jpg',
+      imageMobile: '/banner41-43.jpg',
       color: 'from-cyan-400 to-blue-600',
     },
     {
@@ -34,6 +37,7 @@ export default function UniversalSlider() {
       title: '20+ Years of Excellence',
       subtitle: 'Trusted by thousands of happy patients',
       image: '/banner61-1297x300.jpg',
+      imageMobile: '/banner61-43.jpg',
       color: 'from-blue-300 to-cyan-500',
     },
     {
@@ -41,6 +45,7 @@ export default function UniversalSlider() {
       title: 'Community Focused',
       subtitle: 'Giving back through dental missions',
       image: '/banner71-1297x300.jpg',
+      imageMobile: '/banner71-43.jpg',
       color: 'from-blue-600 to-blue-800',
     },
   ];
@@ -48,6 +53,7 @@ export default function UniversalSlider() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
   const [direction, setDirection] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
   const touchStartX = useRef<number>(0);
   const touchEndX = useRef<number>(0);
 
@@ -93,6 +99,16 @@ export default function UniversalSlider() {
     setActiveIndex(index);
     setAutoPlay(false);
   }, [activeIndex]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (!autoPlay) return;
@@ -168,7 +184,7 @@ export default function UniversalSlider() {
             >
               {/* Background Image */}
               <Image
-                src={slides[activeIndex].image}
+                src={isMobile ? slides[activeIndex].imageMobile : slides[activeIndex].image}
                 alt={slides[activeIndex].title}
                 fill
                 className="object-cover"
