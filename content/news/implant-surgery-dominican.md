@@ -5,8 +5,8 @@ category: training
 date: 2014-07-15
 featured: false
 images:
-  - DSC04408
-  - DSC04406
+  - 2016-1141
+  - 2016-1142
 ---
 
 Live surgical placement and restoration for a Dominican Republic patient.

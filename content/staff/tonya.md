@@ -1,7 +1,7 @@
 ---
 name: "Tonya"
-role: "Dental Assistant"
-image: "/DSC_0550.jpg"
-bio: "Tonya has been a dental assistant for 8 years and is deeply committed to patient care. Raised in Haines City, she brings a strong sense of community and focuses on making every patient feel comfortable and secure in our office."
+role: "Patient Relations"
+image: "/team-2024/IMG_0001-scaled.jpg"
+bio: "Tonya has been a dental assistant for over 18 years. She was raised in Haines City and has a great sense of community. Her main focus is making patients comfortable and secure when in our office. Tonya transitioned to a Patient Relations position in 2020. Outside of work she enjoys spending time with her husband and daughter."
 order: 6
 ---

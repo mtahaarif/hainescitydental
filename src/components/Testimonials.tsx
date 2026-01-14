@@ -1,205 +1,232 @@
 'use client';
 
-import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 
 interface Testimonial {
-  id: number;
   name: string;
-  role: string;
   content: string;
   rating: number;
+  date: string;
+  source: string;
 }
 
 const testimonials: Testimonial[] = [
   {
-    id: 1,
-    name: 'Verified Patient',
-    role: 'Patient Review',
-    content: 'Haines City Dental provides professional and compassionate dental care. Our team is dedicated to creating a comfortable environment for all patients.',
+    name: "Heidi B.",
+    content: "I'm terrified of going to the dentist. Thank goodness I found Dr. Khan the morning I woke up with an infected tooth. Dr. Khan is gentle, kind, and wonderful. I am in the middle of a difficult root canal and I haven't experienced any pain.",
     rating: 5,
+    date: "3 weeks ago",
+    source: "Google Review"
   },
   {
-    id: 2,
-    name: 'Verified Patient',
-    role: 'Patient Review',
-    content: 'The staff at Haines City Dental are friendly, professional, and committed to excellent patient care and satisfaction.',
+    name: "Pat R.",
+    content: "Just had a tooth extracted by Dr Kahn! No pain, he was so gentle, have been going there for about 20 yrs, am not going anywhere else, even though I drive 2 hrs to get there! Thank you Dr. Kahn!",
     rating: 5,
+    date: "6 days ago",
+    source: "Google Review"
   },
   {
-    id: 3,
-    name: 'Verified Patient',
-    role: 'Patient Review',
-    content: 'We appreciate the advanced technology and expert care provided by the doctors and team at Haines City Dental.',
+    name: "Mercedes N.",
+    content: "I am so happy that I became a patient at Haines city dental. I am so satisfied with the outcome of my smile. I feel confident and happy to be able to show my smile! Dr.Khan, Dianilda, Anabell, and Jay treated me wonderfully.",
     rating: 5,
+    date: "1 month ago",
+    source: "Google Review"
   },
   {
-    id: 4,
-    name: 'Verified Patient',
-    role: 'Patient Review',
-    content: 'Haines City Dental maintains the highest standards of dental care with a focus on patient comfort and satisfaction.',
+    name: "Paul C.",
+    content: "Dr. Kahn was amazing! The extraction was done in a quick, painless manner. He is definitely a true professional! Thank you Dr. Kahn and Annabelle for taking such good care of me this morning!",
     rating: 5,
+    date: "1 month ago",
+    source: "Google Review"
   },
+  {
+    name: "Tiffany K.",
+    content: "I have been coming to Dr Kahn for many years now and even though I now live 2 and a half hours away I still won't go anywhere else! They truly make you feel comfortable here!",
+    rating: 5,
+    date: "1 month ago",
+    source: "Google Review"
+  },
+  {
+    name: "Bruce S.",
+    content: "Just had a tooth extraction by Dr Kahn and it was almost a non event. There was no pain during the procedure at all. Everything was fine. Would recommend this practice to everyone.",
+    rating: 5,
+    date: "2 months ago",
+    source: "Google Review"
+  },
+  {
+    name: "Alyssa M.",
+    content: "As always, my visit and extractions were done professionally and with the utmost amount of care. Huge shoutout to Dr. Khan and his team!",
+    rating: 5,
+    date: "4 months ago",
+    source: "Google Review"
+  },
+  {
+    name: "Rosita R.",
+    content: "Dr. Kahn was amazing! He was attentive and reassuring. The extraction was done in such a manner that I was at ease and shocked by how quickly it was done. He is definitely a true professional!",
+    rating: 5,
+    date: "5 months ago",
+    source: "Google Review"
+  },
+  {
+    name: "Paul C.",
+    content: "This is the best service I have ever received from any dentist location. The Doctor and hygienist were spectacular, down to earth. Very friendly and very professional. I would recommend them to anyone.",
+    rating: 5,
+    date: "8 months ago",
+    source: "Google Review"
+  },
+  {
+    name: "B. Vasquez",
+    content: "I went today - painless filling, gentle dentist. They treated only the area I needed, aren't money hungry trying to do all at once. Thank you for being so kind and understanding. Will be back for more fillings in the future!",
+    rating: 5,
+    date: "10 months ago",
+    source: "Google Review"
+  },
+  {
+    name: "Fedelyne P.",
+    content: "Dr. Khan is an exceptional dentist. I have been suffering with toothache for over a week. I called in yesterday to schedule appointment and today he was able to pull my bad tooth in 5 mins. The price was reasonable. Very funny Doctor!",
+    rating: 5,
+    date: "11 months ago",
+    source: "Google Review"
+  },
+  {
+    name: "Tina J.",
+    content: "Absolutely loved this Dental office! They were very quick to assess my issues, listened to my concerns. The Doctor was able to formulate an affordable plan to get my teeth fixed. My extraction was quick and seamless with minimal downtime.",
+    rating: 5,
+    date: "11 months ago",
+    source: "Google Review"
+  }
 ];
 
 export default function Testimonials() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
   const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
+  const touchStartX = useRef<number>(0);
+  const touchEndX = useRef<number>(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const difference = touchStartX.current - touchEndX.current;
+    const threshold = 50;
+
+    if (Math.abs(difference) > threshold) {
+      if (difference > 0) {
+        handleNext();
+      } else {
+        handlePrevious();
+      }
+    }
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setDirection(1);
-      setActiveIndex((prev) => (prev + 1) % testimonials.length);
+      setActiveIndex((current) => (current + 1) % testimonials.length);
     }, 6000);
+
     return () => clearInterval(interval);
   }, []);
 
-  const next = () => {
-    setDirection(1);
-    setActiveIndex((prev) => (prev + 1) % testimonials.length);
+  const handlePrevious = () => {
+    setActiveIndex((current) => (current - 1 + testimonials.length) % testimonials.length);
   };
 
-  const prev = () => {
-    setDirection(-1);
-    setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
-
-  const slideVariants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 300 : -300,
-      opacity: 0,
-      scale: 0.9,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-      scale: 1,
-    },
-    exit: (direction: number) => ({
-      x: direction > 0 ? -300 : 300,
-      opacity: 0,
-      scale: 0.9,
-    }),
+  const handleNext = () => {
+    setActiveIndex((current) => (current + 1) % testimonials.length);
   };
 
   return (
-    <section ref={ref} className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
+    <section className="py-20 bg-gradient-to-br from-blue-50 to-white">
+      <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
         >
-<h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-            What Our <span className="gradient-text">Patients Say</span>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            What Our Patients Say
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Don&apos;t just take our word for it. Hear from our happy patients about their experiences.
+          <p className="text-xl text-gray-600">
+            Real Google reviews from real patients
           </p>
         </motion.div>
 
-        {/* Testimonial Slider */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="relative max-w-4xl mx-auto"
-        >
-          <div className="glass-strong p-8 sm:p-12 relative overflow-hidden h-[400px] flex items-center justify-center">
-            {/* Quote decoration */}
+        <div className="max-w-4xl mx-auto relative">
+          <AnimatePresence mode="wait">
             <motion.div
-              className="absolute top-4 left-4 text-dental-blue-200"
-              animate={{ opacity: [0.2, 0.4, 0.2] }}
-              transition={{ duration: 3, repeat: Infinity }}
+              key={activeIndex}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.5 }}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              className="bg-white rounded-2xl shadow-xl p-8 md:p-12 relative"
             >
-              <Quote className="w-16 h-16" />
-            </motion.div>
+              <Quote className="absolute top-8 left-8 w-12 h-12 text-blue-100" />
 
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={activeIndex}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-                className="text-center"
-              >
-                {/* Rating */}
-                <div className="flex justify-center gap-1 mb-6">
+              <div className="relative z-10">
+                <div className="flex items-center justify-center mb-6">
                   {[...Array(testimonials[activeIndex].rating)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, scale: 0 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: i * 0.1 }}
-                    >
-                      <Star className="w-6 h-6 text-yellow-400 fill-yellow-400" />
-                    </motion.div>
+                    <Star key={i} className="w-6 h-6 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
 
-                {/* Content */}
-                <p className="text-xl sm:text-2xl text-gray-700 mb-8 leading-relaxed italic">
-                  &quot;{testimonials[activeIndex].content}&quot;
+                <p className="text-xl text-gray-700 mb-6 leading-relaxed text-center">
+                  "{testimonials[activeIndex].content}"
                 </p>
 
-                {/* Author */}
-                <div>
-                  <p className="font-bold text-gray-900 text-lg">
+                <div className="text-center">
+                  <p className="font-semibold text-gray-900 text-lg">
                     {testimonials[activeIndex].name}
                   </p>
-                  <p className="text-dental-blue-600">{testimonials[activeIndex].role}</p>
+                  <p className="text-sm text-blue-600 mt-1">
+                    {testimonials[activeIndex].source}
+                  </p>
                 </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
 
-          {/* Navigation Arrows */}
-          <motion.button
-            onClick={prev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 p-3 glass-light rounded-full shadow-lg hover:shadow-xl transition-all"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <ChevronLeft className="w-6 h-6 text-dental-blue-600" />
-          </motion.button>
-          
-          <motion.button
-            onClick={next}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 p-3 glass-light rounded-full shadow-lg hover:shadow-xl transition-all"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <ChevronRight className="w-6 h-6 text-dental-blue-600" />
-          </motion.button>
+          <div className="flex justify-center items-center gap-4 mt-8">
+            <button
+              onClick={handlePrevious}
+              className="p-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+              aria-label="Previous testimonial"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
 
-          {/* Dots */}
-          <div className="flex justify-center gap-3 mt-8">
-            {testimonials.map((_, index) => (
-              <motion.button
-                key={index}
-                onClick={() => {
-                  setDirection(index > activeIndex ? 1 : -1);
-                  setActiveIndex(index);
-                }}
-                className={`h-2.5 rounded-full transition-all duration-300 ${
-                  index === activeIndex
-                    ? 'w-9 bg-dental-blue-500'
-                    : 'w-3 bg-dental-blue-200 hover:bg-dental-blue-300'
-                }`}
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.8 }}
-              />
-            ))}
+            <div className="flex gap-2">
+              {testimonials.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setActiveIndex(index)}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    index === activeIndex ? 'bg-blue-600 w-8' : 'bg-gray-300'
+                  }`}
+                  aria-label={`Go to testimonial ${index + 1}`}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={handleNext}
+              className="p-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+              aria-label="Next testimonial"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

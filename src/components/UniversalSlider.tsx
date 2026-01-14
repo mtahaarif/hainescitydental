@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
@@ -48,6 +48,31 @@ export default function UniversalSlider() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
   const [direction, setDirection] = useState(1);
+  const touchStartX = useRef<number>(0);
+  const touchEndX = useRef<number>(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const difference = touchStartX.current - touchEndX.current;
+    const threshold = 50; // Minimum swipe distance
+
+    if (Math.abs(difference) > threshold) {
+      if (difference > 0) {
+        // Swipe left - go to next
+        goToNext();
+      } else {
+        // Swipe right - go to previous
+        goToPrevious();
+      }
+    }
+  };
 
   const goToNext = useCallback(() => {
     setDirection(1);
@@ -118,6 +143,9 @@ export default function UniversalSlider() {
         {/* Slide Container */}
         <motion.div
           className="relative w-full aspect-[4/3] sm:aspect-[16/7] lg:aspect-[1297/300] rounded-2xl sm:rounded-3xl overflow-hidden glass-strong"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
           whileHover={{ 
             boxShadow: '0 0 60px rgba(59, 130, 246, 0.3)',
           }}

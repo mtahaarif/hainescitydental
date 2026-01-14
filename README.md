@@ -1,158 +1,112 @@
-# Haines City Dental - Next.js Version
+# Haines City Dental - Modern Dental Practice Website
 
-A modern, enhanced version of the Haines City Dental website built with Next.js 14, featuring smooth animations, particle effects, and improved user experience.
+A high-performance, modern website for Haines City Dental built with Next.js 14, React 18, TypeScript, and Tailwind CSS.
 
 ## 🚀 Features
 
-### Next.js Exclusive Features
-- **Server-Side Rendering (SSR)** - Improved SEO and faster initial page loads
-- **Image Optimization** - Automatic image optimization with Next.js Image component
-- **App Router** - Latest Next.js routing with layouts and loading states
-- **Metadata API** - Enhanced SEO with built-in metadata handling
-- **Font Optimization** - Automatic Google Fonts optimization
+- **Modern Tech Stack**: Next.js 14 with App Router, React 18, TypeScript
+- **Optimized Performance**: Static generation, image optimization, lazy loading
+- **Responsive Design**: Mobile-first approach with touch/swipe support
+- **SEO Optimized**: Meta tags, sitemap, robots.txt
+- **Smooth Animations**: Framer Motion for fluid user experience
+- **Content Management**: Markdown-based content system
+- **Professional Services**: Complete dental services showcase
+- **Team Profiles**: Doctor and staff profiles with 2024 photos
+- **News & Events**: Community involvement and training highlights
+- **Google Reviews**: Authentic patient testimonials
 
-### Enhanced Animations & Effects
-- **Framer Motion** - Smooth page transitions and micro-interactions
-- **Particle Background** - Interactive particle effects using tsparticles
-- **Scroll Progress Indicator** - Visual feedback for page scroll position
-- **Staggered Animations** - Elements animate in sequence for visual appeal
-- **Hover Effects** - Magnetic hover effects and smooth transitions
+## 📦 Tech Stack
 
-### Design Improvements
-- **Glass Morphism** - Enhanced frosted glass effect throughout
-- **Gradient Accents** - Beautiful gradient text and backgrounds
-- **Floating Animations** - Subtle floating elements for depth
-- **Responsive Design** - Fully responsive from mobile to 4K displays
-
-## 🛠️ Tech Stack
-
-- **Framework**: Next.js 14 (App Router)
+- **Framework**: Next.js 14.2.35
+- **UI Library**: React 18.3.1
 - **Language**: TypeScript
-- **Styling**: Tailwind CSS
+- **Styling**: Tailwind CSS + Custom Design System
 - **Animations**: Framer Motion
-- **Particles**: tsparticles
 - **Icons**: Lucide React
-- **Utilities**: clsx, tailwind-merge
+- **Content**: Gray Matter (Markdown + YAML)
 
-## 📦 Getting Started
+## 🛠️ Installation
 
-### Prerequisites
-- Node.js 18+ 
-- npm or yarn
-
-### Installation
-
-1. Navigate to the project directory:
 ```bash
+# Clone the repository
+git clone <repository-url>
 cd hainescitydental1
-```
 
-2. Install dependencies:
-```bash
+# Install dependencies
 npm install
-```
 
-3. Copy the public assets from the original project:
-```bash
-# Copy all files from hainescitydental/public to hainescitydental1/public
-```
-
-4. Start the development server:
-```bash
+# Run development server
 npm run dev
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+## 📝 Available Scripts
 
-## 📁 Project Structure
+```bash
+npm run dev      # Start development server (http://localhost:3000)
+npm run build    # Create production build
+npm run start    # Start production server
+npm run lint     # Run ESLint
+```
+
+## 📂 Project Structure
 
 ```
 hainescitydental1/
 ├── src/
-│   ├── app/
-│   │   ├── layout.tsx          # Root layout with providers
-│   │   ├── page.tsx            # Home page
-│   │   ├── globals.css         # Global styles
-│   │   ├── services/page.tsx   # Services page
-│   │   ├── doctors/page.tsx    # Doctors page
-│   │   ├── staff/page.tsx      # Staff page
-│   │   ├── news/page.tsx       # News page
-│   │   ├── about/page.tsx      # About page
-│   │   ├── contact/page.tsx    # Contact page
-│   │   └── patient-info/page.tsx # Patient info page
-│   ├── components/
-│   │   ├── Header.tsx          # Navigation header
-│   │   ├── Footer.tsx          # Footer component
-│   │   ├── Hero.tsx            # Hero section
-│   │   ├── ParticleBackground.tsx # Particle effects
-│   │   ├── PageTransition.tsx  # Page transitions
-│   │   ├── ScrollProgress.tsx  # Scroll indicator
-│   │   ├── FeaturedServices.tsx # Services preview
-│   │   ├── WhyChooseUs.tsx     # Features section
-│   │   ├── Testimonials.tsx    # Reviews carousel
-│   │   └── CallToAction.tsx    # CTA section
-│   └── lib/
-│       └── utils.ts            # Utility functions
-├── public/                     # Static assets
-├── package.json
-├── tailwind.config.ts
-├── tsconfig.json
-└── next.config.js
+│   ├── app/              # Next.js App Router pages
+│   ├── components/       # Reusable React components
+│   └── lib/              # Utility functions
+├── public/               # Static assets
+│   └── team-2024/        # Team photos (2024 photoshoot)
+├── content/              # Markdown content
+│   ├── doctors/          # Doctor profiles
+│   ├── staff/            # Staff profiles
+│   ├── news/             # News articles
+│   └── services/         # Service descriptions
+└── next.config.js        # Next.js configuration
 ```
 
-## 🎨 Key Components
+## 🎨 Design System
 
-### ParticleBackground
-Interactive particle system that responds to mouse movements and clicks.
+- **Color Palette**: Custom dental-blue scale (50-900)
+- **Typography**: Inter font family
+- **Components**: Glass morphism effects, gradient backgrounds
+- **Animations**: Floating elements, smooth transitions
+- **Mobile**: Touch/swipe gestures for sliders
 
-### PageTransition
-Smooth page transitions using Framer Motion's AnimatePresence.
+## 🚀 Performance Optimizations
 
-### ScrollProgress
-Animated progress bar showing scroll position.
+- Static page generation
+- Image lazy loading
+- Code splitting
+- CSS optimization
+- Aggressive caching headers
+- Minimal bundle size (87.3 kB shared JS)
+- Component lazy loading below the fold
 
-### Glass Morphism Components
-- `.glass` - Light effect
-- `.glass-light` - Medium effect
-- `.glass-strong` - Strong effect
+## 🔒 Security
 
-## 🔧 Customization
+- X-Content-Type-Options: nosniff
+- X-Frame-Options: SAMEORIGIN
+- Referrer-Policy: strict-origin-when-cross-origin
+- X-UA-Compatible: IE=edge
 
-### Colors
-Edit `tailwind.config.ts` to customize the dental-blue color palette.
+## 📱 Mobile Features
 
-### Animations
-Modify animation variants in individual components or add new keyframes in `globals.css`.
+- Responsive design (mobile-first)
+- Touch/swipe gestures on sliders
+- Optimized images for mobile
+- Fast loading times
 
-### Particles
-Adjust particle options in `ParticleBackground.tsx`.
+## 📞 Contact
 
-## 📱 Responsive Breakpoints
+Haines City Dental
+Phone: (863) 422-8338
 
-- **sm**: 640px
-- **md**: 768px
-- **lg**: 1024px
-- **xl**: 1280px
-- **2xl**: 1536px
+## 📝 License
 
-## 🚀 Deployment
+Copyright © 2024-2026 Haines City Dental. All rights reserved.
 
-Build for production:
-```bash
-npm run build
-```
+---
 
-Start production server:
-```bash
-npm start
-```
-
-## 📄 License
-
-Private - Haines City Dental
-
-## 👥 Contact
-
-For questions about this website, contact Haines City Dental:
-- Phone: (863) 422-8338
-- Email: office@hainescitydental.com
+Built with ❤️ using Next.js and modern web technologies.

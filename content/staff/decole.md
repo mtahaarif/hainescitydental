@@ -1,7 +1,7 @@
 ---
 name: "Decole"
 role: "Patient Relationship"
-image: "/DSC_0580.jpg"
-bio: "Decole has worked for Haines City Dental since 2011 and is an integral part of our team. She truly loves her job because the office staff functions like one big family. Outside of work, Decole enjoys spending quality time with family and friends."
+image: "/team-2024/IMG_0060-scaled.jpg"
+bio: "Decole has been a valued member of Haines City Dental since 2011. Her warm smile and caring nature make every patient feel welcome. She's dedicated to building lasting relationships with our patients and ensuring their dental experience is always positive."
 order: 3
 ---
