@@ -5,8 +5,8 @@ category: training
 date: 2014-07-20
 featured: false
 images:
-  - 2016-1142
-  - 2016-1143
+  - DSC04405
+  - DSC04514
 ---
 
 Recognition following intensive implant surgery participation in Santo Domingo.
