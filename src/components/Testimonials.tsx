@@ -142,18 +142,18 @@ export default function Testimonials() {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-br from-blue-50 to-white">
+    <section className="py-12 sm:py-20 bg-gradient-to-br from-blue-50 to-white">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-8 sm:mb-12"
         >
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
             What Our Patients Say
           </h2>
-          <p className="text-xl text-gray-600">
+          <p className="text-lg sm:text-xl text-gray-600">
             Real Google reviews from real patients
           </p>
         </motion.div>
@@ -169,26 +169,26 @@ export default function Testimonials() {
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
-              className="bg-white rounded-2xl shadow-xl p-8 md:p-12 relative"
+              className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 md:p-12 relative"
             >
-              <Quote className="absolute top-8 left-8 w-12 h-12 text-blue-100" />
+              <Quote className="absolute top-4 sm:top-8 left-4 sm:left-8 w-8 h-8 sm:w-12 sm:h-12 text-blue-100" />
 
               <div className="relative z-10">
-                <div className="flex items-center justify-center mb-6">
+                <div className="flex items-center justify-center mb-4 sm:mb-6">
                   {[...Array(testimonials[activeIndex].rating)].map((_, i) => (
-                    <Star key={i} className="w-6 h-6 fill-yellow-400 text-yellow-400" />
+                    <Star key={i} className="w-5 h-5 sm:w-6 sm:h-6 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
 
-                <p className="text-xl text-gray-700 mb-6 leading-relaxed text-center">
+                <p className="text-base sm:text-lg md:text-xl text-gray-700 mb-4 sm:mb-6 leading-relaxed text-center">
                   "{testimonials[activeIndex].content}"
                 </p>
 
                 <div className="text-center">
-                  <p className="font-semibold text-gray-900 text-lg">
+                  <p className="font-semibold text-gray-900 text-base sm:text-lg">
                     {testimonials[activeIndex].name}
                   </p>
-                  <p className="text-sm text-blue-600 mt-1">
+                  <p className="text-xs sm:text-sm text-blue-600 mt-1">
                     {testimonials[activeIndex].source}
                   </p>
                 </div>
@@ -196,35 +196,44 @@ export default function Testimonials() {
             </motion.div>
           </AnimatePresence>
 
-          <div className="flex justify-center items-center gap-4 mt-8">
-            <button
-              onClick={handlePrevious}
-              className="p-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors"
-              aria-label="Previous testimonial"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-
-            <div className="flex gap-2">
+          {/* Navigation - Mobile optimized */}
+          <div className="flex flex-col items-center gap-4 mt-6 sm:mt-8">
+            {/* Pagination dots - wrapped for mobile */}
+            <div className="flex flex-wrap justify-center gap-2 max-w-[200px] sm:max-w-none">
               {testimonials.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setActiveIndex(index)}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    index === activeIndex ? 'bg-blue-600 w-8' : 'bg-gray-300'
+                  className={`w-2.5 h-2.5 sm:w-2 sm:h-2 rounded-full transition-all ${
+                    index === activeIndex ? 'bg-blue-600 w-6 sm:w-8' : 'bg-gray-300 hover:bg-gray-400'
                   }`}
                   aria-label={`Go to testimonial ${index + 1}`}
                 />
               ))}
             </div>
+            
+            {/* Arrow buttons */}
+            <div className="flex items-center gap-4">
+              <button
+                onClick={handlePrevious}
+                className="p-2.5 sm:p-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors active:scale-95"
+                aria-label="Previous testimonial"
+              >
+                <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+              </button>
 
-            <button
-              onClick={handleNext}
-              className="p-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors"
-              aria-label="Next testimonial"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
+              <span className="text-sm text-gray-500 min-w-[60px] text-center">
+                {activeIndex + 1} / {testimonials.length}
+              </span>
+
+              <button
+                onClick={handleNext}
+                className="p-2.5 sm:p-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors active:scale-95"
+                aria-label="Next testimonial"
+              >
+                <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
