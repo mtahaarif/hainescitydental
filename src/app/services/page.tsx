@@ -4,10 +4,8 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { 
-  Star, Heart, Zap, Shield, Clock, DollarSign, 
   ChevronLeft, ChevronRight 
 } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
 
 interface Category {
   id: string;
@@ -16,7 +14,7 @@ interface Category {
   description: string;
   points: string[];
   image: string;
-  icon: LucideIcon;
+  iconSrc: string;
 }
 
 const categories: Category[] = [
@@ -33,7 +31,7 @@ const categories: Category[] = [
       'Smile Makeovers - Complete transformations tailored to your unique goals',
     ],
     image: '/cosmeticdentistry.webp',
-    icon: Star,
+    iconSrc: '/service_icon1.png',
   },
   {
     id: 'general',
@@ -48,7 +46,7 @@ const categories: Category[] = [
       'Oral Cancer Screening - Early detection of cancerous lesions during exams',
     ],
     image: '/generaldentisry.webp',
-    icon: Heart,
+    iconSrc: '/service_icon2.png',
   },
   {
     id: 'implant',
@@ -63,7 +61,7 @@ const categories: Category[] = [
       '95%+ Success Rate - Can last a lifetime with proper care',
     ],
     image: '/implantdentistry.webp',
-    icon: Zap,
+    iconSrc: '/service_icon3.png',
   },
   {
     id: 'periodontal',
@@ -78,7 +76,7 @@ const categories: Category[] = [
       'Periodontal Maintenance - Critical 3-month recare visits to maintain health',
     ],
     image: '/periodontaltherapy.webp',
-    icon: Shield,
+    iconSrc: '/service_icon4.png',
   },
   {
     id: 'sedation',
@@ -93,7 +91,7 @@ const categories: Category[] = [
       'No hangover effects - safe to drive immediately after treatment',
     ],
     image: '/sedationdentistry.webp',
-    icon: Clock,
+    iconSrc: '/service_icon5.png',
   },
   {
     id: 'orthodontics',
@@ -108,7 +106,7 @@ const categories: Category[] = [
       'Removable for eating and cleaning with typically faster results',
     ],
     image: '/orthodontics.webp',
-    icon: DollarSign,
+    iconSrc: '/service_icon6.png',
   },
   {
     id: 'snoring',
@@ -123,7 +121,7 @@ const categories: Category[] = [
       'Repositions jaw to keep airways open for normal, uninterrupted sleep',
     ],
     image: '/repositionsjaw.webp',
-    icon: Star,
+    iconSrc: '/service_icon7.png',
   },
 ];
 
@@ -148,7 +146,6 @@ function ServicesContent() {
   };
 
   const currentService = categories[activeIndex];
-  const Icon = currentService.icon;
 
   return (
     <>
@@ -191,7 +188,13 @@ function ServicesContent() {
             <div className="space-y-3 sm:space-y-4 md:space-y-6 pb-16 lg:pb-0">
               <div className="flex items-center gap-3 sm:gap-4">
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-dental-blue-400 to-dental-blue-600 flex items-center justify-center transition-transform hover:scale-110 hover:rotate-3 flex-shrink-0">
-                  <Icon className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
+                  <Image 
+                    src={currentService.iconSrc} 
+                    alt={currentService.title}
+                    width={32}
+                    height={32}
+                    className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 object-contain brightness-0 invert"
+                  />
                 </div>
                 <div>
                   <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">{currentService.title}</h2>

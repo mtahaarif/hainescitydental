@@ -3,11 +3,11 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import Link from 'next/link';
-import { Heart, Zap, Shield, Clock, Smile, ArrowRight, Star } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+import Image from 'next/image';
+import { ArrowRight } from 'lucide-react';
 
 interface Service {
-  icon: LucideIcon;
+  iconSrc: string;
   title: string;
   description: string;
   href: string;
@@ -16,42 +16,42 @@ interface Service {
 
 const services: Service[] = [
   {
-    icon: Star,
+    iconSrc: '/service_icon1.png',
     title: 'Cosmetic Dentistry',
     description: 'Transform your smile with professional whitening, veneers, and smile makeovers.',
     href: '/services?tab=cosmetic',
     color: 'from-pink-500 to-rose-500',
   },
   {
-    icon: Heart,
+    iconSrc: '/service_icon2.png',
     title: 'General Dentistry',
     description: 'Comprehensive care including cleanings, fillings, and preventive treatments.',
     href: '/services?tab=general',
     color: 'from-red-500 to-pink-500',
   },
   {
-    icon: Zap,
+    iconSrc: '/service_icon3.png',
     title: 'Implant Dentistry',
     description: 'Permanent solutions for missing teeth with natural-looking dental implants.',
     href: '/services?tab=implant',
     color: 'from-yellow-500 to-orange-500',
   },
   {
-    icon: Shield,
+    iconSrc: '/service_icon4.png',
     title: 'Periodontal Therapy',
     description: 'Expert gum disease treatment and soft tissue management.',
     href: '/services?tab=periodontal',
     color: 'from-green-500 to-emerald-500',
   },
   {
-    icon: Clock,
+    iconSrc: '/service_icon5.png',
     title: 'Sedation Dentistry',
     description: 'Relaxed, anxiety-free dental care with safe sedation options.',
     href: '/services?tab=sedation',
     color: 'from-blue-500 to-cyan-500',
   },
   {
-    icon: Smile,
+    iconSrc: '/service_icon6.png',
     title: 'Orthodontics',
     description: 'Achieve straighter teeth with ClearCorrect invisible aligners.',
     href: '/services?tab=orthodontics',
@@ -131,7 +131,13 @@ export default function FeaturedServices() {
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <service.icon className="w-7 h-7 text-white" />
+                    <Image 
+                      src={service.iconSrc} 
+                      alt={service.title}
+                      width={28}
+                      height={28}
+                      className="w-7 h-7 object-contain brightness-0 invert"
+                    />
                   </motion.div>
 
                   <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-dental-blue-600 transition-colors relative z-10">
