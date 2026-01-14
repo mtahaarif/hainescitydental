@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
@@ -15,7 +15,7 @@ interface Slide {
 }
 
 export default function UniversalSlider() {
-  const slides: Slide[] = [
+  const slides: Slide[] = useMemo(() => [
     {
       id: 'services',
       title: 'Comprehensive Dental Care',
@@ -48,12 +48,13 @@ export default function UniversalSlider() {
       imageMobile: '/banner71-43.jpg',
       color: 'from-blue-600 to-blue-800',
     },
-  ];
+  ], []);
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
   const [direction, setDirection] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
   const touchStartX = useRef<number>(0);
   const touchEndX = useRef<number>(0);
 
@@ -105,6 +106,8 @@ export default function UniversalSlider() {
       setIsMobile(window.innerWidth < 640);
     };
     
+    // Set initial value after hydration to prevent mismatch
+    setIsHydrated(true);
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -183,13 +186,21 @@ export default function UniversalSlider() {
               className="absolute inset-0"
             >
               {/* Background Image */}
-              <Image
-                src={isMobile ? slides[activeIndex].imageMobile : slides[activeIndex].image}
-                alt={slides[activeIndex].title}
-                fill
-                className="object-cover"
-                priority
-              />
+              {isHydrated && (
+                <Image
+                  key={`${activeIndex}-${isMobile}`}
+                  src={isMobile ? slides[activeIndex].imageMobile : slides[activeIndex].image}
+                  alt={slides[activeIndex].title}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 80vw"
+                  className="object-cover"
+                  priority
+                  quality={90}
+                  onError={(e) => {
+                    console.error('Image failed to load:', slides[activeIndex].image);
+                  }}
+                />
+              )}
               
               {/* Gradient Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-black/20" />
