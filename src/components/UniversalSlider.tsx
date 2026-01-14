@@ -19,32 +19,32 @@ export default function UniversalSlider() {
       id: 'services',
       title: 'Comprehensive Dental Care',
       subtitle: 'State-of-the-art treatments for your smile',
-      image: '/banner31-1297x300.jpg',
-      imageMobile: '/banner31-4-3.jpg',
+      image: '/banner01-1536x768.jpg',
+      imageMobile: '/banner01-1536x768.jpg',
       color: 'from-dental-blue-400 to-dental-blue-700',
     },
     {
       id: 'team',
       title: 'Expert Dental Professionals',
       subtitle: 'Your health and comfort are our priority',
-      image: '/banner41-1297x300.jpg',
-      imageMobile: '/banner41-43.jpg',
+      image: '/banner02-1536x768.jpg',
+      imageMobile: '/banner02-1536x768.jpg',
       color: 'from-cyan-400 to-blue-600',
     },
     {
       id: 'experience',
       title: '20+ Years of Excellence',
       subtitle: 'Trusted by thousands of happy patients',
-      image: '/banner61-1297x300.jpg',
-      imageMobile: '/banner61-43.jpg',
+      image: '/banner03-1536x768.jpg',
+      imageMobile: '/banner03-1536x768.jpg',
       color: 'from-blue-300 to-cyan-500',
     },
     {
       id: 'community',
       title: 'Community Focused',
       subtitle: 'Giving back through dental missions',
-      image: '/banner71-1297x300.jpg',
-      imageMobile: '/banner71-43.jpg',
+      image: '/banner04-1536x736.jpg',
+      imageMobile: '/banner04-1536x736.jpg',
       color: 'from-blue-600 to-blue-800',
     },
   ], []);
@@ -160,7 +160,7 @@ export default function UniversalSlider() {
       <div className="w-full sm:w-[90%] lg:w-[85%] xl:w-[80%] relative group">
         {/* Slide Container */}
         <motion.div
-          className="relative w-full aspect-[4/3] sm:aspect-[16/7] lg:aspect-[1297/300] rounded-2xl sm:rounded-3xl overflow-hidden glass-strong"
+          className="relative w-full aspect-[4/3] sm:aspect-[16/9] lg:aspect-[2/1] rounded-2xl sm:rounded-3xl overflow-hidden glass-strong"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
