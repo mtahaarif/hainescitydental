@@ -1,7 +1,7 @@
 ---
 name: "Dr. Sohail Khan"
 title: "DMD"
-image: "/team-2024/dr-khan-new.jpg"
+image: "/team-2024/IMG_0077-scaled.jpg"
 order: 1
 bioSections:
   - title: "Education & Credentials"
