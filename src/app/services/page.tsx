@@ -173,10 +173,10 @@ function ServicesContent() {
 
       {/* Service Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="glass-strong p-8 sm:p-12 relative overflow-hidden h-[700px]">
-          <div className="grid lg:grid-cols-2 gap-12 items-center h-full">
+        <div className="glass-strong p-4 sm:p-8 md:p-12 relative overflow-visible lg:overflow-hidden">
+          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-start">
             {/* Image */}
-            <div className="relative h-80 lg:h-[450px] rounded-2xl overflow-hidden transition-transform duration-300 hover:scale-[1.02]">
+            <div className="relative h-48 sm:h-64 md:h-80 lg:h-[400px] rounded-2xl overflow-hidden transition-transform duration-300 hover:scale-[1.02]">
               <Image
                 src={currentService.image}
                 alt={currentService.title}
@@ -188,33 +188,33 @@ function ServicesContent() {
             </div>
 
             {/* Content */}
-            <div className="space-y-6">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-dental-blue-400 to-dental-blue-600 flex items-center justify-center transition-transform hover:scale-110 hover:rotate-3">
-                  <Icon className="w-8 h-8 text-white" />
+            <div className="space-y-3 sm:space-y-4 md:space-y-6 pb-16 lg:pb-0">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-dental-blue-400 to-dental-blue-600 flex items-center justify-center transition-transform hover:scale-110 hover:rotate-3 flex-shrink-0">
+                  <Icon className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-3xl font-bold text-gray-900">{currentService.title}</h2>
-                  <p className="text-dental-blue-600 font-medium">{currentService.subtitle}</p>
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">{currentService.title}</h2>
+                  <p className="text-dental-blue-600 font-medium text-sm sm:text-base">{currentService.subtitle}</p>
                 </div>
               </div>
 
-              <p className="text-gray-600 leading-relaxed text-lg">
+              <p className="text-gray-600 leading-relaxed text-sm sm:text-base md:text-lg">
                 {currentService.description}
               </p>
 
-              <ul className="space-y-3">
+              <ul className="space-y-2 sm:space-y-3">
                 {currentService.points.map((point, idx) => (
-                  <li key={idx} className="flex items-start gap-3">
-                    <span className="w-2 h-2 rounded-full bg-dental-blue-500 mt-2 flex-shrink-0" />
-                    <span className="text-gray-700">{point}</span>
+                  <li key={idx} className="flex items-start gap-2 sm:gap-3">
+                    <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-dental-blue-500 mt-1.5 sm:mt-2 flex-shrink-0" />
+                    <span className="text-gray-700 text-sm sm:text-base">{point}</span>
                   </li>
                 ))}
               </ul>
 
               <a
                 href="tel:+18634228338"
-                className="btn-primary inline-flex items-center gap-2 transition-transform hover:scale-105 active:scale-95"
+                className="btn-primary inline-flex items-center gap-2 transition-transform hover:scale-105 active:scale-95 text-sm sm:text-base"
               >
                 Schedule Consultation
               </a>
@@ -224,31 +224,31 @@ function ServicesContent() {
           {/* Navigation */}
           <button
             onClick={prev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 glass-light rounded-full shadow-lg transition-transform hover:scale-110 active:scale-90"
+            className="absolute left-2 sm:left-4 top-[120px] sm:top-[160px] lg:top-1/2 lg:-translate-y-1/2 p-2 sm:p-3 glass-light rounded-full shadow-lg transition-transform hover:scale-110 active:scale-90 z-10"
             aria-label="Previous service"
           >
-            <ChevronLeft className="w-6 h-6 text-dental-blue-600" />
+            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-dental-blue-600" />
           </button>
           
           <button
             onClick={next}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 glass-light rounded-full shadow-lg transition-transform hover:scale-110 active:scale-90"
+            className="absolute right-2 sm:right-4 top-[120px] sm:top-[160px] lg:top-1/2 lg:-translate-y-1/2 p-2 sm:p-3 glass-light rounded-full shadow-lg transition-transform hover:scale-110 active:scale-90 z-10"
             aria-label="Next service"
           >
-            <ChevronRight className="w-6 h-6 text-dental-blue-600" />
+            <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-dental-blue-600" />
           </button>
         </div>
 
         {/* Dots */}
-        <div className="flex justify-center gap-3 mt-8">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mt-6 sm:mt-8 max-w-[280px] sm:max-w-none mx-auto">
           {categories.map((_, index) => (
             <button
               key={index}
               onClick={() => setActiveIndex(index)}
-              className={`h-2.5 rounded-full transition-all duration-300 hover:scale-125 ${
+              className={`h-2 sm:h-2.5 rounded-full transition-all duration-300 hover:scale-125 ${
                 index === activeIndex
-                  ? 'w-9 bg-dental-blue-500'
-                  : 'w-3 bg-dental-blue-200 hover:bg-dental-blue-300'
+                  ? 'w-6 sm:w-9 bg-dental-blue-500'
+                  : 'w-2.5 sm:w-3 bg-dental-blue-200 hover:bg-dental-blue-300'
               }`}
               aria-label={`Go to service ${index + 1}`}
             />

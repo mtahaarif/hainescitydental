@@ -42,10 +42,10 @@ export default function StaffClient({ staffMembers }: StaffClientProps) {
 
       {/* Staff Carousel */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="glass-strong p-8 sm:p-12 relative overflow-hidden min-h-[500px] sm:min-h-[600px] md:h-[680px]">
-          <div className="flex flex-col items-center text-center">
+        <div className="glass-strong p-4 sm:p-8 md:p-12 relative overflow-visible sm:overflow-hidden">
+          <div className="flex flex-col items-center text-center pb-16 sm:pb-0">
             {/* Image */}
-            <div className="relative w-48 h-48 sm:w-64 sm:h-64 rounded-full overflow-hidden border-4 border-dental-blue-100 shadow-2xl mb-6 sm:mb-8 hover:scale-[1.02] transition-transform duration-300">
+            <div className="relative w-36 h-36 sm:w-48 sm:h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-dental-blue-100 shadow-2xl mb-4 sm:mb-6 md:mb-8 hover:scale-[1.02] transition-transform duration-300">
               <Image
                 src={currentStaff.image}
                 alt={currentStaff.name}
@@ -56,13 +56,13 @@ export default function StaffClient({ staffMembers }: StaffClientProps) {
             </div>
 
             {/* Content */}
-            <div className="space-y-3 sm:space-y-4">
+            <div className="space-y-2 sm:space-y-3 md:space-y-4">
               <div>
-                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">{currentStaff.name}</h2>
-                <p className="text-dental-blue-600 text-lg sm:text-xl font-medium">{currentStaff.role}</p>
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">{currentStaff.name}</h2>
+                <p className="text-dental-blue-600 text-base sm:text-lg md:text-xl font-medium">{currentStaff.role}</p>
               </div>
               
-              <p className="text-gray-700 leading-relaxed text-base sm:text-lg max-w-2xl px-2 sm:px-0">
+              <p className="text-gray-700 leading-relaxed text-sm sm:text-base md:text-lg max-w-2xl px-2 sm:px-4 md:px-0">
                 {currentStaff.bio}
               </p>
             </div>
@@ -73,18 +73,18 @@ export default function StaffClient({ staffMembers }: StaffClientProps) {
             <>
               <button
                 onClick={prev}
-                className="absolute left-4 top-1/2 -translate-y-1/2 p-3 glass-light rounded-full shadow-lg hover:scale-110 active:scale-90 transition-transform"
+                className="absolute left-2 sm:left-4 top-[90px] sm:top-[120px] md:top-1/2 md:-translate-y-1/2 p-2 sm:p-3 glass-light rounded-full shadow-lg hover:scale-110 active:scale-90 transition-transform z-10"
                 aria-label="Previous staff member"
               >
-                <ChevronLeft className="w-6 h-6 text-dental-blue-600" />
+                <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-dental-blue-600" />
               </button>
               
               <button
                 onClick={next}
-                className="absolute right-4 top-1/2 -translate-y-1/2 p-3 glass-light rounded-full shadow-lg hover:scale-110 active:scale-90 transition-transform"
+                className="absolute right-2 sm:right-4 top-[90px] sm:top-[120px] md:top-1/2 md:-translate-y-1/2 p-2 sm:p-3 glass-light rounded-full shadow-lg hover:scale-110 active:scale-90 transition-transform z-10"
                 aria-label="Next staff member"
               >
-                <ChevronRight className="w-6 h-6 text-dental-blue-600" />
+                <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-dental-blue-600" />
               </button>
             </>
           )}
