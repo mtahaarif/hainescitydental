@@ -188,16 +188,15 @@ export default function UniversalSlider() {
               {/* Background Image */}
               {isHydrated && (
                 <Image
-                  key={`${activeIndex}-${isMobile}`}
+                  key={`banner-${activeIndex}-${isMobile}`}
                   src={isMobile ? slides[activeIndex].imageMobile : slides[activeIndex].image}
                   alt={slides[activeIndex].title}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 80vw"
                   className="object-cover"
                   priority
-                  quality={90}
                   onError={(e) => {
-                    console.error('Image failed to load:', slides[activeIndex].image);
+                    console.error('Image failed to load:', isMobile ? slides[activeIndex].imageMobile : slides[activeIndex].image);
                   }}
                 />
               )}
