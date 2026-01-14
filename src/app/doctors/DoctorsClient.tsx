@@ -60,7 +60,7 @@ export default function DoctorsClient({ doctors }: DoctorsClientProps) {
                   src={currentDoctor.image}
                   alt={currentDoctor.name}
                   fill
-                  className="object-cover"
+                  className="object-cover object-top"
                   priority
                 />
               </div>

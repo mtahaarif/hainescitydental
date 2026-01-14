@@ -31,7 +31,7 @@ export default async function Doctors() {
                 alt={doctor.name}
                 width={400}
                 height={400}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-top"
               />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-1">{doctor.name}</h3>
