@@ -19,13 +19,13 @@ export default async function Staff() {
             key={index}
             className="glass-light rounded-2xl p-6 hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
           >
-            <div className="w-full h-64 bg-gradient-to-br from-dental-blue-100 to-cyan-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
+            <div className="w-full h-[22rem] bg-gradient-to-br from-dental-blue-100 to-cyan-100 rounded-xl mb-4 flex items-center justify-center overflow-hidden">
               <Image
                 src={member.image}
                 alt={member.name}
                 width={300}
                 height={300}
-                className="w-full h-full object-contain"
+                className="w-full h-full object-cover"
               />
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-1">{member.name}</h3>

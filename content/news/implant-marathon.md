@@ -5,8 +5,8 @@ category: training
 date: 2014-07-01
 featured: true
 images:
-  - 2016-1139
-  - 2016-1140
+  - DSC04404
+  - DSC04448
 ---
 
 Hands-on implant marathon training alongside a multidisciplinary team in Santo Domingo.
