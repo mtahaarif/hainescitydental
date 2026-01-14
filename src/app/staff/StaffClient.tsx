@@ -42,10 +42,10 @@ export default function StaffClient({ staffMembers }: StaffClientProps) {
 
       {/* Staff Carousel */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="glass-strong p-8 sm:p-12 relative overflow-hidden h-[680px]">
+        <div className="glass-strong p-8 sm:p-12 relative overflow-hidden min-h-[500px] sm:min-h-[600px] md:h-[680px]">
           <div className="flex flex-col items-center text-center">
             {/* Image */}
-            <div className="relative w-48 h-48 sm:w-64 sm:h-64 rounded-full overflow-hidden border-4 border-dental-blue-100 shadow-2xl mb-8 hover:scale-[1.02] transition-transform duration-300">
+            <div className="relative w-48 h-48 sm:w-64 sm:h-64 rounded-full overflow-hidden border-4 border-dental-blue-100 shadow-2xl mb-6 sm:mb-8 hover:scale-[1.02] transition-transform duration-300">
               <Image
                 src={currentStaff.image}
                 alt={currentStaff.name}
@@ -56,13 +56,13 @@ export default function StaffClient({ staffMembers }: StaffClientProps) {
             </div>
 
             {/* Content */}
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <div>
-                <h2 className="text-3xl font-bold text-gray-900">{currentStaff.name}</h2>
-                <p className="text-dental-blue-600 text-xl font-medium">{currentStaff.role}</p>
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">{currentStaff.name}</h2>
+                <p className="text-dental-blue-600 text-lg sm:text-xl font-medium">{currentStaff.role}</p>
               </div>
               
-              <p className="text-gray-700 leading-relaxed text-lg max-w-2xl">
+              <p className="text-gray-700 leading-relaxed text-base sm:text-lg max-w-2xl px-2 sm:px-0">
                 {currentStaff.bio}
               </p>
             </div>
