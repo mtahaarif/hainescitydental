@@ -1,4 +1,3 @@
-import { getAllContent } from '@/lib/content';
 import DoctorsClient from './DoctorsClient';
 
 interface DoctorSection {
@@ -15,6 +14,7 @@ interface Doctor {
 }
 
 export default async function DoctorsPage() {
-  const doctors = (await getAllContent('doctors')) as Doctor[];
+  // TODO: Update to fetch from /api/doctors
+  const doctors: Doctor[] = [];
   return <DoctorsClient doctors={doctors} />;
 }
