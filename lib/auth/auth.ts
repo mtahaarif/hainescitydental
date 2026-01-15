@@ -10,12 +10,12 @@ if (!JWT_SECRET || JWT_SECRET.length < 32) {
 }
 
 export function generateToken(username: string, expiresIn: string = '24h'): string {
-  return jwt.sign({ username }, JWT_SECRET, { expiresIn });
+  return jwt.sign({ username }, JWT_SECRET as string, { expiresIn } as any);
 }
 
 export function verifyToken(token: string): { username: string } | null {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { username: string };
+    const decoded = jwt.verify(token, JWT_SECRET as string) as { username: string };
     return decoded;
   } catch (error) {
     return null;
