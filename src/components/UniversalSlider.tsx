@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
 
 interface Slide {
   id: string;
@@ -186,11 +187,14 @@ export default function UniversalSlider() {
             >
               {/* Background Image */}
               {isHydrated && (
-                <img
+                <Image
                   key={`banner-${activeIndex}-${isMobile}`}
                   src={isMobile ? slides[activeIndex].imageMobile : slides[activeIndex].image}
                   alt={slides[activeIndex].title}
-                  className="absolute inset-0 w-full h-full object-cover"
+                  fill
+                  className="object-cover"
+                  priority={activeIndex === 0}
+                  sizes="100vw"
                   onError={(e) => {
                     console.error('Image failed to load:', (e.target as HTMLImageElement).src);
                   }}
