@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model News {
+  id          String   @id @default(cuid())
+  title       String
+  category    String
+  description String
+  content     String
+  images      String[]
+  date        DateTime @default(now())
+  slug        String   @unique @default("")
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([published])
+  @@index([date])
+}
+
+model Doctor {
+  id              String   @id @default(cuid())
+  name            String
+  credentials     String
+  bio             String
+  image           String?
+  specializations String[]
+  experience      Int      @default(0)
+  education       String
+  active          Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([active])
+}
+
+model Staff {
+  id         String   @id @default(cuid())
+  name       String
+  role       String
+  bio        String
+  image      String?
+  department String
+  experience Int      @default(0)
+  order      Int      @default(0)
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([active])
+  @@index([order])
+}
+
+model Team {
+  id        String   @id @default(cuid())
+  name      String
+  position  String
+  bio       String
+  image     String?
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active])
+  @@index([order])
+}
