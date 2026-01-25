@@ -67,7 +67,7 @@ export default async function NewsPage() {
       {/* Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 text-center">
         <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-          News & <span className="gradient-text">Community</span>
+          <span className="gradient-text">News</span>
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
           Highlights from our doctors, team, and community service events.
@@ -150,19 +150,20 @@ export default async function NewsPage() {
                     };
                     const src = normalize(img);
                     return (
-                      <div
-                        key={img}
-                        className="relative aspect-square rounded-2xl overflow-hidden glass transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.25)] hover:scale-105"
-                      >
-                        <Image
-                          src={src}
-                          alt={item.title}
-                          fill
-                          className="object-cover"
-                          loading="lazy"
-                          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                        />
-                      </div>
+                          <div
+                            key={img}
+                            className="rounded-2xl glass transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.25)] hover:scale-105"
+                          >
+                            <Image
+                              src={src}
+                              alt={item.title}
+                              width={640}
+                              height={480}
+                              className="object-contain w-full h-auto rounded-2xl"
+                              loading="lazy"
+                              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                            />
+                          </div>
                     );
                   })}
                 </div>
