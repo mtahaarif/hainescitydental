@@ -110,15 +110,24 @@ export default function AboutPage() {
         {/* Additional Our Practice images (local copies) */}
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           <figure className="glass p-4 text-center">
-            <Image src="/our-practice-1.jpg" alt="Reception area" width={1200} height={667} className="w-full h-auto object-cover rounded" />
+            <picture>
+              <source srcSet="/our-practice-1.webp" type="image/webp" />
+              <img src="/our-practice-1.jpg" alt="Reception area" className="w-full h-auto object-cover rounded" />
+            </picture>
             <figcaption className="text-sm text-gray-600 mt-3">Welcoming reception and comfortable waiting area</figcaption>
           </figure>
           <figure className="glass p-4 text-center">
-            <Image src="/our-practice-2.jpg" alt="Treatment room" width={1200} height={667} className="w-full h-auto object-cover rounded" />
+            <picture>
+              <source srcSet="/our-practice-2.webp" type="image/webp" />
+              <img src="/our-practice-2.jpg" alt="Treatment room" className="w-full h-auto object-cover rounded" />
+            </picture>
             <figcaption className="text-sm text-gray-600 mt-3">State-of-the-art treatment rooms with modern equipment</figcaption>
           </figure>
           <figure className="glass p-4 text-center">
-            <Image src="/our-practice-3.jpg" alt="Team at work" width={1200} height={667} className="w-full h-auto object-cover rounded" />
+            <picture>
+              <source srcSet="/our-practice-3.webp" type="image/webp" />
+              <img src="/our-practice-3.jpg" alt="Team at work" className="w-full h-auto object-cover rounded" />
+            </picture>
             <figcaption className="text-sm text-gray-600 mt-3">A friendly team dedicated to your comfort and care</figcaption>
           </figure>
         </div>
