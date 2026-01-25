@@ -75,17 +75,17 @@
     "title": "2019 Christmas Party at the Disney Springs",
     "date": "",
     "excerpt": "",
-    "image": "/news/x-mass-party-2019-1-768x1024.jpg",
+    "image": "/news/x-mass-party-2019-3-225x300-2.jpg",
     "images": [
+      "/news/x-mass-party-2019-3-225x300-2.jpg",
       "/news/x-mass-party-2019-1-768x1024.jpg",
       "/news/IMG_7982.jpg",
       "/news/IMG_7979.jpg",
-      "/news/2016-1139-1024x768.jpg",
       "/news/IMG_8010.jpg",
       "/news/IMG_8017.jpg",
       "/news/IMG_8022.jpg"
     ],
-    "html": "<img src=\"/news/x-mass-party-2019-1-768x1024.jpg\" sizes=\"(max-width: 624px) 100vw, 624px\" srcset=\"/news/x-mass-party-2019-1-768x1024.jpg 624w, /news/x-mass-party-2019-1-624x832-1-624x768.jpg 225w, /news/x-mass-party-2019-1-624x832-1-624x768.jpg 600w\" alt=\"\" width=\"624\" height=\"832\"><img src=\"/news/IMG_7982.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/IMG_7979-Copy.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/x-mass-party-2019-3-768x1024.jpg\" alt=\"\" width=\"225\" height=\"300\"><img src=\"/news/IMG_8010.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/x-mass-party-2019-2-1024x768.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/IMG_8017.jpg\" sizes=\"(max-width: 624px) 100vw, 624px\" srcset=\"/news/IMG_8017.jpg 624w, /news/IMG_8017-624x468-1-600x450.jpg 300w, /news/IMG_8017-624x468-1-600x450.jpg 600w\" alt=\"\" width=\"624\" height=\"468\"><img src=\"/news/x-mass-party-2019-2-1024x768.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/IMG_8022.jpg\" alt=\"\" width=\"300\" height=\"225\">"
+    "html": "<img src=\"/news/x-mass-party-2019-3-225x300-2.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/x-mass-party-2019-1-768x1024.jpg\" sizes=\"(max-width: 624px) 100vw, 624px\" srcset=\"/news/x-mass-party-2019-1-768x1024.jpg 624w, /news/x-mass-party-2019-1-624x832-1-624x768.jpg 225w, /news/x-mass-party-2019-1-624x832-1-624x768.jpg 600w\" alt=\"\" width=\"624\" height=\"832\"><img src=\"/news/IMG_7982.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/IMG_7979-Copy.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/x-mass-party-2019-3-768x1024.jpg\" alt=\"\" width=\"225\" height=\"300\"><img src=\"/news/IMG_8010.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/x-mass-party-2019-2-1024x768.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/IMG_8017.jpg\" sizes=\"(max-width: 624px) 100vw, 624px\" srcset=\"/news/IMG_8017.jpg 624w, /news/IMG_8017-624x468-1-600x450.jpg 300w, /news/IMG_8017-624x468-1-600x450.jpg 600w\" alt=\"\" width=\"624\" height=\"468\"><img src=\"/news/x-mass-party-2019-2-1024x768.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/IMG_8022.jpg\" alt=\"\" width=\"300\" height=\"225\">"
   },
   {
     "id": "news-4",
@@ -189,11 +189,12 @@
     "title": "Dr. Khan at Army Reserve Orlando. 2015",
     "date": "",
     "excerpt": "",
-    "image": "/news/DSC00573.jpg",
+    "image": "/news/DSC00577-300x225-1.jpg",
     "images": [
+      "/news/DSC00577-300x225-1.jpg",
       "/news/DSC00573.jpg"
     ],
-    "html": "<img src=\"/news/DSC00573.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/DSC00577.jpg\" alt=\"\" width=\"300\" height=\"225\">"
+    "html": "<img src=\"/news/DSC00577-300x225-1.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/DSC00573.jpg\" alt=\"\" width=\"300\" height=\"225\">"
   },
   {
     "id": "news-13",
