@@ -200,33 +200,38 @@
     "title": "Last Greatest Show on earth. Ringling Brothers and Barnum Baily in Orlando. 2015",
     "date": "",
     "excerpt": "",
-    "image": "/news/DSC03729.jpg",
+    "image": "/news/DSC03765-300x225-1.jpg",
     "images": [
+      "/news/DSC03765-300x225-1.jpg",
+      "/news/DSC03812-300x225-1.jpg",
+      "/news/DSC03871-300x225-1.jpg",
       "/news/DSC03729.jpg"
     ],
-    "html": "<img src=\"/news/DSC03729.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/DSC03765.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/DSC03812.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/DSC03871.jpg\" alt=\"\" width=\"300\" height=\"225\">"
+    "html": "<img src=\"/news/DSC03765-300x225-1.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/DSC03812-300x225-1.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/DSC03871-300x225-1.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/DSC03729.jpg\" alt=\"\" width=\"300\" height=\"225\">"
   },
   {
     "id": "news-14",
     "title": "Haines City Dental Halloween 2015",
     "date": "",
     "excerpt": "",
-    "image": "/news/DSC00338.jpg",
+    "image": "/news/DSC00354-300x225-1.jpg",
     "images": [
+      "/news/DSC00354-300x225-1.jpg",
       "/news/DSC00338.jpg"
     ],
-    "html": "<img src=\"/news/DSC00338.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/DSC00354.jpg\" alt=\"\" width=\"300\" height=\"225\">"
+    "html": "<img src=\"/news/DSC00354-300x225-1.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/DSC00338.jpg\" alt=\"\" width=\"300\" height=\"225\">"
   },
   {
     "id": "news-15",
     "title": "Haines City Dental Halloween 2015",
     "date": "",
     "excerpt": "",
-    "image": "/news/DSC05670.jpg",
+    "image": "/news/DSC05668-300x225-1.jpg",
     "images": [
+      "/news/DSC05668-300x225-1.jpg",
       "/news/DSC05670.jpg"
     ],
-    "html": "<img src=\"/news/DSC05670.jpg\" alt=\"\" width=\"300\" height=\"283\"><img src=\"/news/DSC05668.jpg\" alt=\"\" width=\"300\" height=\"225\">"
+    "html": "<img src=\"/news/DSC05668-300x225-1.jpg\" alt=\"\" width=\"300\" height=\"225\"><img src=\"/news/DSC05670.jpg\" alt=\"\" width=\"300\" height=\"283\">"
   },
   {
     "id": "news-16",
