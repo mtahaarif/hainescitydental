@@ -10,6 +10,21 @@
     --glass-bg: rgba(255, 255, 255, 0.65);
     --glass-border: rgba(255, 255, 255, 0.4);
     --glass-shadow: rgba(14, 165, 233, 0.1);
+    /* Medikan theme tokens (mapped to tailwind.config.js) */
+    --dental-blue-50: #f0f9ff;
+    --dental-blue-100: #e6f6ff;
+    --dental-blue-200: #bfe9ff;
+    --dental-blue-300: #87d8ff;
+    --dental-blue-400: #38bdf8;
+    --dental-blue-500: #0ea5e9;
+    --dental-blue-600: #0284c7;
+    --dental-blue-700: #0369a1;
+    --dental-blue-800: #0d5490;
+    --dental-blue-900: #08385a;
+    --medikan-accent: #187ec2;
+    --medikan-cta: #492012;
+    --medikan-bg-start: #f3f8fb;
+    --medikan-bg-end: #eef6fb;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -95,12 +110,12 @@
 }
 
 #site-header-wrap.header-layout3 .site-header-top .header-top-item i {
-  color: #187EC2;
+  color: var(--medikan-accent);
   margin-right: 10px;
 }
 #site-header-wrap.header-layout3 .site-header-main .site-tool .site-header-button .btn:hover {
-  background-color: #492012;
-  border-color: #187EC2;
+  background-color: var(--medikan-cta);
+  border-color: var(--medikan-accent);
 }
 #site-header-wrap.header-layout3 .site-header-top .row {
   justify-content: space-between;
@@ -108,12 +123,12 @@
 }
 
 body {
-  background: linear-gradient(180deg,rgb(238,238,238) 0%,rgb(43 149 226) 100%);
+  background: linear-gradient(180deg, var(--medikan-bg-start) 0%, var(--medikan-bg-end) 100%);
 }
 
 .btn.btn-secondary {
-  background-color: #187ec2;
-  border-color: #187ec2;
+  background-color: var(--medikan-accent);
+  border-color: var(--medikan-accent);
 }
 
 input[type="text"]   { background-color: #f1f5fe00;
@@ -141,28 +156,28 @@ height: 35px;}
 /* === Mapping: apply Medikon-like styles to this Next.js header/components === */
 /* Dropdown/menu backgrounds (map .primary-menu .sub-menu to our dropdowns) */
 header .glass-light, header .glass-light .block, header .glass-light .px-6 {
-  background: linear-gradient(135deg, rgb(238,238,238) 0%, rgb(43 149 226) 100%);
+  background: linear-gradient(135deg, rgb(238,238,238) 0%, var(--dental-blue-700) 100%);
 }
 
 /* Dropdown link colors */
 header .glass-light a, header .glass-light .text-gray-700 {
-  color: #492012 !important;
+  color: var(--medikan-cta) !important;
 }
 
 /* Icon color in header top area */
 header .header-top-item i, header .max-w-7xl i, header .phone i, header svg {
-  color: #187EC2;
+  color: var(--medikan-accent);
   margin-right: 10px;
 }
 
 /* CTA/Button hover mapping */
 header .site-tool .btn:hover, header .btn-primary:hover, header .btn:hover {
-  background-color: #492012 !important;
-  border-color: #187EC2 !important;
+  background-color: var(--medikan-cta) !important;
+  border-color: var(--medikan-accent) !important;
 }
 
 /* Ensure secondary buttons match theme */
-.btn.btn-secondary, .btn-secondary { background-color: #187ec2; border-color: #187ec2; }
+.btn.btn-secondary, .btn-secondary { background-color: var(--medikan-accent); border-color: var(--medikan-accent); }
 
 /* Keep input appearance similar to the client's theme */
 input[type="text"], input[type="search"], textarea {
@@ -255,9 +270,8 @@ height: 35px;}
 #content .widget_categories ul li a, #content .widget_nav_menu ul li a, #content .cms-navigation-menu.e-sidebar-widget ul li a, #content .widget_pages ul li a, #content .widget_archive ul li a, #content .widget_meta ul li a {
     background-color: rgb(24 126 194 / 1%); }
 
-/* CTA primary style mapping (rounded blue pill) */
 .btn-primary {
-  background: linear-gradient(90deg,#0d86c4 0%,#0aa0e0 100%);
+  background: linear-gradient(90deg, var(--dental-blue-600) 0%, var(--dental-blue-400) 100%);
   color: white;
   padding: 10px 26px;
   border-radius: 9999px;
