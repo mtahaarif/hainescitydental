@@ -378,8 +378,9 @@
     "excerpt": "",
     "image": "/news/69450_10151529005111162_1387083350_n.jpg",
     "images": [
-      "/news/69450_10151529005111162_1387083350_n.jpg"
+      "/news/69450_10151529005111162_1387083350_n.jpg",
+      "/news/Peru01-e1378914450830-1.jpg"
     ],
-    "html": "<img src=\"/news/69450_10151529005111162_1387083350_n.jpg\" sizes=\"(max-width: 960px) 100vw, 960px\" srcset=\"/news/69450_10151529005111162_1387083350_n.jpg 960w, /news/69450_10151529005111162_1387083350_n-1-768x720.jpg 300w, /news/69450_10151529005111162_1387083350_n-1-768x720.jpg 768w, /news/69450_10151529005111162_1387083350_n-1-768x720.jpg 600w\" alt=\"\" width=\"960\" height=\"720\"><img title=\"\" src=\"https://www.hainescitydental.com/wp-content/plugins/elementor/assets/images/placeholder.png\" alt=\"\"><img title=\"\" src=\"https://www.hainescitydental.com/wp-content/plugins/elementor/assets/images/placeholder.png\" alt=\"\">"
+    "html": "<img src=\"/news/69450_10151529005111162_1387083350_n.jpg\" sizes=\"(max-width: 960px) 100vw, 960px\" srcset=\"/news/69450_10151529005111162_1387083350_n.jpg 960w, /news/69450_10151529005111162_1387083350_n-1-768x720.jpg 300w, /news/69450_10151529005111162_1387083350_n-1-768x720.jpg 768w, /news/69450_10151529005111162_1387083350_n-1-768x720.jpg 600w\" alt=\"\" width=\"960\" height=\"720\"><img title=\"\" src=\"https://www.hainescitydental.com/wp-content/plugins/elementor/assets/images/placeholder.png\" alt=\"\"><img title=\"\" src=\"https://www.hainescitydental.com/wp-content/plugins/elementor/assets/images/placeholder.png\" alt=\"\"><img src=\"/news/Peru01-e1378914450830-1.jpg\" alt=\"\" width=\"250\" height=\"188\">"
   }
 ]
