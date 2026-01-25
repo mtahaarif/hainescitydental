@@ -117,18 +117,18 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <nav className="grid grid-cols-3 items-center h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center group">
+          <Link href="/" className="flex items-center group col-start-1">
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="relative h-32 w-auto"
+              className="relative h-12 w-auto"
             >
               <Image
                 src="/hainescitydentallogo.png"
                 alt="Haines City Dental Logo"
-                width={200}
-                height={128}
-                className="h-32 w-auto object-contain"
+                width={140}
+                height={48}
+                className="h-12 w-auto object-contain"
                 priority
               />
             </motion.div>
@@ -171,11 +171,12 @@ export default function Header() {
                 ) : (
                   <Link
                     href={link.href}
-                    className={`font-medium transition-colors duration-300 inline-block px-2 ${
+                    className={`font-medium transition-colors duration-300 inline-block px-3 text-center leading-tight ${
                       pathname === link.href
                         ? 'text-dental-blue-600 border-b-2 border-dental-blue-600 pb-1'
-                        : 'text-gray-700 hover:text-dental-blue-600'
+                        : 'text-dental-blue-600/90 hover:text-dental-blue-700'
                     }`}
+                    style={{ minWidth: 90, maxWidth: 140 }}
                   >
                     <motion.span
                       whileHover={{ y: -2 }}
@@ -220,23 +221,31 @@ export default function Header() {
           </div>
 
           {/* CTA Button */}
-          <motion.a
-            href="tel:+18634228338"
-            className="hidden lg:flex items-center gap-2 btn-primary justify-end col-start-3"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Phone className="w-4 h-4" />
-            Call Now
-          </motion.a>
+          <div className="col-start-3 flex items-center justify-end gap-3">
+            {/* Desktop CTA */}
+            <motion.a
+              href="tel:+18634228338"
+              className="hidden lg:inline-flex items-center gap-3 bg-dental-blue-600 text-white px-4 py-2 rounded-full shadow-sm"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              style={{ height: 44 }}
+            >
+              <Phone className="w-4 h-4 opacity-90" />
+              <span className="font-semibold text-sm">Call Now</span>
+            </motion.a>
 
-          {/* Mobile Menu Button */}
-          <motion.button
-            className="lg:hidden p-2 rounded-lg hover:bg-white/30 transition-colors"
-            onClick={() => setIsOpen(!isOpen)}
-            whileTap={{ scale: 0.9 }}
-          >
-            <AnimatePresence mode="wait">
+            {/* Mobile phone icon + menu button */}
+            <div className="lg:hidden flex items-center gap-2">
+              <a href="tel:+18634228338" className="p-2 rounded-md bg-dental-blue-600 text-white flex items-center" aria-label="Call Haines City Dental">
+                <Phone className="w-4 h-4" />
+              </a>
+              <motion.button
+                className="p-2 rounded-lg hover:bg-white/30 transition-colors"
+                onClick={() => setIsOpen(!isOpen)}
+                whileTap={{ scale: 0.9 }}
+                aria-label="Open menu"
+              >
+                <AnimatePresence mode="wait">
               {isOpen ? (
                 <motion.div
                   key="close"
@@ -259,7 +268,9 @@ export default function Header() {
                 </motion.div>
               )}
             </AnimatePresence>
-          </motion.button>
+              </motion.button>
+            </div>
+          </div>
         </nav>
 
         {/* Mobile Menu */}
