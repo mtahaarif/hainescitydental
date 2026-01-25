@@ -111,22 +111,22 @@ export default function AboutPage() {
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           <figure className="glass p-4 text-center">
             <picture>
-              <source srcSet="/our-practice-1.webp" type="image/webp" />
-              <img src="/our-practice-1.jpg" alt="Reception area" className="w-full h-auto object-cover rounded" />
+              <source srcSet="/our-practice-1-480.webp 480w, /our-practice-1-768.webp 768w, /our-practice-1-1024.webp 1024w, /our-practice-1-1536.webp 1536w" type="image/webp" />
+              <img src="/our-practice-1.jpg" srcSet="/our-practice-1-480.jpg 480w, /our-practice-1-768.jpg 768w, /our-practice-1-1024.jpg 1024w, /our-practice-1-1536.jpg 1536w" sizes="(max-width: 1024px) 100vw, 33vw" alt="Reception area" className="w-full h-auto object-cover rounded" />
             </picture>
             <figcaption className="text-sm text-gray-600 mt-3">Welcoming reception and comfortable waiting area</figcaption>
           </figure>
           <figure className="glass p-4 text-center">
             <picture>
-              <source srcSet="/our-practice-2.webp" type="image/webp" />
-              <img src="/our-practice-2.jpg" alt="Treatment room" className="w-full h-auto object-cover rounded" />
+              <source srcSet="/our-practice-2-480.webp 480w, /our-practice-2-768.webp 768w, /our-practice-2-1024.webp 1024w, /our-practice-2-1536.webp 1536w" type="image/webp" />
+              <img src="/our-practice-2.jpg" srcSet="/our-practice-2-480.jpg 480w, /our-practice-2-768.jpg 768w, /our-practice-2-1024.jpg 1024w, /our-practice-2-1536.jpg 1536w" sizes="(max-width: 1024px) 100vw, 33vw" alt="Treatment room" className="w-full h-auto object-cover rounded" />
             </picture>
             <figcaption className="text-sm text-gray-600 mt-3">State-of-the-art treatment rooms with modern equipment</figcaption>
           </figure>
           <figure className="glass p-4 text-center">
             <picture>
-              <source srcSet="/our-practice-3.webp" type="image/webp" />
-              <img src="/our-practice-3.jpg" alt="Team at work" className="w-full h-auto object-cover rounded" />
+              <source srcSet="/our-practice-3-480.webp 480w, /our-practice-3-768.webp 768w, /our-practice-3-1024.webp 1024w, /our-practice-3-1536.webp 1536w" type="image/webp" />
+              <img src="/our-practice-3.jpg" srcSet="/our-practice-3-480.jpg 480w, /our-practice-3-768.jpg 768w, /our-practice-3-1024.jpg 1024w, /our-practice-3-1536.jpg 1536w" sizes="(max-width: 1024px) 100vw, 33vw" alt="Team at work" className="w-full h-auto object-cover rounded" />
             </picture>
             <figcaption className="text-sm text-gray-600 mt-3">A friendly team dedicated to your comfort and care</figcaption>
           </figure>
