@@ -16,11 +16,22 @@ interface Doctor {
 
 export default async function Doctors() {
   const doctors = (await getAllContent('doctors')) as Doctor[];
+  // Ensure Dr. Sohail Khan appears first
+  const prioritizedDoctors = (() => {
+    const idx = doctors.findIndex((d) => d.name?.toLowerCase().includes('sohail'));
+    if (idx > 0) {
+      const copy = [...doctors];
+      const [item] = copy.splice(idx, 1);
+      copy.unshift(item);
+      return copy;
+    }
+    return doctors;
+  })();
   
   return (
     <div className="py-12">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
-        {doctors.map((doctor, index) => (
+        {prioritizedDoctors.map((doctor, index) => (
           <div
             key={index}
             className="glass-light rounded-2xl p-6 hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
@@ -31,7 +42,7 @@ export default async function Doctors() {
                 alt={doctor.name}
                 width={400}
                 height={400}
-                className="w-full h-full object-cover object-top"
+                className="w-full h-full object-contain"
               />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-1">{doctor.name}</h3>

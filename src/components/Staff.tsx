@@ -25,7 +25,7 @@ export default async function Staff() {
                 alt={member.name}
                 width={300}
                 height={300}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
               />
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-1">{member.name}</h3>

@@ -20,8 +20,20 @@ export default async function TeamCarouselServer() {
   const staff = (await getAllContent('staff')) as Staff[];
 
   // Combine doctors and staff into a single array for the carousel
+  // Move Dr. Sohail Khan to the front if present
+  const orderedDoctors = (() => {
+    const idx = doctors.findIndex((d) => d.name?.toLowerCase().includes('sohail'));
+    if (idx > 0) {
+      const copy = [...doctors];
+      const [item] = copy.splice(idx, 1);
+      copy.unshift(item);
+      return copy;
+    }
+    return doctors;
+  })();
+
   const allTeamMembers = [
-    ...doctors.map((doc) => ({
+    ...orderedDoctors.map((doc) => ({
       name: doc.name,
       role: doc.title,
       title: doc.title,

@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import Hero from '@/components/Hero';
 import FeaturedServices from '@/components/FeaturedServices';
-import UniversalSlider from '@/components/UniversalSlider';
+// UniversalSlider removed — replaced by site-wide banner component in layout
 
 // Lazy load below-the-fold components
 const WhyChooseUs = dynamic(() => import('@/components/WhyChooseUs'), {
@@ -19,7 +19,6 @@ const CallToAction = dynamic(() => import('@/components/CallToAction'), {
 export default function Home() {
   return (
     <>
-      <UniversalSlider />
       <Hero />
       <FeaturedServices />
       <WhyChooseUs />

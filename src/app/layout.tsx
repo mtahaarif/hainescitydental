@@ -4,10 +4,13 @@ import dynamic from 'next/dynamic';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import ScheduleAppointmentBar from '@/components/ScheduleAppointmentBar';
+// ScheduleAppointmentBar removed
 import PageTransition from '@/components/PageTransition';
 import ScrollProgress from '@/components/ScrollProgress';
 import MobileQuickActions from '@/components/MobileQuickActions';
+
+// Dynamically import site banner (client-only)
+const SiteBannerZoomFade = dynamic(() => import('@/components/SiteBannerZoomFade'), { ssr: false, loading: () => null });
 
 // Dynamically import ParticleBackground - it's heavy and optional for UX
 const ParticleBackground = dynamic(() => import('@/components/ParticleBackground'), {
@@ -91,9 +94,10 @@ export default function RootLayout({
         
         {/* Header */}
         <Header />
+        {/* Site banner slider (inserted below header) */}
+        <SiteBannerZoomFade />
         
-        {/* Schedule Appointment Bar */}
-        <ScheduleAppointmentBar />
+        {/* Schedule Appointment Bar removed per request */}
         
         {/* Main Content with Page Transitions */}
         <PageTransition>

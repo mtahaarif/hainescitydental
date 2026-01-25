@@ -85,6 +85,112 @@
   }
 }
 
+/* === Client-provided Medikon child theme overrides === */
+.primary-menu .sub-menu{
+  background: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(43 149 226) 100%);
+}
+
+.primary-menu .sub-menu li a {
+  color: #492012!important;
+}
+
+#site-header-wrap.header-layout3 .site-header-top .header-top-item i {
+  color: #187EC2;
+  margin-right: 10px;
+}
+#site-header-wrap.header-layout3 .site-header-main .site-tool .site-header-button .btn:hover {
+  background-color: #492012;
+  border-color: #187EC2;
+}
+#site-header-wrap.header-layout3 .site-header-top .row {
+  justify-content: space-between;
+  flex-direction: row-reverse;
+}
+
+body {
+  background: linear-gradient(180deg,rgb(238,238,238) 0%,rgb(43 149 226) 100%);
+}
+
+.btn.btn-secondary {
+  background-color: #187ec2;
+  border-color: #187ec2;
+}
+
+input[type="text"]   { background-color: #f1f5fe00;
+border: 1px solid black;
+color: #000000;
+height: 35px;}
+
+.cms-navigation-menu.e-sidebar-widget ul.menu li a:before {
+  content: none;
+    
+}
+
+.elementor-widget-wrap>.elementor-element {
+  width: 100%;
+  line-height: 50px;
+  color: black;
+    
+}
+
+#content .widget_categories ul li a, #content .widget_nav_menu ul li a, #content .cms-navigation-menu.e-sidebar-widget ul li a, #content .widget_pages ul li a, #content .widget_archive ul li a, #content .widget_meta ul li a {
+  background-color: rgb(24 126 194 / 1%); }
+
+/* End of Medikon child theme overrides */
+
+/* === Mapping: apply Medikon-like styles to this Next.js header/components === */
+/* Dropdown/menu backgrounds (map .primary-menu .sub-menu to our dropdowns) */
+header .glass-light, header .glass-light .block, header .glass-light .px-6 {
+  background: linear-gradient(135deg, rgb(238,238,238) 0%, rgb(43 149 226) 100%);
+}
+
+/* Dropdown link colors */
+header .glass-light a, header .glass-light .text-gray-700 {
+  color: #492012 !important;
+}
+
+/* Icon color in header top area */
+header .header-top-item i, header .max-w-7xl i, header .phone i, header svg {
+  color: #187EC2;
+  margin-right: 10px;
+}
+
+/* CTA/Button hover mapping */
+header .site-tool .btn:hover, header .btn-primary:hover, header .btn:hover {
+  background-color: #492012 !important;
+  border-color: #187EC2 !important;
+}
+
+/* Ensure secondary buttons match theme */
+.btn.btn-secondary, .btn-secondary { background-color: #187ec2; border-color: #187ec2; }
+
+/* Keep input appearance similar to the client's theme */
+input[type="text"], input[type="search"], textarea {
+  background-color: #f1f5fe00;
+  border: 1px solid black;
+  color: #000000;
+  height: 35px;
+}
+
+/* Elementor-like widget width/line-height mapping */
+.elementor-widget-wrap > .elementor-element, .elementor-widget-wrap > * {
+  width: 100%;
+  line-height: 50px;
+  color: black;
+}
+
+/* Sidebar/menu list background tint */
+#content .widget_categories ul li a, #content .widget_nav_menu ul li a, #content .cms-navigation-menu.e-sidebar-widget ul li a, #content .widget_pages ul li a, #content .widget_archive ul li a, #content .widget_meta ul li a {
+  background-color: rgb(24 126 194 / 1%);
+}
+
+/* Accessibility: keep dropdowns readable on small screens */
+@media (max-width: 1024px) {
+  header .glass-light a { color: #492012 !important; }
+}
+
+/* End mapping section */
+
 @layer components {
   .glass {
     @apply backdrop-blur-xl rounded-3xl;
