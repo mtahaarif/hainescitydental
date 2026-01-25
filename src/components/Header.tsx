@@ -31,12 +31,12 @@ const patientInfoDropdown = [
 
 const navLinks = [
   { name: 'Home', href: '/' },
-  { name: 'About', href: '/about' },
+  { name: 'Our Practice', href: '/about' },
   { name: 'Services', href: '/services', dropdown: serviceDropdown, clickable: true },
   { name: 'Our Team', href: '/our-team', dropdown: teamDropdown, clickable: true },
-  { name: 'Patient Info', href: '/patient-info', dropdown: patientInfoDropdown, clickable: true },
+  { name: 'Patient Information', href: '/patient-info', dropdown: patientInfoDropdown, clickable: true },
   { name: 'News', href: '/news' },
-  { name: 'Contact', href: '/contact' },
+  { name: 'Contact Us', href: '/contact' },
 ];
 
 export default function Header() {
@@ -115,7 +115,7 @@ export default function Header() {
       transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <nav className="flex items-center justify-between h-20">
+        <nav className="grid grid-cols-3 items-center h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center group">
             <motion.div
@@ -135,7 +135,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex gap-6 items-center">
+          <div className="hidden lg:flex gap-8 items-center justify-center col-start-2">
             {navLinks.map((link) => (
               <div
                 key={link.name}
@@ -171,8 +171,10 @@ export default function Header() {
                 ) : (
                   <Link
                     href={link.href}
-                    className={`text-gray-700 hover:text-dental-blue-600 font-medium transition-colors duration-300 ${
-                      pathname === link.href ? 'text-dental-blue-600' : ''
+                    className={`font-medium transition-colors duration-300 inline-block px-2 ${
+                      pathname === link.href
+                        ? 'text-dental-blue-600 border-b-2 border-dental-blue-600 pb-1'
+                        : 'text-gray-700 hover:text-dental-blue-600'
                     }`}
                   >
                     <motion.span
@@ -220,7 +222,7 @@ export default function Header() {
           {/* CTA Button */}
           <motion.a
             href="tel:+18634228338"
-            className="hidden lg:flex items-center gap-2 btn-primary"
+            className="hidden lg:flex items-center gap-2 btn-primary justify-end col-start-3"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
