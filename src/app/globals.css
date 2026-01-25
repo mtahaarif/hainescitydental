@@ -191,6 +191,19 @@ input[type="text"], input[type="search"], textarea {
 
 /* End mapping section */
 
+/* Header visual to match provided navbar style: subtle pale-blue gradient and thin bottom border */
+header {
+  background: linear-gradient(180deg, #f3f8fb 0%, #eef6fb 100%);
+  border-bottom: 1px solid rgba(16, 64, 100, 0.06);
+}
+
+/* Centered nav text appearance */
+header nav a {
+  color: #136fb0;
+  letter-spacing: 0.02em;
+}
+
+
 @layer components {
   .glass {
     @apply backdrop-blur-xl rounded-3xl;
