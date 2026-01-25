@@ -20,10 +20,6 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <FeaturedServices />
-      <WhyChooseUs />
-      <Testimonials />
-      <CallToAction />
     </>
   );
 }
