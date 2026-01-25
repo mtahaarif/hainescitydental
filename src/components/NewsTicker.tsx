@@ -8,6 +8,7 @@ type Item = {
   title: string;
   href?: string;
   date?: string;
+  image?: string;
 };
 
 export default function NewsTicker({ items }: { items: Item[] }) {
@@ -19,7 +20,11 @@ export default function NewsTicker({ items }: { items: Item[] }) {
         <div className="relative">
           <div className="whitespace-nowrap animate-marquee will-change-transform">
             {items.map((it) => (
-              <span key={it.id} className="inline-flex items-center gap-4 mr-8">
+              <span key={it.id} className="inline-flex items-center gap-3 mr-8">
+                {it.image ? (
+                  // small thumbnail
+                  <img src={it.image} alt={it.title} className="w-10 h-10 rounded object-cover flex-shrink-0" />
+                ) : null}
                 <span className="text-sm text-dental-blue-600 font-semibold">{it.date ? `${it.date} —` : ''}</span>
                 {it.href ? (
                   <Link href={it.href} className="text-sm text-gray-800 hover:text-dental-blue-700">

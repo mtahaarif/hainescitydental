@@ -3,27 +3,36 @@ const fs = require('fs');
 const path = require('path');
 
 const pub = path.join(__dirname, '..', 'public');
-const patterns = [
-  'our-practice-*.jpg',
-  'banner*.jpg',
-];
 
 // widths to generate for responsive srcset
 const widths = [480, 768, 1024, 1536];
 
-function globSync(pattern){
-  const re = new RegExp('^' + pattern.replace(/\*/g, '.*') + '$', 'i');
-  return fs.readdirSync(pub).filter(f => re.test(f));
+function isSourceImage(filename){
+  return /\.(jpe?g|png)$/i.test(filename) &&
+    !/-(480|768|1024|1536)(\.(jpg|jpeg|png|webp))$/i.test(filename) &&
+    !/-(\d+x\d+)(\.(jpg|jpeg|png|webp))$/i.test(filename) &&
+    !/\.webp$/i.test(filename);
 }
 
-async function convertResponsive(file){
-  const infile = path.join(pub, file);
-  const ext = path.extname(file);
-  const name = path.basename(file, ext);
+function walkDir(dir){
+  const results = [];
+  const list = fs.readdirSync(dir, { withFileTypes: true });
+  for(const ent of list){
+    const p = path.join(dir, ent.name);
+    if(ent.isDirectory()) results.push(...walkDir(p));
+    else if(ent.isFile() && isSourceImage(ent.name)) results.push(p);
+  }
+  return results;
+}
+
+async function convertResponsive(infile){
+  const ext = path.extname(infile);
+  const dir = path.dirname(infile);
+  const name = path.basename(infile, ext);
 
   for(const w of widths){
-    const outJpg = path.join(pub, `${name}-${w}.jpg`);
-    const outWebp = path.join(pub, `${name}-${w}.webp`);
+    const outJpg = path.join(dir, `${name}-${w}.jpg`);
+    const outWebp = path.join(dir, `${name}-${w}.webp`);
     try{
       await sharp(infile)
         .resize({ width: w })
@@ -46,9 +55,9 @@ async function convertResponsive(file){
 }
 
 async function run(){
-  for(const pat of patterns){
-    const files = globSync(pat);
-    for(const f of files) await convertResponsive(f);
+  const files = walkDir(pub);
+  for(const f of files){
+    await convertResponsive(f);
   }
 }
 

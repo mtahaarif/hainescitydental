@@ -133,16 +133,15 @@ export default function SiteBannerZoomFade({ images, height = 260 }: Props) {
       <div className="sbzf-inner" role="region" aria-label="Site banner slideshow">
         <div className="sbzf-slider" role="list" ref={containerRef}>
           {imgs.map((src, i) => {
-            // derive base name from filename, strip size suffix if present
+            // derive base name from filename (keep any size token like '1536x768')
             const filename = src.split('/').pop() || src;
-            const base = filename.replace(/-\d+x\d+\.(jpg|jpeg|png)$/i, '').replace(/\.(jpg|jpeg|png)$/i, '');
+            const base = filename.replace(/\.(jpg|jpeg|png)$/i, '');
             const sizes = [480, 768, 1024, 1536];
             const webpSrcSet = sizes.map(w => `/${base}-${w}.webp ${w}w`).join(', ');
             const jpgSrcSet = sizes.map(w => `/${base}-${w}.jpg ${w}w`).join(', ');
             return (
               <div id={`sbzf-slide-${i}`} className="sbzf-slide" role="listitem" aria-hidden={i !== 0} key={i}>
                 <picture>
-                  <source type="image/webp" srcSet={webpSrcSet} sizes="(max-width: 1024px) 100vw, 1600px" />
                   <img src={src} srcSet={jpgSrcSet} sizes="(max-width: 1024px) 100vw, 1600px" alt={`Banner slide ${i + 1}`} loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
                 </picture>
               </div>

@@ -204,6 +204,74 @@ header nav a {
 }
 
 
+/* --- Full Medikon child theme snippet (from client) --- */
+.primary-menu .sub-menu{
+  background: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(43 149 226) 100%);
+}
+
+.primary-menu .sub-menu li a {
+  color: #492012!important;
+}
+
+#site-header-wrap.header-layout3 .site-header-top .header-top-item i {
+    color: #187EC2;
+    margin-right: 10px;
+}
+#site-header-wrap.header-layout3 .site-header-main .site-tool .site-header-button .btn:hover {
+    background-color: #492012;
+    border-color: #187EC2;
+}
+#site-header-wrap.header-layout3 .site-header-top .row {
+    justify-content: space-between;
+    flex-direction: row-reverse;
+}
+
+body {
+    background: linear-gradient(180deg,rgb(238,238,238) 0%,rgb(43 149 226) 100%);
+}
+
+.btn.btn-secondary {
+    background-color: #187ec2;
+    border-color: #187ec2;
+}
+
+input[type="text"]   { background-color: #f1f5fe00;
+border: 1px solid black;
+color: #000000;
+height: 35px;}
+
+.cms-navigation-menu.e-sidebar-widget ul.menu li a:before {
+    content: none;
+    
+}
+
+.elementor-widget-wrap>.elementor-element {
+    width: 100%;
+    line-height: 50px;
+    color: black;
+    
+}
+
+#content .widget_categories ul li a, #content .widget_nav_menu ul li a, #content .cms-navigation-menu.e-sidebar-widget ul li a, #content .widget_pages ul li a, #content .widget_archive ul li a, #content .widget_meta ul li a {
+    background-color: rgb(24 126 194 / 1%); }
+
+/* CTA primary style mapping (rounded blue pill) */
+.btn-primary {
+  background: linear-gradient(90deg,#0d86c4 0%,#0aa0e0 100%);
+  color: white;
+  padding: 10px 26px;
+  border-radius: 9999px;
+  box-shadow: 0 8px 30px rgba(10,160,224,0.18);
+  border: 1px solid rgba(255,255,255,0.08);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Small dropdown arrow spacing */
+.nav-dropdown-arrow { margin-left: 4px; transform: translateY(1px); }
+
+
 @layer components {
   .glass {
     @apply backdrop-blur-xl rounded-3xl;

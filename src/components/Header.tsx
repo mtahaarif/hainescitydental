@@ -47,12 +47,9 @@ export default function Header() {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
@@ -66,76 +63,35 @@ export default function Header() {
   };
 
   const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
-      setActiveDropdown(null);
-    }, 150);
-  };
-
-  const dropdownVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: -10, 
-      scale: 0.95,
-      transition: { duration: 0.2 }
-    },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      scale: 1,
-      transition: { 
-        duration: 0.3,
-        ease: [0.4, 0, 0.2, 1]
-      }
-    },
-  };
-
-  const mobileMenuVariants = {
-    hidden: { 
-      opacity: 0, 
-      height: 0,
-      transition: { duration: 0.3 }
-    },
-    visible: { 
-      opacity: 1, 
-      height: 'auto',
-      transition: { 
-        duration: 0.3,
-        ease: [0.4, 0, 0.2, 1]
-      }
-    },
+    timeoutRef.current = setTimeout(() => setActiveDropdown(null), 150);
   };
 
   return (
     <motion.header
-      className={`fixed w-full top-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
         scrolled ? 'glass-strong shadow-lg' : 'glass'
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+      transition={{ duration: 0.5 }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <nav className="grid grid-cols-3 items-center h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center group col-start-1">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="relative h-12 w-auto"
-            >
-              <Image
-                src="/hainescitydentallogo.png"
-                alt="Haines City Dental Logo"
-                width={140}
-                height={48}
-                className="h-12 w-auto object-contain"
-                priority
-              />
-            </motion.div>
+        <nav className="flex items-center justify-between h-20">
+          
+          {/* Logo Section - Increased size by 50% */}
+          <Link href="/" className="flex items-center flex-shrink-0 mr-4">
+            <Image
+              src="/hainescitydentallogo.png"
+              alt="Haines City Dental Logo"
+              width={210}  // Increased from 140
+              height={72}  // Increased from 48
+              className="h-[72px] w-auto object-contain" // Changed h-12 to h-[72px]
+              priority
+            />
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex gap-8 items-center justify-center col-start-2">
+          {/* Desktop Nav */}
+          <div className="hidden lg:flex gap-5 xl:gap-8 items-center justify-center">
             {navLinks.map((link) => (
               <div
                 key={link.name}
@@ -144,74 +100,47 @@ export default function Header() {
                 onMouseLeave={handleMouseLeave}
               >
                 {link.dropdown ? (
-                  link.clickable ? (
-                    <Link
-                      href={link.href}
-                      className="flex items-center gap-1 text-gray-700 hover:text-dental-blue-600 font-medium transition-colors duration-300"
-                    >
-                      {link.name}
-                      <motion.div
-                        animate={{ rotate: activeDropdown === link.name ? 180 : 0 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <ChevronDown className="w-4 h-4" />
-                      </motion.div>
-                    </Link>
-                  ) : (
-                    <button className="flex items-center gap-1 text-gray-700 hover:text-dental-blue-600 font-medium transition-colors duration-300">
-                      {link.name}
-                      <motion.div
-                        animate={{ rotate: activeDropdown === link.name ? 180 : 0 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <ChevronDown className="w-4 h-4" />
-                      </motion.div>
-                    </button>
-                  )
+                  <Link
+                    href={link.href}
+                    className="flex items-center gap-1 px-1 py-2 text-sm font-medium tracking-wide whitespace-nowrap text-gray-700 hover:text-dental-blue-600 transition-colors"
+                  >
+                    {link.name}
+                    <ChevronDown
+                      className={`w-3.5 h-3.5 transition-transform ${
+                        activeDropdown === link.name ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </Link>
                 ) : (
                   <Link
                     href={link.href}
-                    className={`font-medium transition-colors duration-300 inline-block px-3 text-center leading-tight ${
+                    className={`px-1 py-2 text-sm font-medium tracking-wide whitespace-nowrap transition-colors ${
                       pathname === link.href
-                        ? 'text-dental-blue-600 border-b-2 border-dental-blue-600 pb-1'
+                        ? 'text-dental-blue-600 border-b-2 border-dental-blue-600'
                         : 'text-dental-blue-600/90 hover:text-dental-blue-700'
                     }`}
-                    style={{ minWidth: 90, maxWidth: 140 }}
                   >
-                    <motion.span
-                      whileHover={{ y: -2 }}
-                      transition={{ duration: 0.2 }}
-                      className="inline-block"
-                    >
-                      {link.name}
-                    </motion.span>
+                    {link.name}
                   </Link>
                 )}
 
-                {/* Dropdown Menu */}
+                {/* Dropdown */}
                 <AnimatePresence>
                   {link.dropdown && activeDropdown === link.name && (
                     <motion.div
-                      variants={dropdownVariants}
-                      initial="hidden"
-                      animate="visible"
-                      exit="hidden"
-                      className="absolute left-0 mt-2 w-56 glass-light rounded-2xl shadow-xl py-2 z-50 overflow-hidden"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="absolute left-1/2 -translate-x-1/2 mt-1 w-56 glass-light rounded-2xl shadow-xl py-2 z-50"
                     >
-                      {link.dropdown.map((item, idx) => (
-                        <motion.div
+                      {link.dropdown.map((item) => (
+                        <Link
                           key={item.name}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: idx * 0.05 }}
+                          href={item.href}
+                          className="block px-6 py-2.5 text-sm whitespace-nowrap text-gray-700 hover:text-dental-blue-600 hover:bg-dental-blue-50/80 transition-all"
                         >
-                          <Link
-                            href={item.href}
-                            className="block px-6 py-2.5 text-gray-700 hover:text-dental-blue-600 hover:bg-dental-blue-50/80 transition-all duration-300"
-                          >
-                            {item.name}
-                          </Link>
-                        </motion.div>
+                          {item.name}
+                        </Link>
                       ))}
                     </motion.div>
                   )}
@@ -220,55 +149,35 @@ export default function Header() {
             ))}
           </div>
 
-          {/* CTA Button */}
-          <div className="col-start-3 flex items-center justify-end gap-3">
-            {/* Desktop CTA */}
+          {/* CTA Section */}
+          <div className="flex items-center justify-end gap-3 flex-shrink-0 ml-4">
             <motion.a
               href="tel:+18634228338"
-              className="hidden lg:inline-flex items-center gap-3 bg-dental-blue-600 text-white px-4 py-2 rounded-full shadow-sm"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              style={{ height: 44 }}
+              className="hidden lg:inline-flex items-center gap-2 bg-dental-blue-600 text-white px-5 py-2 rounded-full shadow-sm whitespace-nowrap"
+              style={{ height: 40 }}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
             >
-              <Phone className="w-4 h-4 opacity-90" />
-              <span className="font-semibold text-sm">Call Now</span>
+              <Phone className="w-3.5 h-3.5 text-white" />
+              <span className="text-sm font-semibold">Call Now</span>
             </motion.a>
 
-            {/* Mobile phone icon + menu button */}
+            {/* Mobile Controls */}
             <div className="lg:hidden flex items-center gap-2">
-              <a href="tel:+18634228338" className="p-2 rounded-md bg-dental-blue-600 text-white flex items-center" aria-label="Call Haines City Dental">
-                <Phone className="w-4 h-4" />
-              </a>
-              <motion.button
-                className="p-2 rounded-lg hover:bg-white/30 transition-colors"
-                onClick={() => setIsOpen(!isOpen)}
-                whileTap={{ scale: 0.9 }}
-                aria-label="Open menu"
+              <a
+                href="tel:+18634228338"
+                className="p-2 rounded-md bg-dental-blue-600 text-white"
+                aria-label="Call"
               >
-                <AnimatePresence mode="wait">
-              {isOpen ? (
-                <motion.div
-                  key="close"
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <X className="w-6 h-6" />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="menu"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <Menu className="w-6 h-6" />
-                </motion.div>
-              )}
-            </AnimatePresence>
-              </motion.button>
+                <Phone className="w-4 h-4 text-white" />
+              </a>
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="p-2 rounded-lg hover:bg-white/30"
+                aria-label="Menu"
+              >
+                {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
             </div>
           </div>
         </nav>
@@ -277,104 +186,25 @@ export default function Header() {
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              variants={mobileMenuVariants}
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
               className="lg:hidden pb-4 overflow-hidden"
             >
-              {navLinks.map((link, idx) => (
-                <motion.div
+              {navLinks.map((link) => (
+                <Link
                   key={link.name}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: idx * 0.05 }}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className="block px-4 py-3 text-gray-700 hover:text-dental-blue-600 border-b border-gray-100 last:border-0"
                 >
-                  {link.dropdown ? (
-                    <MobileDropdown link={link} />
-                  ) : (
-                    <Link
-                      href={link.href}
-                      className={`block px-4 py-3 text-gray-700 hover:text-dental-blue-600 transition-colors min-h-[48px] flex items-center ${
-                        pathname === link.href ? 'text-dental-blue-600 font-semibold' : ''
-                      }`}
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {link.name}
-                    </Link>
-                  )}
-                </motion.div>
+                  {link.name}
+                </Link>
               ))}
-              <motion.a
-                href="tel:+18634228338"
-                className="flex items-center justify-center gap-2 mx-4 mt-4 btn-primary"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                <Phone className="w-4 h-4" />
-                Call Now
-              </motion.a>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
     </motion.header>
-  );
-}
-
-function MobileDropdown({ link }: { link: typeof navLinks[0] }) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div>
-      <div className="flex items-center">
-        {link.clickable ? (
-          <Link
-            href={link.href}
-            className="flex-1 px-4 py-3 text-gray-700 hover:text-dental-blue-600 min-h-[48px] flex items-center"
-          >
-            {link.name}
-          </Link>
-        ) : (
-          <span className="flex-1 px-4 py-3 text-gray-700 min-h-[48px] flex items-center">
-            {link.name}
-          </span>
-        )}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="px-4 py-3 text-gray-700 hover:text-dental-blue-600 min-h-[48px]"
-          aria-expanded={isOpen}
-          aria-haspopup="true"
-        >
-          <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
-            <ChevronDown className="w-4 h-4" />
-          </motion.div>
-        </button>
-      </div>
-      <AnimatePresence>
-        {isOpen && link.dropdown && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="overflow-hidden"
-          >
-            <div className="glass rounded-2xl mx-2 my-1 py-1">
-              {link.dropdown.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="block px-6 py-3 text-gray-700 hover:text-dental-blue-600 hover:bg-dental-blue-50/80 text-sm transition-all duration-300 min-h-[44px] flex items-center"
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
   );
 }
