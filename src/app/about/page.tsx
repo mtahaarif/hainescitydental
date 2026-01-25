@@ -19,6 +19,12 @@ export default function AboutPage() {
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
           Providing exceptional dental care to our community since November 2006.
         </p>
+        {/* Inserted Our Practice intro from the client's previous page */}
+        <div className="mt-6 glass p-6 max-w-3xl mx-auto text-left">
+          <p className="text-gray-700 leading-relaxed">
+            Our practice offers comprehensive dental care with an emphasis on prevention, restorative options, and cosmetic dentistry. We never underestimate the importance of serving our patients – from diagnosis to treatment, our team of professionals makes communication with patients a priority. We strive to make our office as warm, friendly, and comfortable. To overcome any anxieties that can often overcome people when visiting the dentist we created very relaxing environment.
+          </p>
+        </div>
       </div>
 
       {/* Main Content */}
@@ -99,6 +105,22 @@ export default function AboutPage() {
               <p className="text-gray-600 mt-2">{stat.label}</p>
             </div>
           ))}
+        </div>
+
+        {/* Additional Our Practice images (local copies) */}
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <figure className="glass p-4 text-center">
+            <Image src="/our-practice-1.jpg" alt="Reception area" width={1200} height={667} className="w-full h-auto object-cover rounded" />
+            <figcaption className="text-sm text-gray-600 mt-3">Welcoming reception and comfortable waiting area</figcaption>
+          </figure>
+          <figure className="glass p-4 text-center">
+            <Image src="/our-practice-2.jpg" alt="Treatment room" width={1200} height={667} className="w-full h-auto object-cover rounded" />
+            <figcaption className="text-sm text-gray-600 mt-3">State-of-the-art treatment rooms with modern equipment</figcaption>
+          </figure>
+          <figure className="glass p-4 text-center">
+            <Image src="/our-practice-3.jpg" alt="Team at work" width={1200} height={667} className="w-full h-auto object-cover rounded" />
+            <figcaption className="text-sm text-gray-600 mt-3">A friendly team dedicated to your comfort and care</figcaption>
+          </figure>
         </div>
 
         {/* History Section */}
