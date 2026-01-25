@@ -9,10 +9,10 @@ export default function AboutPage() {
       {/* Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center animate-fade-in">
         <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-          About <span className="gradient-text">Haines City Dental</span>
+        <span className="gradient-text">Our Practice</span>
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Providing exceptional dental care to our community since November 2006.
+          Providing exceptional dental care to our community.
         </p>
         {/* Inserted Our Practice intro from the client's previous page */}
         <div className="mt-6 glass p-6 max-w-3xl mx-auto text-left">
