@@ -35,16 +35,7 @@ export default function Hero() {
 
         <div className="mt-12">
           <figure className="max-w-3xl mx-auto">
-            <div className="w-full rounded-2xl shadow-lg overflow-hidden">
-              <Image
-                src="/images/55.jpg"
-                alt="Christmas Party — Haines City Dental"
-                width={1200}
-                height={800}
-                className="w-full h-auto object-cover"
-                priority={false}
-              />
-            </div>
+            <Image src="/images/55.jpg" alt="Christmas Party — Haines City Dental" width={1536} height={800} className="w-full h-auto rounded-2xl shadow-lg" />
           </figure>
         </div>
       </div>

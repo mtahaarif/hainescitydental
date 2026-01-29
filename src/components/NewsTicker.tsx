@@ -23,10 +23,14 @@ export default function NewsTicker({ items }: { items: Item[] }) {
             {items.map((it) => (
               <span key={it.id} className="inline-flex items-center gap-3 mr-8">
                 {it.image ? (
-                  // small thumbnail
-                  <div className="w-10 h-10 rounded overflow-hidden flex-shrink-0">
-                    <Image src={it.image} alt={it.title} width={40} height={40} className="object-cover" />
-                  </div>
+                  // small thumbnail using next/image
+                  <Image
+                    src={it.image}
+                    alt={it.title}
+                    width={40}
+                    height={40}
+                    className="rounded object-cover flex-shrink-0"
+                  />
                 ) : null}
                 <span className="text-sm text-dental-blue-600 font-semibold">{it.date ? `${it.date} —` : ''}</span>
                 {it.href ? (

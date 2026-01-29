@@ -27,23 +27,17 @@ export default function OurPracticePage() {
             {/* Additional Our Practice images (local copies) */}
             <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
               <figure className="glass p-4 text-center">
-                <div className="w-full rounded overflow-hidden">
-                  <Image src="/our-practice-1.jpg" alt="Reception area" width={1024} height={768} className="w-full h-auto object-cover rounded" />
-                </div>
+                <Image src="/our-practice-1-1536.webp" alt="Reception area" width={1536} height={1024} className="w-full h-auto object-cover rounded" />
                 <figcaption className="text-sm text-gray-600 mt-3">Welcoming reception and comfortable waiting area</figcaption>
               </figure>
 
               <figure className="glass p-4 text-center">
-                <div className="w-full rounded overflow-hidden">
-                  <Image src="/our-practice-2.jpg" alt="Treatment room" width={1024} height={768} className="w-full h-auto object-cover rounded" />
-                </div>
+                <Image src="/our-practice-2-1536.webp" alt="Treatment room" width={1536} height={1024} className="w-full h-auto object-cover rounded" />
                 <figcaption className="text-sm text-gray-600 mt-3">State-of-the-art treatment rooms with modern equipment</figcaption>
               </figure>
 
               <figure className="glass p-4 text-center">
-                <div className="w-full rounded overflow-hidden">
-                  <Image src="/our-practice-3.jpg" alt="Team at work" width={1024} height={768} className="w-full h-auto object-cover rounded" />
-                </div>
+                <Image src="/our-practice-3-1536.webp" alt="Team at work" width={1536} height={1024} className="w-full h-auto object-cover rounded" />
                 <figcaption className="text-sm text-gray-600 mt-3">A friendly team dedicated to your comfort and care</figcaption>
               </figure>
             </div>
@@ -51,7 +45,7 @@ export default function OurPracticePage() {
 
           {/* Right appointment panel (same as homepage) */}
           <aside className="md:col-span-1 flex flex-col items-center text-center gap-4">
-            <Image src="/images/call.jpg" alt="Call for Appointment" width={600} height={400} className="w-full h-auto rounded-xl shadow-md" />
+            <Image src="/images/call.jpg" alt="Call for Appointment" width={1200} height={800} className="w-full h-auto rounded-xl shadow-md" />
             <a href="tel:+18634228338" className="inline-flex items-center justify-center bg-dental-blue-600 text-white px-6 py-3 rounded-full shadow-md hover:shadow-lg transition">
               Call For An Appointment
             </a>

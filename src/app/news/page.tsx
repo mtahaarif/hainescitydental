@@ -29,7 +29,71 @@ export default async function NewsPage() {
     const jsonPath = path.join(process.cwd(), 'src', 'data', 'news.json');
     if (fs.existsSync(jsonPath)) {
       const raw = fs.readFileSync(jsonPath, 'utf8');
-      const parsed = JSON.parse(raw);
+      // Try strict JSON parse first; fall back to a tolerant extractor when the
+      // JSON is malformed (some exported items contain unescaped double-quotes
+      // inside the HTML fields which breaks JSON.parse).
+      let parsed: any[] = [];
+      try {
+        parsed = JSON.parse(raw);
+      } catch (parseErr) {
+        // Fallback: extract top-level object text chunks from the array and
+        // pull the fields we care about (id, title, date, image, images,
+        // excerpt). We intentionally ignore the raw `html` field when it's
+        // malformed — the `images` array is sufficient to rebuild the page.
+        const objects: string[] = [];
+        const text = raw;
+        let inArray = false;
+        let depth = 0;
+        let start = -1;
+        for (let i = 0; i < text.length; i++) {
+          const ch = text[i];
+          if (!inArray) {
+            if (ch === '[') inArray = true;
+            continue;
+          }
+          if (ch === '{') {
+            if (depth === 0) start = i;
+            depth++;
+            continue;
+          }
+          if (ch === '}') {
+            depth--;
+            if (depth === 0 && start !== -1) {
+              objects.push(text.substring(start, i + 1));
+              start = -1;
+            }
+            continue;
+          }
+        }
+
+        for (const objStr of objects) {
+          const idMatch = objStr.match(/"id"\s*:\s*"((?:\\.|[^"\\])*)"/);
+          const titleMatch = objStr.match(/"title"\s*:\s*"((?:\\.|[^"\\])*)"/);
+          const dateMatch = objStr.match(/"date"\s*:\s*"((?:\\.|[^"\\])*)"/);
+          const imageMatch = objStr.match(/"image"\s*:\s*"((?:\\.|[^"\\])*)"/);
+          const excerptMatch = objStr.match(/"excerpt"\s*:\s*"((?:\\.|[^"\\])*)"/);
+          const imagesMatch = objStr.match(/"images"\s*:\s*\[([^\]]*)\]/s);
+
+          const imagesList: string[] = [];
+          if (imagesMatch && imagesMatch[1]) {
+            const g = imagesMatch[1].matchAll(/"([^\"]+)"/g);
+            for (const m of g) {
+              if (m && m[1]) imagesList.push(m[1]);
+            }
+          }
+
+          parsed.push({
+            id: idMatch ? idMatch[1] : undefined,
+            title: titleMatch ? titleMatch[1] : (idMatch ? idMatch[1] : undefined),
+            date: dateMatch ? dateMatch[1] : '',
+            image: imageMatch ? imageMatch[1] : '',
+            images: imagesList,
+            excerpt: excerptMatch ? excerptMatch[1] : '',
+            html: '',
+          });
+        }
+      }
+
       // Map external shape to our NewsItem interface
       const parsedItems: NewsItem[] = parsed.map((it: any, idx: number) => {
         const images = it.images && it.images.length ? it.images : (it.image ? [it.image] : []);
@@ -45,22 +109,7 @@ export default async function NewsPage() {
         } as NewsItem;
       });
 
-      // Also load markdown content items and merge any that are missing from the JSON
-      try {
-        const fallback = (await getAllContent('news')) as NewsItem[];
-        const seen = new Set(parsedItems.map(i => i.id || i.slug));
-        // append fallback items that aren't present in parsedItems
-        for (const f of fallback) {
-          const key = f.id || f.slug;
-          if (!key) continue;
-          if (!seen.has(key)) {
-            parsedItems.push(f);
-            seen.add(key);
-          }
-        }
-      } catch (e) {
-        // if fallback fails, continue with parsedItems
-      }
+
 
       sortedNews = parsedItems;
     } else {

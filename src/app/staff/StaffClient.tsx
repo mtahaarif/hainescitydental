@@ -1,4 +1,4 @@
- 'use client';
+"use client";
 
 import { useState } from 'react';
 import Image from 'next/image';
@@ -26,10 +26,9 @@ export default function StaffClient({ staffMembers }: StaffClientProps) {
   const current = staffMembers[activeIndex];
 
   return (
-    <section className="min-h-screen py-12">
+    <section className="py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-dental-blue-50/90 border border-dental-blue-100 rounded-3xl p-6 md:p-8 shadow-sm grid md:grid-cols-4 gap-6">
-
           <main className="md:col-span-3">
             <div className="mb-8 text-center">
               <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
@@ -48,53 +47,45 @@ export default function StaffClient({ staffMembers }: StaffClientProps) {
                   </div>
 
                   <p className="text-dental-blue-600 text-base sm:text-lg md:text-xl font-medium">{current.role}</p>
-                  <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900 mt-2">{current.name}</h2>
-                  <p className="text-gray-700 mt-4 max-w-prose mx-auto">{current.bio}</p>
+                  <h3 className="text-2xl sm:text-3xl font-semibold text-gray-900 mt-2">{current.name}</h3>
+                  <p className="mt-4 text-gray-600 max-w-2xl">{current.bio}</p>
+
+                  <div className="mt-6 flex items-center gap-4">
+                    <button onClick={prev} aria-label="Previous" className="p-2 rounded-full bg-white/60 hover:bg-white">
+                      <ChevronLeft className="w-6 h-6" />
+                    </button>
+                    <button onClick={next} aria-label="Next" className="p-2 rounded-full bg-white/60 hover:bg-white">
+                      <ChevronRight className="w-6 h-6" />
+                    </button>
+                  </div>
                 </div>
 
-                <div className="mt-8 flex items-center justify-center gap-4">
-                  <button
-                    aria-label="Previous staff"
-                    onClick={prev}
-                    className="inline-flex items-center justify-center rounded-full bg-white p-2 shadow hover:bg-gray-50"
-                  >
-                    <ChevronLeft />
-                  </button>
-                  <div className="flex items-center gap-2">
-                    {staffMembers.map((s, idx) => (
-                      <button
-                        key={s.name + idx}
-                        onClick={() => setActiveIndex(idx)}
-                        aria-current={idx === activeIndex}
-                        className={`w-10 h-10 rounded-full overflow-hidden border ${
-                          idx === activeIndex ? 'border-dental-blue-600' : 'border-gray-200'
-                        }`}
-                      >
-                        <Image src={s.image} alt={s.name} width={40} height={40} className="object-cover" />
-                      </button>
-                    ))}
-                  </div>
-                  <button
-                    aria-label="Next staff"
-                    onClick={next}
-                    className="inline-flex items-center justify-center rounded-full bg-white p-2 shadow hover:bg-gray-50"
-                  >
-                    <ChevronRight />
-                  </button>
+                {/* Thumbnails */}
+                <div className="mt-8 flex items-center justify-center gap-3 flex-wrap">
+                  {staffMembers.map((s, idx) => (
+                    <button
+                      key={s.name + idx}
+                      onClick={() => setActiveIndex(idx)}
+                      className={`w-16 h-16 rounded-full overflow-hidden border-2 ${
+                        idx === activeIndex ? 'border-dental-blue-600' : 'border-transparent'
+                      }`}
+                      aria-label={`Show ${s.name}`}
+                    >
+                      <Image src={s.image} alt={s.name} width={64} height={64} className="object-cover" />
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
           </main>
 
-          <aside className="hidden md:block">
-            <div className="sticky top-24">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Our Practice</h3>
-              <p className="text-gray-600">Learn more about our team and approach to patient care.</p>
-            </div>
+          {/* Sidebar or placeholder column for additional info if needed */}
+          <aside className="hidden md:block md:col-span-1">
+            {/* reserved for contact or scheduling CTA */}
+            <div className="p-4 rounded-xl bg-white/60 h-full flex items-center justify-center">Contact our office to schedule</div>
           </aside>
         </div>
       </div>
     </section>
   );
 }
- 

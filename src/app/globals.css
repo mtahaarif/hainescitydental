@@ -571,17 +571,4 @@ height: 35px;}
     border-bottom: 2px solid var(--dental-blue-700);
     border-radius: 0;
   }
-
-  /* Logo: never show underline or hover border */
-  header .logo-link {
-    text-decoration: none !important;
-    border-bottom: none !important;
-  }
-
-  header .logo-link:hover,
-  header .logo-link:focus {
-    text-decoration: none !important;
-    border-bottom: none !important;
-    outline: none !important;
-  }
 }

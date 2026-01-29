@@ -143,7 +143,6 @@ export default function FeaturedServices() {
                       alt={service.title}
                       width={28}
                       height={28}
-                      loading="lazy"
                       className="w-7 h-7 object-contain brightness-0 invert"
                     />
                   </motion.div>
