@@ -77,7 +77,7 @@ export default function Header() {
         <nav className="flex items-center justify-between h-20">
           
           {/* Logo Section - Increased size by 400% */}
-          <Link href="/" className="flex items-center flex-shrink-0 mr-4 no-underline hover:no-underline focus:no-underline active:no-underline">
+          <Link href="/" className="logo-link flex items-center flex-shrink-0 mr-4 no-underline hover:no-underline focus:no-underline active:no-underline">
             <Image
               src="/hainescitydentallogo.png"
               alt="Haines City Dental Logo"

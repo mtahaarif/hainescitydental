@@ -66,6 +66,25 @@
     @apply text-dental-blue-700;
   }
 
+  /* Logo-specific override: ensure the navbar logo never shows underline or bottom border */
+  .logo-link,
+  .logo-link * {
+    text-decoration: none !important;
+    box-shadow: none !important;
+  }
+
+  .logo-link {
+    border-bottom: none !important;
+  }
+
+  .logo-link:hover,
+  .logo-link:focus,
+  .logo-link:active {
+    text-decoration: none !important;
+    border-bottom: none !important;
+    outline: none !important;
+  }
+
   h1 {
     @apply text-3xl sm:text-4xl lg:text-5xl font-bold;
   }
