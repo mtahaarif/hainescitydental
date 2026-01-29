@@ -31,7 +31,7 @@ export default async function NewsPage() {
       const raw = fs.readFileSync(jsonPath, 'utf8');
       const parsed = JSON.parse(raw);
       // Map external shape to our NewsItem interface
-      sortedNews = parsed.map((it: any, idx: number) => {
+      const parsedItems: NewsItem[] = parsed.map((it: any, idx: number) => {
         const images = it.images && it.images.length ? it.images : (it.image ? [it.image] : []);
         return {
           slug: it.slug || `news-${idx}`,
@@ -44,6 +44,25 @@ export default async function NewsPage() {
           content: it.html || it.content || '',
         } as NewsItem;
       });
+
+      // Also load markdown content items and merge any that are missing from the JSON
+      try {
+        const fallback = (await getAllContent('news')) as NewsItem[];
+        const seen = new Set(parsedItems.map(i => i.id || i.slug));
+        // append fallback items that aren't present in parsedItems
+        for (const f of fallback) {
+          const key = f.id || f.slug;
+          if (!key) continue;
+          if (!seen.has(key)) {
+            parsedItems.push(f);
+            seen.add(key);
+          }
+        }
+      } catch (e) {
+        // if fallback fails, continue with parsedItems
+      }
+
+      sortedNews = parsedItems;
     } else {
       // fallback to CMS loader if JSON not present
       const newsItems = (await getAllContent('news')) as NewsItem[];
