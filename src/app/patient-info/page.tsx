@@ -411,20 +411,27 @@ function SpecialsContent() {
 
 export default function PatientInfoPage() {
   return (
-    <div className="min-h-screen pt-8 pb-16">
-      {/* Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 text-center">
-        <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-          Patient <span className="gradient-text">Information</span>
-        </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Everything you need to know about becoming a patient at Haines City Dental
-        </p>
-      </div>
+    <div className="min-h-screen py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-dental-blue-50/90 border border-dental-blue-100 rounded-3xl p-6 md:p-8 shadow-sm">
 
-      <Suspense fallback={<div className="text-center py-12">Loading content...</div>}>
-        <PatientInfoContent />
-      </Suspense>
+          <main>
+            {/* Header */}
+            <div className="mb-6 text-center">
+              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+                Patient <span className="gradient-text">Information</span>
+              </h1>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                Everything you need to know about becoming a patient at Haines City Dental
+              </p>
+            </div>
+
+            <Suspense fallback={<div className="text-center py-12">Loading content...</div>}>
+              <PatientInfoContent />
+            </Suspense>
+          </main>
+        </div>
+      </div>
     </div>
   );
 }

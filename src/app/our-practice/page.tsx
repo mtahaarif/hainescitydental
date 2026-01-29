@@ -27,26 +27,23 @@ export default function OurPracticePage() {
             {/* Additional Our Practice images (local copies) */}
             <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
               <figure className="glass p-4 text-center">
-                <picture>
-                  <source srcSet="/our-practice-1-480.webp 480w, /our-practice-1-768.webp 768w, /our-practice-1-1024.webp 1024w, /our-practice-1-1536.webp 1536w" type="image/webp" />
-                  <img src="/our-practice-1.jpg" srcSet="/our-practice-1-480.jpg 480w, /our-practice-1-768.jpg 768w, /our-practice-1-1024.jpg 1024w, /our-practice-1-1536.jpg 1536w" sizes="(max-width: 1024px) 100vw, 33vw" alt="Reception area" className="w-full h-auto object-cover rounded" />
-                </picture>
+                <div className="w-full rounded overflow-hidden">
+                  <Image src="/our-practice-1.jpg" alt="Reception area" width={1024} height={768} className="w-full h-auto object-cover rounded" />
+                </div>
                 <figcaption className="text-sm text-gray-600 mt-3">Welcoming reception and comfortable waiting area</figcaption>
               </figure>
 
               <figure className="glass p-4 text-center">
-                <picture>
-                  <source srcSet="/our-practice-2-480.webp 480w, /our-practice-2-768.webp 768w, /our-practice-2-1024.webp 1024w, /our-practice-2-1536.webp 1536w" type="image/webp" />
-                  <img src="/our-practice-2.jpg" srcSet="/our-practice-2-480.jpg 480w, /our-practice-2-768.jpg 768w, /our-practice-2-1024.jpg 1024w, /our-practice-2-1536.jpg 1536w" sizes="(max-width: 1024px) 100vw, 33vw" alt="Treatment room" className="w-full h-auto object-cover rounded" />
-                </picture>
+                <div className="w-full rounded overflow-hidden">
+                  <Image src="/our-practice-2.jpg" alt="Treatment room" width={1024} height={768} className="w-full h-auto object-cover rounded" />
+                </div>
                 <figcaption className="text-sm text-gray-600 mt-3">State-of-the-art treatment rooms with modern equipment</figcaption>
               </figure>
 
               <figure className="glass p-4 text-center">
-                <picture>
-                  <source srcSet="/our-practice-3-480.webp 480w, /our-practice-3-768.webp 768w, /our-practice-3-1024.webp 1024w, /our-practice-3-1536.webp 1536w" type="image/webp" />
-                  <img src="/our-practice-3.jpg" srcSet="/our-practice-3-480.jpg 480w, /our-practice-3-768.jpg 768w, /our-practice-3-1024.jpg 1024w, /our-practice-3-1536.jpg 1536w" sizes="(max-width: 1024px) 100vw, 33vw" alt="Team at work" className="w-full h-auto object-cover rounded" />
-                </picture>
+                <div className="w-full rounded overflow-hidden">
+                  <Image src="/our-practice-3.jpg" alt="Team at work" width={1024} height={768} className="w-full h-auto object-cover rounded" />
+                </div>
                 <figcaption className="text-sm text-gray-600 mt-3">A friendly team dedicated to your comfort and care</figcaption>
               </figure>
             </div>
@@ -54,7 +51,7 @@ export default function OurPracticePage() {
 
           {/* Right appointment panel (same as homepage) */}
           <aside className="md:col-span-1 flex flex-col items-center text-center gap-4">
-            <img src="/images/call.jpg" alt="Call for Appointment" className="w-full h-auto rounded-xl shadow-md" />
+            <Image src="/images/call.jpg" alt="Call for Appointment" width={600} height={400} className="w-full h-auto rounded-xl shadow-md" />
             <a href="tel:+18634228338" className="inline-flex items-center justify-center bg-dental-blue-600 text-white px-6 py-3 rounded-full shadow-md hover:shadow-lg transition">
               Call For An Appointment
             </a>

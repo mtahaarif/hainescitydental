@@ -513,4 +513,75 @@ height: 35px;}
       margin-top: 1rem;
     }
   }
+
+  /* Global content container and justified text for uniformity */
+  .content-prose {
+    /* Wider line measure for desktop for a less congested layout */
+    max-width: 95ch;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: justify;
+    text-justify: inter-word;
+    word-break: break-word;
+    hyphens: auto;
+    line-height: 1.7;
+  }
+
+  /* Extra-wide on large viewports to reduce cramped right-column look */
+  @media (min-width: 1280px) {
+    .content-prose {
+      max-width: 110ch;
+    }
+  }
+
+  /* Prevent long words from overflowing */
+  .content-prose p, .content-prose li, .content-prose span {
+    overflow-wrap: break-word;
+  }
+
+  /* Disable hyphenation for headings and short title blocks (improves service card layout) */
+  .content-prose h1,
+  .content-prose h2,
+  .content-prose h3,
+  .content-prose h4,
+  .content-prose h5,
+  .content-prose h6,
+  .glass-light h1,
+  .glass-light h2,
+  .glass-light h3,
+  .glass-light .service-title {
+    hyphens: none !important;
+    -webkit-hyphens: none !important;
+    -ms-hyphens: none !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+
+  /* Navbar: blue links. Use a bottom-border on hover so active link's border remains the single underline. */
+  header nav a {
+    color: #136fb0;
+    text-decoration: none;
+    padding-bottom: 4px; /* provide space for the border */
+  }
+
+  header nav a:hover,
+  header nav a:focus {
+    color: var(--dental-blue-700);
+    text-decoration: none;
+    border-bottom: 2px solid var(--dental-blue-700);
+    border-radius: 0;
+  }
+
+  /* Logo: never show underline or hover border */
+  header .logo-link {
+    text-decoration: none !important;
+    border-bottom: none !important;
+  }
+
+  header .logo-link:hover,
+  header .logo-link:focus {
+    text-decoration: none !important;
+    border-bottom: none !important;
+    outline: none !important;
+  }
 }

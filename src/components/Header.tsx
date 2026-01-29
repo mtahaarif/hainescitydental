@@ -17,10 +17,8 @@ const serviceDropdown = [
   { name: 'Snoring & Sleep Apnea', href: '/services?tab=snoring' },
 ];
 
-const teamDropdown = [
-  { name: 'Meet the Doctors', href: '/doctors' },
-  { name: 'Meet the Staff', href: '/staff' },
-];
+// team dropdown removed since Meet the Doctors/Staff pages were deleted
+const teamDropdown: any[] = [];
 
 const patientInfoDropdown = [
   { name: 'New Patients', href: '/patient-info?tab=new-patients' },
@@ -31,9 +29,9 @@ const patientInfoDropdown = [
 
 const navLinks = [
   { name: 'Home', href: '/' },
-  { name: 'Our Practice', href: '/about' },
+  { name: 'Our Practice', href: '/our-practice' },
   { name: 'Services', href: '/services', dropdown: serviceDropdown, clickable: true },
-  { name: 'Our Team', href: '/our-team', dropdown: teamDropdown, clickable: true },
+  { name: 'Our Team', href: '/our-team' },
   { name: 'Patient Information', href: '/patient-info', dropdown: patientInfoDropdown, clickable: true },
   { name: 'News', href: '/news' },
   { name: 'Contact Us', href: '/contact' },
@@ -78,14 +76,14 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <nav className="flex items-center justify-between h-20">
           
-          {/* Logo Section - Increased size by 50% */}
-          <Link href="/" className="flex items-center flex-shrink-0 mr-4">
+          {/* Logo Section - Increased size by 400% */}
+          <Link href="/" className="logo-link flex items-center flex-shrink-0 mr-4">
             <Image
               src="/hainescitydentallogo.png"
               alt="Haines City Dental Logo"
-              width={210}  // Increased from 140
-              height={72}  // Increased from 48
-              className="h-[72px] w-auto object-contain" // Changed h-12 to h-[72px]
+              width={560}
+              height={192}
+              className="h-[192px] w-auto object-contain"
               priority
             />
           </Link>

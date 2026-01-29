@@ -18,42 +18,49 @@ const services: Service[] = [
   {
     iconSrc: '/service_icon1.png',
     title: 'Cosmetic Dentistry',
-    description: 'Transform your smile with professional whitening, veneers, and smile makeovers.',
+    description: 'Tooth‑colored composite fillings, porcelain crowns and veneers, and professional whitening to restore form and esthetics — conservative, natural‑looking restorations often completed in one or a few visits to improve function and the appearance of your smile.',
     href: '/services?tab=cosmetic',
     color: 'from-pink-500 to-rose-500',
   },
   {
     iconSrc: '/service_icon2.png',
     title: 'General Dentistry',
-    description: 'Comprehensive care including cleanings, fillings, and preventive treatments.',
+    description: 'Complete oral care: preventive cleanings, tooth‑colored (composite) fillings and bonding for chips/cracks, porcelain crowns and fixed bridges, root canal therapy, extractions, and removable dentures — durable, natural‑looking restorations with patient‑focused aftercare.',
     href: '/services?tab=general',
     color: 'from-red-500 to-pink-500',
   },
   {
     iconSrc: '/service_icon3.png',
     title: 'Implant Dentistry',
-    description: 'Permanent solutions for missing teeth with natural-looking dental implants.',
+    description: 'Single-tooth, multiple-tooth and full-arch dental implant solutions that look, feel, and function like natural teeth. Implants replace tooth roots and support ceramic crowns for a long-term, esthetic, and stable result.',
     href: '/services?tab=implant',
     color: 'from-yellow-500 to-orange-500',
   },
   {
     iconSrc: '/service_icon4.png',
     title: 'Periodontal Therapy',
-    description: 'Expert gum disease treatment and soft tissue management.',
+    description: 'Comprehensive periodontal care: diagnosis and non‑surgical Soft Tissue Management including therapeutic scaling and root planing to remove infection, reduce pocket depths, preserve bone, and control gum disease — with ongoing 3‑month supportive recare for long‑term maintenance.',
     href: '/services?tab=periodontal',
     color: 'from-green-500 to-emerald-500',
   },
   {
     iconSrc: '/service_icon5.png',
     title: 'Sedation Dentistry',
-    description: 'Relaxed, anxiety-free dental care with safe sedation options.',
+    description: "Nitrous Oxide (N2O) — commonly called laughing gas — is delivered through a nasal hood (typically ~30% N2O / 70% O2) to provide rapid, controllable relaxation and pain relief. Effects begin within minutes and are reversed with oxygen for quick recovery and minimal side effects.",
     href: '/services?tab=sedation',
     color: 'from-blue-500 to-cyan-500',
   },
   {
+    iconSrc: '/service_icon7.png',
+    title: 'Snoring & Sleep Apnea',
+    description: "Millions suffer from snoring and sleep apnea, but relief doesn't require surgery. A custom oral appliance can eliminate snoring and improve your sleep quality, giving you and your loved ones restful nights.",
+    href: '/services?tab=snoring',
+    color: 'from-cyan-400 to-blue-600',
+  },
+  {
     iconSrc: '/service_icon6.png',
     title: 'Orthodontics',
-    description: 'Achieve straighter teeth with ClearCorrect invisible aligners.',
+    description: 'Cosmetic care including tooth‑colored (composite) fillings, porcelain crowns and veneers, and professional whitening to restore form and esthetics — natural‑looking, durable restorations often completed in one or a few visits.',
     href: '/services?tab=orthodontics',
     color: 'from-purple-500 to-violet-500',
   },
@@ -136,6 +143,7 @@ export default function FeaturedServices() {
                       alt={service.title}
                       width={28}
                       height={28}
+                      loading="lazy"
                       className="w-7 h-7 object-contain brightness-0 invert"
                     />
                   </motion.div>

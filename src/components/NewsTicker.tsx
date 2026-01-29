@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 type Item = {
   id: string;
@@ -23,7 +24,9 @@ export default function NewsTicker({ items }: { items: Item[] }) {
               <span key={it.id} className="inline-flex items-center gap-3 mr-8">
                 {it.image ? (
                   // small thumbnail
-                  <img src={it.image} alt={it.title} className="w-10 h-10 rounded object-cover flex-shrink-0" />
+                  <div className="w-10 h-10 rounded overflow-hidden flex-shrink-0">
+                    <Image src={it.image} alt={it.title} width={40} height={40} className="object-cover" />
+                  </div>
                 ) : null}
                 <span className="text-sm text-dental-blue-600 font-semibold">{it.date ? `${it.date} —` : ''}</span>
                 {it.href ? (

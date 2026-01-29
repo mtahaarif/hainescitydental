@@ -1,4 +1,5 @@
 import { Users, Target, Heart, Award, Clock, MapPin } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Hero() {
 
@@ -32,15 +33,18 @@ export default function Hero() {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Additional Our Practice images (local copies) */}
         <div className="mt-12">
-          <figure className="w-full flex justify-center">
-            <img
-              src="/images/55.jpg"
-              alt="Christmas Party — Haines City Dental"
-              className="max-w-full h-auto rounded-2xl shadow-lg"
-              loading="lazy"
-            />
+          <figure className="max-w-3xl mx-auto">
+            <div className="w-full rounded-2xl shadow-lg overflow-hidden">
+              <Image
+                src="/images/55.jpg"
+                alt="Christmas Party — Haines City Dental"
+                width={1200}
+                height={800}
+                className="w-full h-auto object-cover"
+                priority={false}
+              />
+            </div>
           </figure>
         </div>
       </div>

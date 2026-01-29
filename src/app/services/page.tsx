@@ -23,12 +23,12 @@ const categories: Category[] = [
     title: 'Cosmetic Dentistry',
     subtitle: 'Transform Your Smile',
     description:
-      'Transform your smile with our comprehensive cosmetic dental services. From professional teeth whitening to custom porcelain veneers and smile makeovers, we combine artistry with advanced technology to create beautiful, natural-looking results.',
+      'Tooth‑conserving cosmetic care to restore form and esthetics: tooth‑colored composite fillings and bonding, porcelain crowns and veneers, and professional whitening — delivered with conservative techniques and artistic shading for natural, long‑lasting results.',
     points: [
-      'White Fillings & Composite Bonding - Tooth-colored restorations that blend seamlessly',
-      'Porcelain Veneers - Ultra-thin shells that dramatically enhance your smile',
-      'Teeth Whitening - Professional-grade bleaching for a brighter appearance',
-      'Smile Makeovers - Complete transformations tailored to your unique goals',
+      'Composite Bonding & White Fillings — repair chips, cracks and decay with tooth‑matched restorations',
+      'Porcelain Veneers & Crowns — custom restorations for shape, color and symmetry',
+      'Professional Teeth Whitening — safe, effective bleaching for brighter smiles',
+      'Smile Design & Makeovers — coordinated restorative and cosmetic planning',
     ],
     image: '/cosmeticdentistry.webp',
     iconSrc: '/service_icon1.png',
@@ -38,12 +38,12 @@ const categories: Category[] = [
     title: 'General Dentistry',
     subtitle: 'Complete Oral Care',
     description:
-      'Comprehensive dental care for patients of all ages. We provide everything from preventive cleanings to advanced restorative treatments, all designed to maintain your optimal oral health in a comfortable environment.',
+      'Complete oral care focused on prevention and durable restorations: routine cleanings and exams, tooth‑colored (composite) fillings, crowns and bridges, root canal therapy, extractions, and removable dentures — with patient education and tailored aftercare for lasting results.',
     points: [
-      'Regular Cleanings & Exams - Preventive care every 6 months to catch issues early',
-      'Composite White Fillings - Aesthetic, tooth-colored restorations for cavities',
-      'Root Canal Therapy - Advanced treatment to save infected or diseased teeth',
-      'Oral Cancer Screening - Early detection of cancerous lesions during exams',
+      'Preventive Cleanings & Exams — routine hygiene and early problem detection',
+      'Composite (White) Fillings & Bonding — aesthetic repairs for decay and damage',
+      'Crowns, Bridges & Fixed Prosthetics — restore function and appearance',
+      'Root Canal Therapy, Extractions & Dentures — endodontic and prosthetic solutions',
     ],
     image: '/generaldentisry.webp',
     iconSrc: '/service_icon2.png',
@@ -53,12 +53,12 @@ const categories: Category[] = [
     title: 'Implant Dentistry',
     subtitle: 'Restore Your Smile',
     description:
-      'Missing teeth? Dental implants provide a permanent, natural-looking solution that looks, feels, and functions like your real teeth. Whether you\'re missing one tooth or an entire arch, we have the expertise to restore your smile with lasting results.',
+      'Precision implant solutions to replace single teeth, multiple teeth or full arches. Dental implants restore tooth roots and support ceramic crowns or prostheses for a natural, stable, and long‑term result.',
     points: [
-      'Single Tooth Implants - Perfect for isolated missing teeth with custom crowns',
-      'Full Arch Implants - Solution for multiple missing or all teeth',
-      'Implant-Supported Dentures - Combines implants with prosthetics for stability',
-      '95%+ Success Rate - Can last a lifetime with proper care',
+      'Single‑Tooth Implants — lifelike crowns on implant roots',
+      'Implant‑Supported Bridges & Full‑Arch Solutions — predictable rehabilitation for multiple missing teeth',
+      'Implant‑Retained Dentures — improved retention and chewing function',
+      'Long‑Term Success — durable outcomes with proper planning and maintenance',
     ],
     image: '/implantdentistry.webp',
     iconSrc: '/service_icon3.png',
@@ -68,12 +68,12 @@ const categories: Category[] = [
     title: 'Periodontal Therapy',
     subtitle: 'Gum Health Management',
     description:
-      'Healthy gums are the foundation of a healthy smile. Periodontal disease affects 3 out of 4 adults and is the leading cause of adult tooth loss. We offer advanced soft tissue management to treat gum disease and protect your teeth.',
+      'Comprehensive periodontal care to diagnose and control gum disease. We provide non‑surgical Soft Tissue Management — therapeutic scaling, root planing, and individualized maintenance — to eliminate infection, reduce pocket depths, preserve bone, and protect teeth.',
     points: [
-      'Soft Tissue Management - Personalized plan to eliminate gum infection',
-      'Therapeutic Scaling - Professional removal of toxins and bacteria',
-      'Root Planing - Treatment of diseased root surfaces below the gum line',
-      'Periodontal Maintenance - Critical 3-month recare visits to maintain health',
+      'Early diagnosis of gingivitis and periodontitis to prevent progression',
+      'Therapeutic Scaling & Gross Debridement — remove toxins and bacterial deposits',
+      'Root Planing — detoxify and smooth root surfaces below the gumline',
+      '3‑Month Supportive Recare — timed maintenance to disrupt bacterial re‑establishment',
     ],
     image: '/periodontaltherapy.webp',
     iconSrc: '/service_icon4.png',
@@ -83,12 +83,12 @@ const categories: Category[] = [
     title: 'Sedation Dentistry',
     subtitle: 'Relaxed Dental Care',
     description:
-      'Anxious about dental visits? Sedation dentistry allows you to receive comfortable, relaxed care. We use the latest sedation technology to help you feel at ease throughout your procedure.',
+      'Nitrous Oxide (N2O) delivered via nasal hood (commonly ~30% N2O / 70% O2) provides rapid, controllable inhalation sedation. Effects begin within minutes and are reversed by oxygen for quick recovery and minimal side effects — ideal for anxious patients and routine procedures.',
     points: [
-      'Nitrous Oxide (Laughing Gas) - Works rapidly, reaching the brain in 20 seconds',
-      'Euphoric, relaxed feeling that alleviates pain perception',
-      'Completely safe with minimal side effects',
-      'No hangover effects - safe to drive immediately after treatment',
+      'Rapid onset: relaxation and analgesia within minutes',
+      'Administered through a nasal hood; patient breathes normally',
+      'Controlled depth of sedation and immediate reversal with oxygen',
+      'Modern scavenging systems reduce waste gas exposure to staff',
     ],
     image: '/sedationdentistry.webp',
     iconSrc: '/service_icon5.png',
@@ -98,12 +98,12 @@ const categories: Category[] = [
     title: 'Orthodontics',
     subtitle: 'Straighten Your Teeth',
     description:
-      'Achieve the straight smile you\'ve always wanted with modern, discreet orthodontic solutions. Say goodbye to traditional metal braces and embrace the future of teeth straightening with clear aligners.',
+      'Modern orthodontic care using discreet, custom aligner systems and appliances to straighten teeth and correct bite issues — comfortable, removable options for adults and teens who want an aesthetic approach to orthodontics.',
     points: [
-      'ClearCorrect Invisible Aligners - No wires or brackets, just clear comfort',
-      'Custom-made aligners that gradually move teeth into position',
-      'Nearly invisible - perfect for professionals and self-conscious patients',
-      'Removable for eating and cleaning with typically faster results',
+      'Clear aligner systems — virtually invisible tooth movement',
+      'Custom treatment plans with predictable staged movements',
+      'Removable for oral hygiene and eating',
+      'Options for fixed appliances when needed for complex cases',
     ],
     image: '/orthodontics.webp',
     iconSrc: '/service_icon6.png',
@@ -113,12 +113,12 @@ const categories: Category[] = [
     title: 'Snoring & Sleep Apnea',
     subtitle: 'Better Sleep Solutions',
     description:
-      'Millions suffer from snoring and sleep apnea, but relief doesn\'t require surgery. A custom oral appliance can eliminate snoring and improve your sleep quality, giving you and your loved ones restful nights.',
+      'Non‑surgical solutions for snoring and mild‑to‑moderate obstructive sleep apnea using custom oral appliances that reposition the jaw to keep airways open — comfortable, easy to use, and an effective alternative for patients who cannot tolerate CPAP.',
     points: [
-      'Custom Intra-Oral Devices - Innovative, comfortable alternative to CPAP machines',
-      'Ready in less than two weeks',
-      'No surgery required - extremely comfortable to wear',
-      'Repositions jaw to keep airways open for normal, uninterrupted sleep',
+      'Custom intra‑oral devices designed to improve airway patency',
+      'Quick fabrication and fitting with minimal downtime',
+      'Comfortable, non‑surgical alternative to CPAP for select patients',
+      'Improves sleep quality and reduces disruptive snoring',
     ],
     image: '/repositionsjaw.webp',
     iconSrc: '/service_icon7.png',
@@ -266,9 +266,9 @@ export default function ServicesPage() {
   return (
     <div className="min-h-screen py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-dental-blue-50/90 border border-dental-blue-100 rounded-3xl p-6 md:p-8 shadow-sm grid md:grid-cols-4 gap-6">
+        <div className="bg-dental-blue-50/90 border border-dental-blue-100 rounded-3xl p-6 md:p-8 shadow-sm">
 
-          <main className="md:col-span-3">
+          <main>
             {/* Header */}
             <div className="mb-8 text-center">
               <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
@@ -283,34 +283,6 @@ export default function ServicesPage() {
               <ServicesContent />
             </Suspense>
           </main>
-
-          {/* Right appointment panel */}
-          <aside className="md:col-span-1 flex flex-col items-center text-center gap-4">
-            <img src="/images/call.jpg" alt="Call for Appointment" className="w-full h-auto rounded-xl shadow-md" />
-            <a href="tel:+18634228338" className="inline-flex items-center justify-center bg-dental-blue-600 text-white px-6 py-3 rounded-full shadow-md hover:shadow-lg transition">
-              Call For An Appointment
-            </a>
-
-            <form className="w-full bg-white/80 border border-dental-blue-100 rounded-xl p-4 shadow-sm">
-              <div className="space-y-3">
-                <label className="block text-sm font-medium text-gray-700 text-left">Name</label>
-                <input type="text" name="name" placeholder="Your Name" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-dental-blue-300" />
-
-                <label className="block text-sm font-medium text-gray-700 text-left">Email</label>
-                <input type="email" name="email" placeholder="your@email.com" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-dental-blue-300" />
-
-                <label className="block text-sm font-medium text-gray-700 text-left">Phone</label>
-                <input type="tel" name="phone" placeholder="(863) 422-8338" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-dental-blue-300" />
-
-                <label className="block text-sm font-medium text-gray-700 text-left">Message</label>
-                <textarea name="message" rows={3} placeholder="Tell us about your dental needs..." className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-dental-blue-300 resize-y" />
-
-                <button type="submit" className="w-full btn-primary flex items-center justify-center gap-2">
-                  Send Message
-                </button>
-              </div>
-            </form>
-          </aside>
         </div>
       </div>
     </div>

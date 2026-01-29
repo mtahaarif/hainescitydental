@@ -73,6 +73,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="icon" href="https://www.hainescitydental.com/wp-content/uploads/2023/11/favicon-100x100.png" />
       </head>
       <body className={`${inter.className} min-h-screen relative antialiased`}>
         {/* Skip Navigation Link for Accessibility */}
@@ -101,7 +102,7 @@ export default function RootLayout({
         
         {/* Main Content with Page Transitions */}
         <PageTransition>
-          <main id="main-content" className="relative min-h-screen pb-20 md:pb-0">
+          <main id="main-content" className="content-prose relative min-h-screen pb-20 md:pb-0 mx-auto px-4 sm:px-6 lg:px-8">
             {children}
           </main>
         </PageTransition>
