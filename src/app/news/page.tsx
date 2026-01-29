@@ -107,17 +107,26 @@ export default async function NewsPage() {
                       </p>
                     )}
 
+                    {item.content && (
+                      <div
+                        className="prose max-w-none mb-6"
+                        dangerouslySetInnerHTML={{ __html: item.content }}
+                      />
+                    )}
+
                     {item.images && item.images.length > 0 && (
                       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                        {item.images.map((img) => {
+                        {(() => {
+                          const imgs: string[] = [];
                           const normalize = (s: string) => {
                             if (!s) return '';
+                            if (/^https?:\/\//i.test(s)) return s;
                             if (s.startsWith('/')) {
                               const full = path.join(process.cwd(), 'public', s.replace(/^\//, ''));
                               if (fs.existsSync(full)) return s;
+                              return '';
                             }
-                            if (/^https?:\/\//i.test(s)) return s;
-                            if (/\.(png|jpe?g|webp)$/i.test(s)) {
+                            if (/\.(png|jpe?g|jpeg|webp)$/i.test(s)) {
                               const candidate = s.startsWith('news/') ? `/${s}` : `/${s}`;
                               const full = path.join(process.cwd(), 'public', candidate.replace(/^\//, ''));
                               if (fs.existsSync(full)) return candidate;
@@ -139,14 +148,23 @@ export default async function NewsPage() {
                               // ignore
                             }
 
-                            const ext = /FLAMOM|FNDC/i.test(s) ? 'png' : 'jpg';
-                            const p = s.includes('/') ? s : `news/${s}`;
-                            return `/${p}.${ext}`;
+                            return '';
                           };
-                          const src = normalize(img);
-                          return (
+
+                          for (const img of item.images) {
+                            const src = normalize(img);
+                            if (!src) continue;
+                            // ensure file exists for local images
+                            if (src.startsWith('/')) {
+                              const full = path.join(process.cwd(), 'public', src.replace(/^\//, ''));
+                              if (!fs.existsSync(full)) continue;
+                            }
+                            imgs.push(src);
+                          }
+
+                          return imgs.map((src) => (
                             <div
-                              key={img}
+                              key={src}
                               className="rounded-2xl glass transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.25)] hover:scale-105"
                             >
                               <Image
@@ -159,8 +177,8 @@ export default async function NewsPage() {
                                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                               />
                             </div>
-                          );
-                        })}
+                          ));
+                        })()}
                       </div>
                     )}
                   </article>
