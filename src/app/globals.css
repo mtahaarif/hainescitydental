@@ -392,14 +392,6 @@ height: 35px;}
       inset 0 1px 1px rgba(255, 255, 255, 0.2);
   }
 
-  /* Patient pages: ensure all blue-background buttons show white text for legibility */
-  .patient-page .btn-primary,
-  .patient-page [class*="bg-dental-blue-"],
-  .patient-page [class*="from-dental-blue-"],
-  .patient-page [class*="to-dental-blue-"] {
-    color: #ffffff !important;
-  }
-
   .btn-primary:hover {
     background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 50%, #0284c7 100%);
     box-shadow: 
@@ -612,3 +604,14 @@ height: 35px;}
     border-radius: 0;
   }
 }
+
+/* Patient page specific overrides: ensure blue/secondary buttons show white text and icons */
+.patient-page .btn-secondary {
+  color: #ffffff !important;
+}
+.patient-page .btn-secondary svg {
+  color: #ffffff !important;
+  stroke: currentColor !important;
+  fill: currentColor !important;
+}
+
