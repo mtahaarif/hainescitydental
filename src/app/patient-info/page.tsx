@@ -109,7 +109,7 @@ function NewPatientsContent() {
           </a>
           <a
             href="tel:+18634228338"
-            className="btn-secondary inline-flex items-center justify-center gap-2 transition-transform hover:scale-105 active:scale-95"
+            className="btn-primary inline-flex items-center justify-center gap-2 transition-transform hover:scale-105 active:scale-95"
           >
             <Phone className="w-4 h-4" />
             (863) 422-8338
