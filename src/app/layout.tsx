@@ -7,7 +7,6 @@ import Footer from '@/components/Footer';
 // ScheduleAppointmentBar removed
 import PageTransition from '@/components/PageTransition';
 import ScrollProgress from '@/components/ScrollProgress';
-import MobileQuickActions from '@/components/MobileQuickActions';
 
 // Dynamically import site banner (client-only)
 const SiteBannerZoomFade = dynamic(() => import('@/components/SiteBannerZoomFade'), { ssr: false, loading: () => null });
@@ -102,7 +101,7 @@ export default function RootLayout({
         
         {/* Main Content with Page Transitions */}
         <PageTransition>
-          <main id="main-content" className="content-prose relative min-h-screen pb-20 md:pb-0 mx-auto px-4 sm:px-6 lg:px-8">
+          <main id="main-content" className="content-prose relative min-h-screen pb-20 md:pb-0 mx-auto px-2 sm:px-6 lg:px-8">
             {children}
           </main>
         </PageTransition>
@@ -110,8 +109,7 @@ export default function RootLayout({
         {/* Footer */}
         <Footer />
         
-        {/* Mobile Quick Actions - Fixed bottom bar for mobile */}
-        <MobileQuickActions />
+        {/* Mobile Quick Actions removed per request */}
       </body>
     </html>
   );

@@ -231,6 +231,19 @@ header {
   border-bottom: 1px solid rgba(16, 64, 100, 0.06);
 }
 
+/* Make header glass panels square on small screens so they align with
+   full-bleed page containers (avoids visible rounded white corners). */
+@media (max-width: 640px) {
+  header.glass,
+  header .glass,
+  header .glass-light,
+  header .glass-strong,
+  header {
+    border-radius: 0 !important;
+    background-clip: padding-box;
+  }
+}
+
 /* Centered nav text appearance */
 header nav a {
   color: #136fb0;

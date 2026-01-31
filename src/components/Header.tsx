@@ -41,6 +41,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [mobileOpenDropdowns, setMobileOpenDropdowns] = useState<Record<string, boolean>>({});
   const pathname = usePathname();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -164,10 +165,10 @@ export default function Header() {
             <div className="lg:hidden flex items-center gap-2">
               <a
                 href="tel:+18634228338"
-                className="p-2 rounded-md bg-dental-blue-600 text-white"
+                className="flex items-center justify-center h-10 w-10 p-2 rounded-full bg-dental-blue-600 text-white shadow-sm"
                 aria-label="Call"
               >
-                <Phone className="w-4 h-4 text-white" />
+                <Phone className="w-5 h-5 text-white" />
               </a>
               <button
                 onClick={() => setIsOpen(!isOpen)}
@@ -190,14 +191,56 @@ export default function Header() {
               className="lg:hidden pb-4 overflow-hidden"
             >
               {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className="block px-4 py-3 text-gray-700 hover:text-dental-blue-600 border-b border-gray-100 last:border-0"
-                >
-                  {link.name}
-                </Link>
+                <div key={link.name} className="border-b border-gray-100 last:border-0">
+                  <div className="flex items-center justify-between">
+                    <Link
+                      href={link.href}
+                      onClick={() => {
+                        setIsOpen(false);
+                        setMobileOpenDropdowns((prev) => ({ ...prev, [link.name]: false }));
+                      }}
+                      className="block px-4 py-3 text-dental-blue-600 hover:text-dental-blue-700"
+                    >
+                      {link.name}
+                    </Link>
+
+                    {link.dropdown && (
+                      <button
+                        onClick={() =>
+                          setMobileOpenDropdowns((prev) => ({ ...prev, [link.name]: !prev[link.name] }))
+                        }
+                        aria-expanded={!!mobileOpenDropdowns[link.name]}
+                        className="p-3"
+                      >
+                        <ChevronDown
+                          className={`w-4 h-4 transition-transform ${mobileOpenDropdowns[link.name] ? 'rotate-180' : ''}`}
+                        />
+                      </button>
+                    )}
+                  </div>
+
+                  <AnimatePresence>
+                    {link.dropdown && mobileOpenDropdowns[link.name] && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="pl-6 overflow-hidden"
+                      >
+                        {link.dropdown.map((item) => (
+                          <Link
+                            key={item.name}
+                            href={item.href}
+                            onClick={() => setIsOpen(false)}
+                            className="block px-4 py-2 text-sm text-dental-blue-500 hover:text-dental-blue-700"
+                          >
+                            {item.name}
+                          </Link>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               ))}
             </motion.div>
           )}

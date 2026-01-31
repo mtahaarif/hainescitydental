@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className="min-h-screen py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-dental-blue-50/90 border border-dental-blue-100 rounded-3xl p-6 md:p-8 shadow-sm grid md:grid-cols-4 gap-6">
+        <div className="-mx-4 sm:mx-0 px-4 sm:px-0 bg-dental-blue-50/90 border border-dental-blue-100 sm:rounded-3xl rounded-none p-6 md:p-8 shadow-sm grid md:grid-cols-4 gap-6">
           {/* Main content (Hero + below) */}
           <main className="md:col-span-3">
             <Hero />
@@ -38,6 +38,11 @@ export default function Home() {
                 </button>
               </div>
             </form>
+
+            {/* Testimonials image (click -> testimonials page) */}
+            <a href="/testimonials" className="w-full mt-4">
+              <img src="/test1.png" alt="Patient Testimonials" className="w-full rounded-xl shadow-md" />
+            </a>
           </aside>
         </div>
       </div>

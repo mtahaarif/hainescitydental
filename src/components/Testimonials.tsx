@@ -142,7 +142,7 @@ export default function Testimonials() {
   };
 
   return (
-    <section className="py-12 sm:py-20 bg-gradient-to-br from-blue-50 to-white">
+    <section className="py-12 sm:py-20 bg-gradient-to-br from-blue-50 to-white sm:rounded-3xl rounded-2xl overflow-hidden">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -169,7 +169,7 @@ export default function Testimonials() {
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
-              className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 md:p-12 relative"
+              className="bg-white sm:rounded-3xl rounded-2xl shadow-xl p-6 sm:p-8 md:p-12 relative"
             >
               <Quote className="absolute top-4 sm:top-8 left-4 sm:left-8 w-8 h-8 sm:w-12 sm:h-12 text-blue-100" />
 

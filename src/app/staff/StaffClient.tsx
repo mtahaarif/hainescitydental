@@ -28,7 +28,7 @@ export default function StaffClient({ staffMembers }: StaffClientProps) {
   return (
     <section className="py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-dental-blue-50/90 border border-dental-blue-100 rounded-3xl p-6 md:p-8 shadow-sm grid md:grid-cols-4 gap-6">
+        <div className="-mx-4 sm:mx-0 px-4 sm:px-0 bg-dental-blue-50/90 border border-dental-blue-100 sm:rounded-3xl rounded-none p-6 md:p-8 shadow-sm grid md:grid-cols-4 gap-6">
           <main className="md:col-span-3">
             <div className="mb-8 text-center">
               <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">

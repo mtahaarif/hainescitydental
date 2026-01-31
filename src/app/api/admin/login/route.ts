@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { generateToken } from '@/lib/auth/auth';
 
 const ADMIN_USERNAME = process.env.CMS_ADMIN_USERNAME || 'hainescitydental123';
 const ADMIN_PASSWORD = process.env.CMS_ADMIN_PASSWORD || 'hainescitydental123';
@@ -8,7 +9,8 @@ export async function POST(request: NextRequest) {
   const { username, password } = await request.json();
 
   if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-    const response = NextResponse.json({ success: true });
+    const token = generateToken(username, '24h');
+    const response = NextResponse.json({ success: true, token });
     response.cookies.set(AUTH_COOKIE, 'true', {
       httpOnly: true,
       sameSite: 'lax',

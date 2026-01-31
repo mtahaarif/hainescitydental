@@ -5,7 +5,7 @@ export default function OurPracticePage() {
   return (
     <div className="min-h-screen py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-dental-blue-50/90 border border-dental-blue-100 rounded-3xl p-6 md:p-8 shadow-sm grid md:grid-cols-4 gap-6">
+        <div className="-mx-4 sm:mx-0 px-4 sm:px-0 bg-dental-blue-50/90 border border-dental-blue-100 sm:rounded-3xl rounded-none p-6 md:p-8 shadow-sm grid md:grid-cols-4 gap-6">
 
           {/* Main content */}
           <main className="md:col-span-3">
@@ -27,17 +27,17 @@ export default function OurPracticePage() {
             {/* Additional Our Practice images (local copies) */}
             <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
               <figure className="glass p-4 text-center">
-                <Image src="/our-practice-1-1536.webp" alt="Reception area" width={1536} height={1024} className="w-full h-auto object-cover rounded" />
+                <Image src="/our-practice-1-1536.jpg" alt="Reception area" width={1536} height={1024} className="w-full h-auto object-cover rounded" />
                 <figcaption className="text-sm text-gray-600 mt-3">Welcoming reception and comfortable waiting area</figcaption>
               </figure>
 
               <figure className="glass p-4 text-center">
-                <Image src="/our-practice-2-1536.webp" alt="Treatment room" width={1536} height={1024} className="w-full h-auto object-cover rounded" />
+                <Image src="/our-practice-2.png" alt="Treatment room" width={1536} height={1024} className="w-full h-auto object-cover rounded" />
                 <figcaption className="text-sm text-gray-600 mt-3">State-of-the-art treatment rooms with modern equipment</figcaption>
               </figure>
 
               <figure className="glass p-4 text-center">
-                <Image src="/our-practice-3-1536.webp" alt="Team at work" width={1536} height={1024} className="w-full h-auto object-cover rounded" />
+                <Image src="/our-practice-3-1536.jpg" alt="Team at work" width={1536} height={1024} className="w-full h-auto object-cover rounded" />
                 <figcaption className="text-sm text-gray-600 mt-3">A friendly team dedicated to your comfort and care</figcaption>
               </figure>
             </div>
