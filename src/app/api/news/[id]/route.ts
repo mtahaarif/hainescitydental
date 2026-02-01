@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth/auth';
+import { validateTokenString } from '@/lib/auth/auth';
 import { query } from '@/lib/mysql';
 
 
@@ -9,6 +9,16 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     const rows: any = await query('SELECT * FROM news WHERE id = ?', [params.id]);
     const news = rows[0];
     if (!news) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+
+    // If not published, only return to admin
+    const cookieToken = request.cookies.get('cms_token')?.value;
+    const header = request.headers.get('authorization');
+    const token = header?.startsWith('Bearer ') ? header.substring(7) : cookieToken || null;
+    const decoded = token ? validateTokenString(token) : null;
+    if (!decoded && Number(news.published) !== 1) {
+      return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    }
+
     news.images = news.images ? JSON.parse(news.images) : [];
     return NextResponse.json(news);
   } catch (error) {
@@ -20,11 +30,11 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 // PUT - Update news (requires auth)
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const authHeader = request.headers.get('authorization');
-    if (!authHeader?.startsWith('Bearer ')) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    const token = authHeader.substring(7);
-    const decoded = verifyToken(token);
-    if (!decoded) return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+    const header = request.headers.get('authorization');
+    const cookieToken = request.cookies.get('cms_token')?.value;
+    const token = header?.startsWith('Bearer ') ? header.substring(7) : cookieToken || null;
+    const decoded = token ? validateTokenString(token) : null;
+    if (!decoded) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const body = await request.json();
     const { title, category, description, content: bodyContent, images, date, published } = body;
@@ -57,11 +67,11 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 // DELETE - Delete news (requires auth)
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const authHeader = request.headers.get('authorization');
-    if (!authHeader?.startsWith('Bearer ')) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    const token = authHeader.substring(7);
-    const decoded = verifyToken(token);
-    if (!decoded) return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+    const header = request.headers.get('authorization');
+    const cookieToken = request.cookies.get('cms_token')?.value;
+    const token = header?.startsWith('Bearer ') ? header.substring(7) : cookieToken || null;
+    const decoded = token ? validateTokenString(token) : null;
+    if (!decoded) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     await query('DELETE FROM news WHERE id = ?', [params.id]);
     return NextResponse.json({ success: true });

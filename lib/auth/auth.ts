@@ -22,6 +22,12 @@ export function verifyToken(token: string): { username: string } | null {
   }
 }
 
+// helper to validate token string and return decoded or null
+export function validateTokenString(token?: string | null) {
+  if (!token) return null;
+  return verifyToken(token);
+}
+
 export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 10);
 }

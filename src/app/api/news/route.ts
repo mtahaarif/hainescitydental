@@ -1,17 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth/auth';
+import { validateTokenString } from '@/lib/auth/auth';
 import { query } from '@/lib/mysql';
 import { randomUUID } from 'crypto';
 
 // GET - Fetch all published news
 export async function GET(request: NextRequest) {
   try {
-    const rows: any = await query(
-      `SELECT id, title, category, description, content, images, date, slug, published, createdAt, updatedAt
-       FROM news WHERE published = 1 ORDER BY date DESC LIMIT 50`
-    );
+    // accept admin cookie or bearer header to return full list
+    const header = request.headers.get('authorization');
+    const cookieToken = request.cookies.get('cms_token')?.value;
+    const token = header?.startsWith('Bearer ') ? header.substring(7) : cookieToken || null;
+    const decoded = token ? validateTokenString(token) : null;
 
-    // parse JSON columns
+    const rows: any = decoded
+      ? await query(
+          `SELECT id, title, category, description, content, images, date, slug, published, createdAt, updatedAt
+           FROM news ORDER BY date DESC LIMIT 200`
+        )
+      : await query(
+          `SELECT id, title, category, description, content, images, date, slug, published, createdAt, updatedAt
+           FROM news WHERE published = 1 ORDER BY date DESC LIMIT 50`
+        );
+
     const news = rows.map((r: any) => ({
       ...r,
       images: r.images ? JSON.parse(r.images) : [],
@@ -27,16 +37,11 @@ export async function GET(request: NextRequest) {
 // POST - Create new news (requires auth)
 export async function POST(request: NextRequest) {
   try {
-    const authHeader = request.headers.get('authorization');
-    if (!authHeader?.startsWith('Bearer ')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const token = authHeader.substring(7);
-    const decoded = verifyToken(token);
-    if (!decoded) {
-      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
-    }
+    const header = request.headers.get('authorization');
+    const cookieToken = request.cookies.get('cms_token')?.value;
+    const token = header?.startsWith('Bearer ') ? header.substring(7) : cookieToken || null;
+    const decoded = token ? validateTokenString(token) : null;
+    if (!decoded) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const body = await request.json();
     const { title, category, description, content: bodyContent, images, date, published } = body;

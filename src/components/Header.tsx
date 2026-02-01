@@ -24,7 +24,6 @@ const patientInfoDropdown = [
   { name: 'New Patients', href: '/patient-info?tab=new-patients' },
   { name: 'New Patient Forms', href: '/patient-info?tab=forms' },
   { name: 'HIPAA Forms', href: '/patient-info?tab=hipaa' },
-  { name: 'Current Specials', href: '/patient-info?tab=specials' },
 ];
 
 const navLinks = [

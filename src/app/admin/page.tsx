@@ -1,16 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { LogOut } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import NewsAdminList from './news/page';
 
 export default function AdminPage() {
-  const [activeTab, setActiveTab] = useState<'news' | 'doctors' | 'staff' | 'team'>('news');
-
-  const handleLogout = async () => {
-    await fetch('/api/admin/logout', { method: 'POST' });
-    window.location.href = '/admin/login';
-  };
+  const [activeTab, setActiveTab] = useState<'news' | 'team'>('news');
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -18,13 +12,6 @@ export default function AdminPage() {
       <header className="bg-white shadow">
         <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-900">CMS Dashboard</h1>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg"
-          >
-            <LogOut size={20} />
-            Logout
-          </button>
         </div>
       </header>
 
@@ -33,54 +20,100 @@ export default function AdminPage() {
         {/* Tabs */}
         <div className="border-b border-gray-200 mb-8">
           <div className="flex gap-8">
-            {['news', 'doctors', 'staff', 'team'].map((tab) => (
+            {['news', 'team'].map((tab) => (
               <button
                 key={tab}
-                onClick={() => setActiveTab(tab as typeof activeTab)}
+                onClick={() => setActiveTab(tab as 'news' | 'team')}
                 className={`px-4 py-2 font-medium border-b-2 transition ${
                   activeTab === tab
                     ? 'border-blue-500 text-blue-600'
                     : 'border-transparent text-gray-600 hover:text-gray-900'
                 }`}
               >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {tab === 'team' ? 'Our Team' : tab.charAt(0).toUpperCase() + tab.slice(1)}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Content Sections */}
         <div className="space-y-6">
-          {activeTab === 'news' && (
-            <ContentSection
-              title="News Articles"
-              apiEndpoint="/api/news"
-              fields={['title', 'category', 'description', 'published']}
-            />
-          )}
-          {activeTab === 'doctors' && (
-            <ContentSection
-              title="Doctors"
-              apiEndpoint="/api/doctors"
-              fields={['name', 'credentials', 'specializations', 'active']}
-            />
-          )}
-          {activeTab === 'staff' && (
-            <ContentSection
-              title="Staff Members"
-              apiEndpoint="/api/staff"
-              fields={['name', 'role', 'department', 'active']}
-            />
-          )}
-          {activeTab === 'team' && (
-            <ContentSection
-              title="Team Members"
-              apiEndpoint="/api/team"
-              fields={['name', 'position', 'active']}
-            />
-          )}
+          {activeTab === 'news' && <NewsAdminList />}
+          {activeTab === 'team' && <TeamListInline />}
         </div>
       </main>
+    </div>
+  );
+}
+
+function TeamListInline() {
+  const [items, setItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchList();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function fetchList() {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/team');
+      if (res.ok) setItems(await res.json());
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function goNew() {
+    window.location.href = '/admin/team/new';
+  }
+
+  function goEdit(id: string) {
+    window.location.href = `/admin/team/${id}`;
+  }
+
+  async function handleDelete(id: string) {
+    if (!confirm('Delete this member?')) return;
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/team/${id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Delete failed');
+      await fetchList();
+    } catch (err) {
+      console.error(err);
+      alert('Delete failed');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold">Team Members</h2>
+        <div>
+          <button onClick={goNew} className="btn-primary">Add New</button>
+        </div>
+      </div>
+
+      {loading && <div>Loading...</div>}
+
+      <div className="space-y-4">
+        {items.map((it) => (
+          <div key={it.id} className="glass-light p-4 rounded-lg flex items-center justify-between">
+            <div>
+              <div className="font-medium">{it.name} <span className="text-sm text-gray-500">({it.role || it.position || 'Staff'})</span></div>
+              <div className="text-sm text-gray-500">{it.bio}</div>
+            </div>
+            <div className="flex items-center gap-2">
+              <button className="btn-secondary" onClick={() => goEdit(it.id)}>Edit</button>
+              <button className="btn-secondary" onClick={() => handleDelete(it.id)}>Delete</button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

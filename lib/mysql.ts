@@ -8,9 +8,16 @@ const {
   HOSTGATOR_DB_PORT,
 } = process.env;
 
-if (!HOSTGATOR_DB_HOST || !HOSTGATOR_DB_USER || !HOSTGATOR_DB_NAME) {
+const missing: string[] = [];
+if (!HOSTGATOR_DB_HOST) missing.push('HOSTGATOR_DB_HOST');
+if (!HOSTGATOR_DB_USER) missing.push('HOSTGATOR_DB_USER');
+if (!HOSTGATOR_DB_PASSWORD) missing.push('HOSTGATOR_DB_PASSWORD');
+if (!HOSTGATOR_DB_NAME) missing.push('HOSTGATOR_DB_NAME');
+if (!HOSTGATOR_DB_PORT) missing.push('HOSTGATOR_DB_PORT');
+
+if (missing.length) {
   // don't throw here so local dev without HostGator is still possible
-  console.warn('HostGator DB environment variables are not fully set.');
+  console.warn('HostGator DB environment variables are not fully set. Missing:', missing.join(', '));
 }
 
 const pool = mysql.createPool({

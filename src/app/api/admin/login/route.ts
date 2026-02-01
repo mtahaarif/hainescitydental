@@ -10,12 +10,13 @@ export async function POST(request: NextRequest) {
 
   if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
     const token = generateToken(username, '24h');
-    const response = NextResponse.json({ success: true, token });
-    response.cookies.set(AUTH_COOKIE, 'true', {
+    const response = NextResponse.json({ success: true });
+    // store JWT in an httpOnly cookie for server-side protection
+    response.cookies.set('cms_token', token, {
       httpOnly: true,
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
-      path: '/admin',
+      path: '/',
       maxAge: 60 * 60 * 12, // 12 hours
     });
     return response;

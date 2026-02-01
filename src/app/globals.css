@@ -44,7 +44,8 @@
       radial-gradient(ellipse at 50% 100%, rgba(224, 242, 254, 0.5) 0%, transparent 50%),
       linear-gradient(180deg, #f0f9ff 0%, #ffffff 50%, #f8fafc 100%);
     background-attachment: fixed;
-    overscroll-behavior-y: none;
+    overscroll-behavior-y: auto;
+    overflow-x: hidden;
   }
 
   html {
@@ -613,5 +614,29 @@ height: 35px;}
   color: #ffffff !important;
   stroke: currentColor !important;
   fill: currentColor !important;
+}
+
+/* Mobile-specific tweaks: make download buttons compact and prevent wrapping */
+@media (max-width: 640px) {
+  .patient-page .btn-secondary {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 8px 12px !important;
+    border-radius: 12px !important;
+    min-width: 100px !important;
+    text-align: center;
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.95rem;
+    gap: 8px !important;
+  }
+
+  /* Ensure page doesn't overflow horizontally */
+  html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
 }
 

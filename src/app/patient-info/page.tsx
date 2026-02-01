@@ -14,7 +14,6 @@ const tabs: Tab[] = [
   { id: 'new-patients', title: 'New Patients', icon: Users },
   { id: 'forms', title: 'New Patient Forms', icon: FileText },
   { id: 'hipaa', title: 'HIPAA Forms', icon: Shield },
-  { id: 'specials', title: 'Current Specials', icon: Star },
 ];
 
 function PatientInfoContent() {
@@ -53,7 +52,6 @@ function PatientInfoContent() {
         {activeTab === 'new-patients' && <NewPatientsContent />}
         {activeTab === 'forms' && <FormsContent />}
         {activeTab === 'hipaa' && <HIPAAContent />}
-        {activeTab === 'specials' && <SpecialsContent />}
       </div>
     </div>
   );
@@ -257,7 +255,7 @@ function FormsContent() {
         {forms.map((form, index) => (
           <div
             key={index}
-            className="glass-light p-6 rounded-2xl flex items-center justify-between transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+            className="glass-light p-6 rounded-2xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-dental-blue-400 to-dental-blue-600 flex items-center justify-center">
@@ -269,7 +267,7 @@ function FormsContent() {
               href={form.file}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-secondary inline-flex items-center gap-2 transition-transform hover:scale-105 active:scale-95"
+              className="btn-secondary inline-flex items-center gap-2 transition-transform hover:scale-105 active:scale-95 self-start sm:self-auto whitespace-nowrap"
             >
               <Download className="w-4 h-4" />
               Download
@@ -282,6 +280,11 @@ function FormsContent() {
 }
 
 function HIPAAContent() {
+  const forms = [
+    { name: 'HIPAA Privacy Notice', file: '/forms/hipaa-notice.pdf', icon: Shield, gradient: 'from-green-400 to-green-600' },
+    { name: 'HIPAA Authorization Form', file: '/forms/hipaa-authorization.pdf', icon: FileText, gradient: 'from-green-400 to-green-600' },
+  ];
+
   return (
     <div className="space-y-8">
       <div>
@@ -292,41 +295,31 @@ function HIPAAContent() {
       </div>
 
       <div className="space-y-4">
-        <div className="glass-light p-6 rounded-2xl flex items-center justify-between transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
-              <Shield className="w-6 h-6 text-white" />
+        {forms.map((form, index) => {
+          const Icon = form.icon as any;
+          return (
+            <div
+              key={index}
+              className="glass-light p-6 rounded-2xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+            >
+              <div className="flex items-center gap-4">
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${form.gradient} flex items-center justify-center`}>
+                  <Icon className="w-6 h-6 text-white" />
+                </div>
+                <span className="font-medium text-gray-900">{form.name}</span>
+              </div>
+              <a
+                href={form.file}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-secondary inline-flex items-center gap-2 transition-transform hover:scale-105 active:scale-95 self-start sm:self-auto whitespace-nowrap"
+              >
+                <Download className="w-4 h-4" />
+                Download
+              </a>
             </div>
-            <span className="font-medium text-gray-900">HIPAA Privacy Notice</span>
-          </div>
-          <a
-            href="/forms/hipaa-notice.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-secondary inline-flex items-center gap-2 transition-transform hover:scale-105 active:scale-95"
-          >
-            <Download className="w-4 h-4" />
-            Download
-          </a>
-        </div>
-
-        <div className="glass-light p-6 rounded-2xl flex items-center justify-between transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
-              <FileText className="w-6 h-6 text-white" />
-            </div>
-            <span className="font-medium text-gray-900">HIPAA Authorization Form</span>
-          </div>
-          <a
-            href="/forms/hipaa-authorization.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-secondary inline-flex items-center gap-2 transition-transform hover:scale-105 active:scale-95"
-          >
-            <Download className="w-4 h-4" />
-            Download
-          </a>
-        </div>
+          );
+        })}
       </div>
     </div>
   );

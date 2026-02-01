@@ -1,65 +1,43 @@
-import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth/auth';
+import { query } from '@/lib/mysql';
+import { validateTokenString } from '@/lib/auth/auth';
+import { randomUUID } from 'crypto';
 
-// GET - Fetch all active team members sorted by order
-export async function GET(request: NextRequest) {
+// GET - fetch public team members
+export async function GET() {
   try {
-    const team = await prisma.team.findMany({
-      where: { active: true },
-      orderBy: { order: 'asc' },
-    });
-    return NextResponse.json(team);
-  } catch (error) {
-    console.error('Team fetch error:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch team' },
-      { status: 500 }
-    );
+    const rows: any = await query('SELECT id, name, role, bio, image_url, created_at FROM team_members ORDER BY created_at DESC');
+    return NextResponse.json(rows);
+  } catch (err) {
+    console.error('Team fetch error', err);
+    return NextResponse.json({ error: 'Failed to fetch team' }, { status: 500 });
   }
 }
 
-// POST - Create new team member (requires auth)
+// POST - create team member (admin)
 export async function POST(request: NextRequest) {
   try {
-    const authHeader = request.headers.get('authorization');
-    if (!authHeader?.startsWith('Bearer ')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const token = authHeader.substring(7);
-    const decoded = verifyToken(token);
-    if (!decoded) {
-      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
-    }
+    const header = request.headers.get('authorization');
+    const cookieToken = request.cookies.get('cms_token')?.value;
+    const token = header?.startsWith('Bearer ') ? header.substring(7) : cookieToken || null;
+    const decoded = token ? validateTokenString(token) : null;
+    if (!decoded) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const body = await request.json();
-    const { name, position, bio, image, order, active } = body;
+    const { name, role, bio, image_url } = body;
+    if (!name || !role) return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
 
-    if (!name?.trim() || !position?.trim() || !bio?.trim()) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      );
-    }
-
-    const team = await prisma.team.create({
-      data: {
-        name,
-        position,
-        bio,
-        image,
-        order: order || 0,
-        active: active ?? true,
-      },
-    });
-
-    return NextResponse.json(team, { status: 201 });
-  } catch (error) {
-    console.error('Team create error:', error);
-    return NextResponse.json(
-      { error: 'Failed to create team member' },
-      { status: 500 }
+    const id = randomUUID();
+    const created_at = new Date();
+    await query(
+      'INSERT INTO team_members (id, name, role, bio, image_url, created_at) VALUES (:id, :name, :role, :bio, :image_url, :created_at)',
+      { id, name, role, bio: bio || '', image_url: image_url || '', created_at }
     );
+
+    const [created] = await query('SELECT id, name, role, bio, image_url, created_at FROM team_members WHERE id = ?', [id]);
+    return NextResponse.json(created, { status: 201 });
+  } catch (err) {
+    console.error('Team create error', err);
+    return NextResponse.json({ error: 'Failed to create' }, { status: 500 });
   }
 }

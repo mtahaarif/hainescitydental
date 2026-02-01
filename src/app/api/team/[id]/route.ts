@@ -1,106 +1,53 @@
-import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth/auth';
+import { query } from '@/lib/mysql';
+import { validateTokenString } from '@/lib/auth/auth';
 
-// GET - Fetch single team member by ID
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const team = await prisma.team.findUnique({
-      where: { id: params.id },
-    });
-
-    if (!team) {
-      return NextResponse.json({ error: 'Not found' }, { status: 404 });
-    }
-
-    return NextResponse.json(team);
-  } catch (error) {
-    console.error('Team fetch error:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch team member' },
-      { status: 500 }
-    );
+    const rows: any = await query('SELECT id, name, role, bio, image_url, created_at FROM team_members WHERE id = ?', [params.id]);
+    const item = rows[0];
+    if (!item) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    return NextResponse.json(item);
+  } catch (err) {
+    console.error('Team fetch error', err);
+    return NextResponse.json({ error: 'Failed to fetch' }, { status: 500 });
   }
 }
 
-// PUT - Update team member (requires auth)
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const authHeader = request.headers.get('authorization');
-    if (!authHeader?.startsWith('Bearer ')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const token = authHeader.substring(7);
-    const decoded = verifyToken(token);
-    if (!decoded) {
-      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
-    }
+    const header = request.headers.get('authorization');
+    const cookieToken = request.cookies.get('cms_token')?.value;
+    const token = header?.startsWith('Bearer ') ? header.substring(7) : cookieToken || null;
+    const decoded = token ? validateTokenString(token) : null;
+    if (!decoded) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const body = await request.json();
-    const { name, position, bio, image, order, active } = body;
-
-    const team = await prisma.team.update({
-      where: { id: params.id },
-      data: {
-        name,
-        position,
-        bio,
-        image,
-        order,
-        active,
-      },
-    });
-
-    return NextResponse.json(team);
-  } catch (error: any) {
-    if (error.code === 'P2025') {
-      return NextResponse.json({ error: 'Not found' }, { status: 404 });
-    }
-    console.error('Team update error:', error);
-    return NextResponse.json(
-      { error: 'Failed to update team member' },
-      { status: 500 }
+    const { name, role, bio, image_url } = body;
+    await query(
+      'UPDATE team_members SET name = :name, role = :role, bio = :bio, image_url = :image_url WHERE id = :id',
+      { id: params.id, name, role, bio: bio || '', image_url: image_url || '' }
     );
+    const [updated] = await query('SELECT id, name, role, bio, image_url, created_at FROM team_members WHERE id = ?', [params.id]);
+    return NextResponse.json(updated);
+  } catch (err) {
+    console.error('Team update error', err);
+    return NextResponse.json({ error: 'Failed to update' }, { status: 500 });
   }
 }
 
-// DELETE - Delete team member (requires auth)
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const authHeader = request.headers.get('authorization');
-    if (!authHeader?.startsWith('Bearer ')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const header = request.headers.get('authorization');
+    const cookieToken = request.cookies.get('cms_token')?.value;
+    const token = header?.startsWith('Bearer ') ? header.substring(7) : cookieToken || null;
+    const decoded = token ? validateTokenString(token) : null;
+    if (!decoded) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const token = authHeader.substring(7);
-    const decoded = verifyToken(token);
-    if (!decoded) {
-      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
-    }
-
-    await prisma.team.delete({
-      where: { id: params.id },
-    });
-
+    await query('DELETE FROM team_members WHERE id = ?', [params.id]);
     return NextResponse.json({ success: true });
-  } catch (error: any) {
-    if (error.code === 'P2025') {
-      return NextResponse.json({ error: 'Not found' }, { status: 404 });
-    }
-    console.error('Team delete error:', error);
-    return NextResponse.json(
-      { error: 'Failed to delete team member' },
-      { status: 500 }
-    );
+  } catch (err) {
+    console.error('Team delete error', err);
+    return NextResponse.json({ error: 'Failed to delete' }, { status: 500 });
   }
 }

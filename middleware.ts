@@ -1,12 +1,14 @@
 import { NextResponse, type NextRequest } from 'next/server';
+import { validateTokenString } from './lib/auth/auth';
 
-const AUTH_COOKIE = 'cms_auth';
+const AUTH_COOKIE = 'cms_token';
 
 export function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
   const isLogin = pathname.startsWith('/admin/login');
   const isAuthApi = pathname.startsWith('/api/admin');
-  const isAuthed = request.cookies.get(AUTH_COOKIE)?.value === 'true';
+  const cookieToken = request.cookies.get(AUTH_COOKIE)?.value || null;
+  const isAuthed = !!(cookieToken && validateTokenString(cookieToken));
 
   if (isAuthApi) {
     return NextResponse.next();

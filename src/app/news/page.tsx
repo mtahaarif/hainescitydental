@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { Calendar } from 'lucide-react';
 import { getAllContent } from '@/lib/content';
+import LightboxGallery from '@/components/LightboxGallery';
 
 const categoryConfig = {
   training: { label: 'Training' },
@@ -182,73 +183,67 @@ export default async function NewsPage() {
                       />
                     )}
 
-                    {item.images && item.images.length > 0 && (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                        {(() => {
-                          const imgs: string[] = [];
-                          const normalize = (s: string) => {
-                            if (!s) return '';
-                            if (/^https?:\/\//i.test(s)) return s;
-                            if (s.startsWith('/')) {
-                              const full = path.join(process.cwd(), 'public', s.replace(/^\//, ''));
-                              if (fs.existsSync(full)) return s;
-                              return '';
-                            }
-                            if (/\.(png|jpe?g|jpeg|webp)$/i.test(s)) {
-                              const candidate = s.startsWith('news/') ? `/${s}` : `/${s}`;
-                              const full = path.join(process.cwd(), 'public', candidate.replace(/^\//, ''));
-                              if (fs.existsSync(full)) return candidate;
-                              const alt = path.join(process.cwd(), 'public', 'news', path.basename(s));
-                              if (fs.existsSync(alt)) return `/news/${path.basename(s)}`;
-                            }
+                    {item.images && item.images.length > 0 && (() => {
+                      // Normalize and filter image paths on the server, then render the client-side lightbox gallery
+                      const imgs: string[] = [];
+                      const normalize = (s: string) => {
+                        if (!s) return '';
+                        if (/^https?:\/\//i.test(s)) return s;
+                        if (s.startsWith('/')) {
+                          const full = path.join(process.cwd(), 'public', s.replace(/^\//, ''));
+                          if (fs.existsSync(full)) return s;
+                          return '';
+                        }
+                        if (/\.(png|jpe?g|jpeg|webp)$/i.test(s)) {
+                          const candidate = s.startsWith('news/') ? `/${s}` : `/${s}`;
+                          const full = path.join(process.cwd(), 'public', candidate.replace(/^\//, ''));
+                          if (fs.existsSync(full)) return candidate;
+                          const alt = path.join(process.cwd(), 'public', 'news', path.basename(s));
+                          if (fs.existsSync(alt)) return `/news/${path.basename(s)}`;
+                        }
 
-                            const baseName = s.includes('/') ? s.split('/').pop() as string : s;
-                            const newsDir = path.join(process.cwd(), 'public', 'news');
-                            try {
-                              if (fs.existsSync(newsDir)) {
-                                const files = fs.readdirSync(newsDir);
-                                const match = files.find(f => f.toLowerCase().startsWith(baseName.toLowerCase()));
-                                if (match) return `/news/${match}`;
-                                const match2 = files.find(f => f.toLowerCase().includes(baseName.toLowerCase()));
-                                if (match2) return `/news/${match2}`;
-                              }
-                            } catch (e) {
-                              // ignore
-                            }
-
-                            return '';
-                          };
-
-                          for (const img of item.images) {
-                            const src = normalize(img);
-                            if (!src) continue;
-                            // ensure file exists for local images
-                            if (src.startsWith('/')) {
-                              const full = path.join(process.cwd(), 'public', src.replace(/^\//, ''));
-                              if (!fs.existsSync(full)) continue;
-                            }
-                            imgs.push(src);
+                        const baseName = s.includes('/') ? s.split('/').pop() as string : s;
+                        const newsDir = path.join(process.cwd(), 'public', 'news');
+                        try {
+                          if (fs.existsSync(newsDir)) {
+                            const files = fs.readdirSync(newsDir);
+                            const match = files.find(f => f.toLowerCase().startsWith(baseName.toLowerCase()));
+                            if (match) return `/news/${match}`;
+                            const match2 = files.find(f => f.toLowerCase().includes(baseName.toLowerCase()));
+                            if (match2) return `/news/${match2}`;
                           }
+                        } catch (e) {
+                          // ignore
+                        }
 
-                          return imgs.map((src) => (
-                            <div
-                              key={src}
-                              className="rounded-2xl glass transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.25)] hover:scale-105"
-                            >
-                              <Image
-                                src={src}
-                                alt={item.title}
-                                width={640}
-                                height={480}
-                                className="object-contain w-full h-auto rounded-2xl"
-                                loading="lazy"
-                                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                              />
-                            </div>
-                          ));
-                        })()}
-                      </div>
-                    )}
+                        return '';
+                      };
+
+                      for (const img of item.images) {
+                        const src = normalize(img);
+                        if (!src) continue;
+                        // ensure file exists for local images
+                        if (src.startsWith('/')) {
+                          const full = path.join(process.cwd(), 'public', src.replace(/^\//, ''));
+                          if (!fs.existsSync(full)) continue;
+                        }
+                        imgs.push(src);
+                      }
+
+                      if (imgs.length === 0) return null;
+
+                      return (
+                        <div>
+                          {/* LightboxGallery is a client component that handles opening images */}
+                          {/* Pass item metadata so the lightbox shows the right-side details panel */}
+                          <LightboxGallery
+                            images={imgs}
+                            alt={item.title}
+                            meta={{ title: item.title, date: item.date, description: item.description, content: item.content }}
+                          />
+                        </div>
+                      );
+                    })()}
                   </article>
                 );
               })}
