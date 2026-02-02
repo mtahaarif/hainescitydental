@@ -53,7 +53,7 @@ export default function NewsPage() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen text-justify">
       <div className="w-full">
         <div className="bg-dental-blue-50/90 border-y border-dental-blue-100 py-8 px-0 shadow-sm">
           {error && <div className="text-red-600 mb-6">{error}</div>}

@@ -130,7 +130,7 @@ export default function TeamAdminList() {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full text-justify">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold">Team Members</h2>
         <button onClick={goNew} className="px-4 py-2 bg-dental-blue-600 text-white rounded hover:bg-dental-blue-700">

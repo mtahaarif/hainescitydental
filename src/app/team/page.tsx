@@ -39,7 +39,7 @@ export default function TeamPage() {
   });
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen text-justify">
       <div className="w-full px-0 py-8">
         {error && <div className="text-red-600 mb-6">{error}</div>}
 

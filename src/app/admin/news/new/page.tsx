@@ -56,7 +56,7 @@ export default function NewsCreate() {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full text-justify">
       <h2 className="text-2xl font-bold mb-4">Create News</h2>
       <form onSubmit={handleSubmit} className="space-y-6 glass-light p-6 rounded-xl">
         {error && <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded">{error}</div>}

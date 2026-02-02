@@ -3,7 +3,7 @@ import { Users, Target, Heart, Award, Clock, MapPin } from 'lucide-react';
 
 export default function OurPracticePage() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen text-justify">
       <div className="w-full">
         <div className="bg-dental-blue-50/90 border-y border-dental-blue-100 py-8 px-0 shadow-sm grid md:grid-cols-4 gap-6">
 
@@ -46,8 +46,8 @@ export default function OurPracticePage() {
           {/* Right appointment panel (same as homepage) */}
           <aside className="md:col-span-1 flex flex-col items-center text-center gap-4">
             <Image src="/images/call.jpg" alt="Call for Appointment" width={1200} height={800} className="w-full h-auto rounded-xl shadow-md" />
-            <a href="tel:+18634228338" className="inline-flex items-center justify-center bg-dental-blue-600 text-white px-6 py-3 rounded-full shadow-md hover:shadow-lg transition">
-              (863) 422-8338
+            <a href="/contact" className="inline-flex items-center justify-center bg-dental-blue-600 text-white px-6 py-3 rounded-full shadow-md hover:shadow-lg transition">
+              Schedule an appointment
             </a>
           </aside>
         </div>

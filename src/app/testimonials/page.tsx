@@ -17,7 +17,7 @@ export default function TestimonialsPage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen text-justify">
       <div className="w-full">
         {review ? (
           <div className="bg-white border-y shadow py-8 px-0">

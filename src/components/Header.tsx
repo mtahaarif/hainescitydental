@@ -157,7 +157,7 @@ export default function Header() {
               whileTap={{ scale: 0.97 }}
             >
               <Phone className="w-3.5 h-3.5 text-white" />
-              <span className="text-sm font-semibold">Call Now</span>
+              <span className="text-sm font-semibold">(863) 422-8338</span>
             </motion.a>
 
             {/* Mobile Controls */}
