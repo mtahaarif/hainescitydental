@@ -50,7 +50,7 @@ export default function OurTeamPage() {
         <div className="bg-dental-blue-50/90 border-y border-dental-blue-100 py-8 px-0 shadow-sm">
           <main>
             <section className="text-center mb-6">
-              <h1 className="text-4xl sm:text-5xl font-bold text-dental-blue-600">Our Team</h1>
+              <h1 className="text-4xl sm:text-5xl font-bold text-dental-blue-600 text-center">Our Team</h1>
             </section>
 
             {error && <div className="text-red-600 mb-6 text-center">{error}</div>}
@@ -65,7 +65,7 @@ export default function OurTeamPage() {
             ) : (
               <div className="space-y-12">
                 <section>
-                  <h2 className="text-2xl font-bold mb-6 text-dental-blue-600 text-justify">Doctors</h2>
+                  <h2 className="text-2xl font-bold mb-6 text-dental-blue-600">Doctors</h2>
                   <div className="flex flex-col gap-6">
                     {doctors.map((d) => (
                       <div key={d.id} className="bg-white p-6 rounded-xl shadow flex flex-col items-center text-center">
@@ -83,7 +83,7 @@ export default function OurTeamPage() {
                 </section>
 
                 <section>
-                  <h2 className="text-2xl font-bold mb-6 text-dental-blue-600 text-justify">Staff</h2>
+                  <h2 className="text-2xl font-bold mb-6 text-dental-blue-600">Staff</h2>
                   <div className="flex flex-col gap-6">
                     {staff.map((s) => (
                       <div key={s.id} className="bg-white p-6 rounded-xl shadow flex flex-col items-center text-center">

@@ -17,8 +17,8 @@ export default function OurPracticePage() {
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                 Providing exceptional dental care to our community.
               </p>
-              <div className="mt-6 glass p-6 max-w-3xl mx-auto text-left">
-                <p className="text-gray-700 leading-relaxed text-justify">
+              <div className="mt-6 glass p-6 max-w-3xl mx-auto text-justify">
+                <p className="text-gray-700 leading-relaxed">
                   Our practice offers comprehensive dental care with an emphasis on prevention, restorative options, and cosmetic dentistry. We never underestimate the importance of serving our patients – from diagnosis to treatment, our team of professionals makes communication with patients a priority. We strive to make our office as warm, friendly, and comfortable. To overcome any anxieties that can often overcome people when visiting the dentist we created very relaxing environment.
                 </p>
               </div>

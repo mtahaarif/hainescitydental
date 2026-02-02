@@ -76,10 +76,10 @@ function NewPatientsContent() {
   };
 
   return (
-    <div className="space-y-8 text-justify">
-      <div>
+    <div className="space-y-8">
+      <div className="text-justify">
         <h3 className="text-2xl font-bold text-gray-900 mb-4">Welcome to Haines City Dental</h3>
-        <p className="text-lg text-gray-700 mb-4 text-justify">
+        <p className="text-lg text-gray-700 mb-4">
           We at Haines City Dental accept and welcome{' '}
           <span className="text-dental-blue-500 font-semibold">new patients</span> all the time.
         </p>

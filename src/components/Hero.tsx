@@ -15,8 +15,8 @@ export default function Hero() {
           Providing exceptional dental care to our community.
         </p>
         {/* Inserted Our Practice intro from the client's previous page */}
-        <div className="mt-6 glass p-6 w-full text-left">
-          <p className="text-gray-700 leading-relaxed text-justify">
+        <div className="mt-6 glass p-6 w-full text-left text-justify">
+          <p className="text-gray-700 leading-relaxed">
               At Haines City Dental, we are excited to share our passion for oral health with you and your family.
               Our staff members believe in making personal connections with our patients to provide the highest
               level of service. We will answer any questions that you may have, go over all of your options and
