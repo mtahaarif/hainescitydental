@@ -52,7 +52,17 @@ export async function query(sql: string, params?: any) {
     } catch (initErr) {
       poolInitialized = false;
       pool = null;
-      console.error('[MySQL] Failed to initialize pool:', initErr);
+      const errorMsg = initErr instanceof Error ? initErr.message : String(initErr);
+      const errorCode = (initErr as any)?.code || 'UNKNOWN';
+      const errorErrno = (initErr as any)?.errno || 'N/A';
+      console.error('[MySQL] Failed to initialize pool', {
+        error: errorMsg,
+        code: errorCode,
+        errno: errorErrno,
+        host: HOSTGATOR_DB_HOST,
+        user: HOSTGATOR_DB_USER,
+        database: HOSTGATOR_DB_NAME,
+      });
       throw initErr;
     }
   }
@@ -67,7 +77,15 @@ export async function query(sql: string, params?: any) {
     console.log('[MySQL Query] Success, rows:', rows?.length || 0);
     return rows as any;
   } catch (err) {
-    console.error('[MySQL Query] Error:', err instanceof Error ? err.message : String(err));
+    const errorMsg = err instanceof Error ? err.message : String(err);
+    const errorCode = (err as any)?.code || 'UNKNOWN';
+    const errorErrno = (err as any)?.errno || 'N/A';
+    console.error('[MySQL Query] Error', {
+      message: errorMsg,
+      code: errorCode,
+      errno: errorErrno,
+      sql: sql.substring(0, 100) + (sql.length > 100 ? '...' : ''),
+    });
     throw err;
   }
 }
