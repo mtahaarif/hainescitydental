@@ -18,7 +18,7 @@ export default function OurPracticePage() {
                 Providing exceptional dental care to our community.
               </p>
               <div className="mt-6 glass p-6 max-w-3xl mx-auto text-left">
-                <p className="text-gray-700 leading-relaxed">
+                <p className="text-gray-700 leading-relaxed text-justify">
                   Our practice offers comprehensive dental care with an emphasis on prevention, restorative options, and cosmetic dentistry. We never underestimate the importance of serving our patients – from diagnosis to treatment, our team of professionals makes communication with patients a priority. We strive to make our office as warm, friendly, and comfortable. To overcome any anxieties that can often overcome people when visiting the dentist we created very relaxing environment.
                 </p>
               </div>
@@ -47,7 +47,7 @@ export default function OurPracticePage() {
           <aside className="md:col-span-1 flex flex-col items-center text-center gap-4">
             <Image src="/images/call.jpg" alt="Call for Appointment" width={1200} height={800} className="w-full h-auto rounded-xl shadow-md" />
             <a href="tel:+18634228338" className="inline-flex items-center justify-center bg-dental-blue-600 text-white px-6 py-3 rounded-full shadow-md hover:shadow-lg transition">
-              Call For An Appointment
+              (863) 422-8338
             </a>
           </aside>
         </div>

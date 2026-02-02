@@ -94,7 +94,7 @@ export default function NewsPage() {
                         )}
 
                         {item.description && (
-                          <p className="text-gray-700 text-base leading-relaxed whitespace-pre-line">
+                          <p className="text-gray-700 text-base leading-relaxed whitespace-pre-line text-justify">
                             {item.description}
                           </p>
                         )}

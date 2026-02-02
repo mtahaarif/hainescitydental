@@ -65,7 +65,7 @@ export default function OurTeamPage() {
             ) : (
               <div className="space-y-12">
                 <section>
-                  <h2 className="text-2xl font-bold mb-6 text-dental-blue-600">Doctors</h2>
+                  <h2 className="text-2xl font-bold mb-6 text-dental-blue-600 text-justify">Doctors</h2>
                   <div className="flex flex-col gap-6">
                     {doctors.map((d) => (
                       <div key={d.id} className="bg-white p-6 rounded-xl shadow flex flex-col items-center text-center">
@@ -76,14 +76,14 @@ export default function OurTeamPage() {
                         )}
                         <h3 className="text-xl font-bold">{d.name}</h3>
                         {d.role && <p className="text-base text-dental-blue-600 mt-2">{d.role}</p>}
-                        {d.bio && <p className="mt-3 text-base text-gray-700 whitespace-pre-line">{d.bio}</p>}
+                        {d.bio && <p className="mt-3 text-base text-gray-700 whitespace-pre-line text-justify">{d.bio}</p>}
                       </div>
                     ))}
                   </div>
                 </section>
 
                 <section>
-                  <h2 className="text-2xl font-bold mb-6 text-dental-blue-600">Staff</h2>
+                  <h2 className="text-2xl font-bold mb-6 text-dental-blue-600 text-justify">Staff</h2>
                   <div className="flex flex-col gap-6">
                     {staff.map((s) => (
                       <div key={s.id} className="bg-white p-6 rounded-xl shadow flex flex-col items-center text-center">
@@ -94,7 +94,7 @@ export default function OurTeamPage() {
                         )}
                         <h3 className="text-xl font-bold">{s.name}</h3>
                         {s.role && <p className="text-base text-dental-blue-600 mt-2">{s.role}</p>}
-                        {s.bio && <p className="mt-3 text-base text-gray-700 whitespace-pre-line">{s.bio}</p>}
+                        {s.bio && <p className="mt-3 text-base text-gray-700 whitespace-pre-line text-justify">{s.bio}</p>}
                       </div>
                     ))}
                   </div>

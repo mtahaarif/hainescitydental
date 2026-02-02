@@ -202,7 +202,7 @@ function ServicesContent() {
                 </div>
               </div>
 
-              <p className="text-gray-600 leading-relaxed text-sm sm:text-base md:text-lg">
+              <p className="text-gray-600 leading-relaxed text-sm sm:text-base md:text-lg text-justify">
                 {currentService.description}
               </p>
 
@@ -271,8 +271,8 @@ export default function ServicesPage() {
           <main>
             {/* Header */}
             <div className="mb-8 text-center">
-              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-                Comprehensive <span className="gradient-text">Dental Services</span>
+              <h1 className="text-4xl sm:text-5xl font-bold text-dental-blue-600 mb-4">
+                Comprehensive Dental Services
               </h1>
               <p className="text-xl text-gray-600">
                 From routine care to advanced treatments, we offer a full spectrum of dental services.

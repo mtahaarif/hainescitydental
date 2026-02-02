@@ -16,7 +16,7 @@ export default function Home() {
           <aside className="md:col-span-1 flex flex-col items-center text-center gap-4">
             <Image src="/images/call.jpg" alt="Call for Appointment" width={1200} height={800} className="w-full h-auto rounded-xl shadow-md" />
             <a href="tel:+18634228338" className="inline-flex items-center justify-center bg-dental-blue-600 text-white px-6 py-3 rounded-full shadow-md hover:shadow-lg transition">
-              Call For An Appointment
+              (863) 422-8338
             </a>
 
             {/* Reviews carousel */}

@@ -79,14 +79,14 @@ function NewPatientsContent() {
     <div className="space-y-8">
       <div>
         <h3 className="text-2xl font-bold text-gray-900 mb-4">Welcome to Haines City Dental</h3>
-        <p className="text-lg text-gray-700 mb-4">
+        <p className="text-lg text-gray-700 mb-4 text-justify">
           We at Haines City Dental accept and welcome{' '}
           <span className="text-dental-blue-500 font-semibold">new patients</span> all the time.
         </p>
-        <p className="text-lg text-gray-700 mb-4">
+        <p className="text-lg text-gray-700 mb-4 text-justify">
           <span className="font-semibold text-dental-blue-500">Ages 12 years old to 112 years.</span>
         </p>
-        <p className="text-lg text-gray-700 mb-6">
+        <p className="text-lg text-gray-700 mb-6 text-justify">
           We provide{' '}
           <span className="text-dental-blue-500 font-semibold">comprehensive dentistry</span> and we
           always welcome any <span className="text-dental-blue-500 font-semibold">emergencies</span>.
@@ -117,7 +117,7 @@ function NewPatientsContent() {
 
       {/* Contact Form */}
       <div className="glass-light p-8 rounded-3xl">
-        <p className="text-gray-700 mb-6">
+        <p className="text-gray-700 mb-6 text-justify">
           Or, you can simply provide us with the following information and we will contact you shortly
           to schedule an appointment. We&apos;re looking forward to meeting you.
         </p>

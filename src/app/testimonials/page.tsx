@@ -38,7 +38,7 @@ export default function TestimonialsPage() {
             </div>
 
             <div className="mb-4">
-              <p className="text-gray-700 leading-relaxed">{review.text}</p>
+              <p className="text-gray-700 leading-relaxed text-justify">{review.text}</p>
             </div>
 
             {review.url && (
