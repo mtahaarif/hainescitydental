@@ -1,110 +1,106 @@
+"use client";
+
 import Image from 'next/image';
-import { getAllContent } from '@/lib/content';
+import { useEffect, useState } from 'react';
 
-const ORDER = [
-  'Sohail Khan',
-  'Asma Mamsa',
-  'Danyelle',
-  'Decole',
-  'Maribel',
-  'Stephanie',
-  'Yahira',
-  'Tonya',
-  'Dianilda',
-  'Anabell',
-  'Kyndall',
-];
+type Member = {
+  id: string;
+  name: string;
+  role?: string;
+  bio?: string;
+  department?: string;
+  image?: string;
+};
 
-function findByName(list: any[], name: string) {
-  const exact = list.find((p) => p.name && p.name.toLowerCase().trim() === name.toLowerCase().trim());
-  if (exact) return exact;
-  const includes = list.find((p) => p.name && p.name.toLowerCase().includes(name.toLowerCase()));
-  return includes || null;
-}
+export default function OurTeamPage() {
+  const [team, setTeam] = useState<Member[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-async function PeopleList() {
-  const doctors = (await getAllContent('doctors')) as any[] || [];
-  const staff = (await getAllContent('staff')) as any[] || [];
-  const pool = [...doctors, ...staff];
+  useEffect(() => {
+    let mounted = true;
+    fetch('/api/team')
+      .then((res) => res.json())
+      .then((data) => {
+        if (!mounted) return;
+        setTeam(Array.isArray(data.team) ? data.team : []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        if (mounted) {
+          setError('Failed to load team');
+          setLoading(false);
+        }
+      });
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
-  const TITLES: Record<string, string> = {
-    'Sohail Khan': 'Sohail Khan, DMD\nDentist',
-    'Asma Mamsa': 'Asma Mamsa, DDS\nDentist',
-    'Danyelle': 'Danyelle\nOffice Manager',
-    'Decole': 'Decole\nPatient Relations',
-    'Maribel': 'Maribel\nHygienist',
-    'Stephanie': 'Stephanie\nHygienist',
-    'Yahira': 'Yahira\nDental Assistant',
-    'Tonya': 'Tonya\nPatient Relations',
-    'Dianilda': 'Dianilda\nDental Assistant',
-    'Anabell': 'Anabell\nDental Assistant',
-    'Kyndall': 'Kyndall\nDental Assistant',
-  };
-
-  const DESCRIPTIONS: Record<string, string> = {
-    'Sohail Khan': `Dr. Sohail Khan earned his Doctor of Dental Medicine degree from Boston University, Henry M. Goldman School of Dental Medicine. He completed an AEGD residency and additional implant training, and is a member of the American Academy of General Dentistry. He enjoys aesthetics, oral surgery, traveling, sports, and photography.`,
-    'Asma Mamsa': `Dr. Asma Mamsa is a 2002 graduate of the University of Illinois Chicago College of Dentistry. She enjoys traveling, cooking, and spending time with family.`,
-    'Danyelle': `Danyelle has worked in dentistry for over 24 years. She attained Expanded Functions and Radiology certifications at the University of Florida and has been with Haines City Dental for 24 years.`,
-    'Decole': `Decole has been with Haines City Dental since 2011. She enjoys that the office feels like family and loves spending time with family and friends.`,
-    'Maribel': `Maribel has been in dental care for over 36 years and a hygienist for 21 years. She trained at Miami Dade Medical and enjoys crafting, gardening, and family time.`,
-    'Stephanie': `Stephanie worked in Endodontics before pursuing dental hygiene at Concorde Career Institute in Orlando. She enjoys helping patients feel confident about their smiles and spending time with family.`,
-    'Yahira': `Yahira has over 15 years’ experience, is certified in expanded functions and radiology in Florida, and enjoys family time.`,
-    'Tonya': `Tonya has been a dental assistant for over 18 years and transitioned to patient relations in 2020. She enjoys serving her community and spending time with her family.`,
-    'Dianilda': `Dianilda has over 20 years experience and joined Haines City Dental in 2013. She holds certifications in expanded functions and radiology.`,
-    'Anabell': `Anabell began her career in New York City and has been with Haines City Dental since 2014. She enjoys spending quality time with family and friends.`,
-    'Kyndall': `Kyndall enjoys helping patients with their dental needs; outside of work she spends time with her son and family.`,
-  };
-  const people = ORDER.map((name) => {
-    const p = findByName(pool, name);
-    // normalize fields (use overrides when provided)
-    const foundName = p?.name || name;
-    const imageField = p ? (p.image || p.photo || p.avatar || '') : '';
-    const image = imageField || (name === 'Kyndall' ? '/images/kyndall.jpg' : '');
-    const title = TITLES[name] || p?.title || p?.role || '';
-    const bio = DESCRIPTIONS[name] || p?.bio || (p?.bioSections && p.bioSections.map((s:any)=>s.content).join('\n\n')) || p?.description || '';
-    return { name: foundName, title, image, bio };
-  }) as { name: string; title: string; image: string; bio: string }[];
+  const doctors = team.filter((t) => String(t.department || '').toLowerCase().includes('doctor'));
+  const staff = team.filter((t) => {
+    const d = String(t.department || '').toLowerCase();
+    return !d.includes('doctor');
+  });
 
   return (
-    <div className="space-y-8">
-      {people.map((p, idx) => (
-        <div key={idx} className="py-6 border-b last:border-b-0">
-          <div className="flex flex-col items-start text-left gap-4">
-            {p.image ? (
-              <div className="w-48 h-48 rounded-xl overflow-hidden">
-                <Image src={p.image} alt={p.name} width={320} height={320} className="object-cover w-full h-full" />
-              </div>
-            ) : (
-              <div className="w-48 h-48 rounded-xl bg-dental-blue-100 flex items-center justify-center text-white font-bold text-2xl">{p.name.split(' ')[0]?.charAt(0) || 'P'}</div>
-            )}
-
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900">{p.name}</h3>
-              {p.title && <p className="text-dental-blue-600 font-medium mt-1 whitespace-pre-line">{p.title}</p>}
-            </div>
-
-            <p className="text-gray-700 text-sm leading-relaxed max-w-3xl whitespace-pre-line">{p.bio}</p>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-export default async function OurTeamPage() {
-  return (
-    <div className="min-h-screen py-12">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="-mx-4 sm:mx-0 px-4 sm:px-0 bg-dental-blue-50/90 border border-dental-blue-100 sm:rounded-3xl rounded-none p-6 md:p-8 shadow-sm">
-
+    <div className="min-h-screen">
+      <div className="w-full">
+        <div className="bg-dental-blue-50/90 border-y border-dental-blue-100 py-8 px-0 shadow-sm">
           <main>
             <section className="text-center mb-6">
-              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900">Our Team</h1>
+              <h1 className="text-4xl sm:text-5xl font-bold text-dental-blue-600">Our Team</h1>
             </section>
 
-            <section>
-              <PeopleList />
-            </section>
+            {error && <div className="text-red-600 mb-6 text-center">{error}</div>}
+
+            {loading ? (
+              <div className="flex items-center justify-center py-20">
+                <div className="flex items-center gap-3 text-dental-blue-700">
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-dental-blue-600 border-t-transparent" />
+                  <span className="text-sm font-medium">Loading team...</span>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-12">
+                <section>
+                  <h2 className="text-2xl font-bold mb-6 text-dental-blue-600">Doctors</h2>
+                  <div className="flex flex-col gap-6">
+                    {doctors.map((d) => (
+                      <div key={d.id} className="bg-white p-6 rounded-xl shadow flex flex-col items-center text-center">
+                        {d.image && (
+                          <div className="w-48 h-64 relative mb-4 rounded-lg overflow-hidden">
+                            <Image src={d.image} alt={d.name} fill sizes="192px" className="object-cover" />
+                          </div>
+                        )}
+                        <h3 className="text-xl font-bold">{d.name}</h3>
+                        {d.role && <p className="text-base text-dental-blue-600 mt-2">{d.role}</p>}
+                        {d.bio && <p className="mt-3 text-base text-gray-700 whitespace-pre-line">{d.bio}</p>}
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                <section>
+                  <h2 className="text-2xl font-bold mb-6 text-dental-blue-600">Staff</h2>
+                  <div className="flex flex-col gap-6">
+                    {staff.map((s) => (
+                      <div key={s.id} className="bg-white p-6 rounded-xl shadow flex flex-col items-center text-center">
+                        {s.image && (
+                          <div className="w-48 h-64 relative mb-4 rounded-lg overflow-hidden">
+                            <Image src={s.image} alt={s.name} fill sizes="192px" className="object-cover" />
+                          </div>
+                        )}
+                        <h3 className="text-xl font-bold">{s.name}</h3>
+                        {s.role && <p className="text-base text-dental-blue-600 mt-2">{s.role}</p>}
+                        {s.bio && <p className="mt-3 text-base text-gray-700 whitespace-pre-line">{s.bio}</p>}
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              </div>
+            )}
           </main>
         </div>
       </div>

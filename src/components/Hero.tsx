@@ -5,17 +5,17 @@ export default function Hero() {
 
 
   return (
-    <div className="min-h-screen pt-8 pb-16">
+    <div className="min-h-screen py-0">
       {/* Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center animate-fade-in">
+      <div className="w-full px-0 mb-16 text-center animate-fade-in">
         <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
         <span className="gradient-text">Haines City Dental</span>
         </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+        <p className="text-xl text-gray-600">
           Providing exceptional dental care to our community.
         </p>
         {/* Inserted Our Practice intro from the client's previous page */}
-        <div className="mt-6 glass p-6 max-w-3xl mx-auto text-left">
+        <div className="mt-6 glass p-6 w-full text-left">
           <p className="text-gray-700 leading-relaxed">
               At Haines City Dental, we are excited to share our passion for oral health with you and your family.
               Our staff members believe in making personal connections with our patients to provide the highest
@@ -31,10 +31,10 @@ export default function Hero() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-0">
 
         <div className="mt-12">
-          <figure className="max-w-3xl mx-auto">
+          <figure className="w-full">
             <Image src="/images/55.jpg" alt="Christmas Party — Haines City Dental" width={1536} height={800} className="w-full h-auto rounded-2xl shadow-lg" />
           </figure>
         </div>

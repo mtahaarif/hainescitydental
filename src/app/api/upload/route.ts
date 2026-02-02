@@ -1,63 +1,51 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth/auth';
+import { validateTokenString } from '@/lib/auth/auth';
+import { put } from '@vercel/blob';
 
+/**
+ * Image upload endpoint using Vercel Blob storage.
+ * Expects: POST /api/upload?filename=yourfile.jpg with raw body as the file bytes.
+ * Returns: { url: string } (frontend expects a JSON object with `url`)
+ */
 export async function POST(request: NextRequest) {
   try {
-    const authHeader = request.headers.get('authorization');
-    if (!authHeader?.startsWith('Bearer ')) {
+    // Verify admin token
+    const cookieToken = request.cookies.get('cms_token')?.value;
+    if (!cookieToken || !validateTokenString(cookieToken)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const token = authHeader.substring(7);
-    const decoded = verifyToken(token);
-    if (!decoded) {
-      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+    // Filename provided via query param
+    const filename = request.nextUrl.searchParams.get('filename') || `upload-${Date.now()}`;
+
+    const token = process.env.BLOB_READ_WRITE_TOKEN;
+    if (!token) {
+      console.error('[Upload] BLOB_READ_WRITE_TOKEN not configured');
+      return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 });
     }
 
-    const formData = await request.formData();
-    const file = formData.get('file') as File;
+    // Read raw request body as bytes
+    const arrayBuffer = await request.arrayBuffer();
+    const bytes = new Uint8Array(arrayBuffer);
 
-    if (!file) {
-      return NextResponse.json(
-        { error: 'No file provided' },
-        { status: 400 }
-      );
+    // Upload to Vercel Blob
+    // Note: pass the token explicitly so the library can authenticate
+    // @ts-ignore - library types may be loose
+    const blob = await put(filename, bytes, { access: 'public', token });
+
+    // blob usually contains a url/publicUrl property; normalize response to { url }
+    const blobAny: any = blob;
+    const url = blobAny?.url ?? blobAny?.publicUrl ?? blobAny?.blobUrl ?? null;
+
+    if (!url) {
+      console.warn('[Upload] Unexpected blob response:', blob);
+      // Return the raw blob object as a fallback (stringified)
+      return NextResponse.json({ url: typeof blob === 'string' ? blob : JSON.stringify(blob) }, { status: 200 });
     }
 
-    // Validate file type
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-    if (!allowedTypes.includes(file.type)) {
-      return NextResponse.json(
-        { error: 'Invalid file type. Only JPEG, PNG, WebP, and GIF allowed.' },
-        { status: 400 }
-      );
-    }
-
-    // Validate file size (5MB max)
-    const maxSize = 5 * 1024 * 1024;
-    if (file.size > maxSize) {
-      return NextResponse.json(
-        { error: 'File too large. Max size is 5MB.' },
-        { status: 400 }
-      );
-    }
-
-    // For now, return a placeholder URL
-    // TODO: Integrate with Vercel Blob Storage or Cloudinary
-    const filename = `${Date.now()}-${file.name}`;
-    const url = `/uploads/${filename}`;
-
-    return NextResponse.json({
-      url,
-      filename,
-      size: file.size,
-      type: file.type,
-    });
+    return NextResponse.json({ url }, { status: 200 });
   } catch (error) {
-    console.error('Upload error:', error);
-    return NextResponse.json(
-      { error: 'Failed to upload file' },
-      { status: 500 }
-    );
+    console.error('[Upload] Error uploading to Vercel Blob:', error);
+    return NextResponse.json({ error: 'Failed to upload file' }, { status: 500 });
   }
 }

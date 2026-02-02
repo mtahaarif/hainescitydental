@@ -73,7 +73,7 @@ export default function Header() {
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-6 lg:px-12">
         <nav className="flex items-center justify-between h-20">
           
           {/* Logo Section - Increased size by 400% */}

@@ -101,7 +101,7 @@ export default function RootLayout({
         
         {/* Main Content with Page Transitions */}
         <PageTransition>
-          <main id="main-content" className="content-prose relative min-h-screen pb-20 md:pb-0 mx-auto px-2 sm:px-6 lg:px-8">
+          <main id="main-content" className="content-prose relative min-h-screen pb-20 md:pb-0 w-full px-0">
             {children}
           </main>
         </PageTransition>

@@ -1,11 +1,12 @@
 import Hero from '@/components/Hero';
 import Image from 'next/image';
+import TestimonialsCompact from '@/components/TestimonialsCompact';
 
 export default function Home() {
   return (
-    <div className="min-h-screen py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="-mx-4 sm:mx-0 px-4 sm:px-0 bg-dental-blue-50/90 border border-dental-blue-100 sm:rounded-3xl rounded-none p-6 md:p-8 shadow-sm grid md:grid-cols-4 gap-6">
+    <div className="min-h-screen">
+      <div className="w-full">
+        <div className="bg-dental-blue-50/90 border-y border-dental-blue-100 py-8 px-0 shadow-sm grid md:grid-cols-4 gap-6">
           {/* Main content (Hero + below) */}
           <main className="md:col-span-3">
             <Hero />
@@ -18,31 +19,16 @@ export default function Home() {
               Call For An Appointment
             </a>
 
-            {/* Embedded schedule/contact form (simple front-end form) */}
-            <form className="w-full bg-white/80 border border-dental-blue-100 rounded-xl p-4 shadow-sm">
-              <div className="space-y-3">
-                <label className="block text-sm font-medium text-gray-700 text-left">Name</label>
-                <input type="text" name="name" placeholder="Your Name" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-dental-blue-300" />
+            {/* Reviews carousel */}
+            <div className="w-full mt-4">
+              <TestimonialsCompact />
+            </div>
 
-                <label className="block text-sm font-medium text-gray-700 text-left">Email</label>
-                <input type="email" name="email" placeholder="your@email.com" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-dental-blue-300" />
-
-                <label className="block text-sm font-medium text-gray-700 text-left">Phone</label>
-                <input type="tel" name="phone" placeholder="(863) 422-8338" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-dental-blue-300" />
-
-                <label className="block text-sm font-medium text-gray-700 text-left">Message</label>
-                <textarea name="message" rows={3} placeholder="Tell us about your dental needs..." className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-dental-blue-300 resize-y" />
-
-                <button type="submit" className="w-full btn-primary flex items-center justify-center gap-2">
-                  Send Message
-                </button>
-              </div>
-            </form>
-
-            {/* Testimonials image (click -> testimonials page) */}
-            <a href="/testimonials" className="w-full mt-4">
-              <img src="/test1.png" alt="Patient Testimonials" className="w-full rounded-xl shadow-md" />
-            </a>
+            {/* Additional Info Images */}
+            <div className="w-full mt-4 flex flex-col gap-4">
+              <Image src="/images/nitrous.png" alt="Nitrous Oxide Sedation" width={300} height={200} className="w-full h-auto rounded-xl shadow-md" />
+              <Image src="/images/snoring.png" alt="Snoring & Sleep Apnea Solutions" width={300} height={200} className="w-full h-auto rounded-xl shadow-md" />
+            </div>
           </aside>
         </div>
       </div>

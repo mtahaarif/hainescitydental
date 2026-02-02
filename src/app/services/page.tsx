@@ -150,7 +150,7 @@ function ServicesContent() {
   return (
     <>
       {/* Service Tabs */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+      <div className="w-full px-0 mb-8">
         <div className="flex flex-wrap justify-center gap-2">
           {categories.map((category, index) => (
             <button
@@ -169,7 +169,7 @@ function ServicesContent() {
       </div>
 
       {/* Service Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-0">
         <div className="glass-strong p-4 sm:p-8 md:p-12 relative overflow-visible lg:overflow-hidden">
           <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-start">
             {/* Image */}
@@ -243,7 +243,7 @@ function ServicesContent() {
         </div>
 
         {/* Dots */}
-        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mt-6 sm:mt-8 max-w-[280px] sm:max-w-none mx-auto">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mt-6 sm:mt-8">
           {categories.map((_, index) => (
             <button
               key={index}
@@ -264,9 +264,9 @@ function ServicesContent() {
 
 export default function ServicesPage() {
   return (
-    <div className="min-h-screen py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-dental-blue-50/90 border border-dental-blue-100 rounded-3xl p-6 md:p-8 shadow-sm">
+    <div className="min-h-screen">
+      <div className="w-full">
+        <div className="bg-dental-blue-50/90 border-y border-dental-blue-100 py-8 px-0 shadow-sm">
 
           <main>
             {/* Header */}
@@ -274,7 +274,7 @@ export default function ServicesPage() {
               <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
                 Comprehensive <span className="gradient-text">Dental Services</span>
               </h1>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              <p className="text-xl text-gray-600">
                 From routine care to advanced treatments, we offer a full spectrum of dental services.
               </p>
             </div>

@@ -1,22 +1,66 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import NewsAdminList from './news/page';
+import TeamAdminList from './team/page';
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<'news' | 'team'>('news');
+  const [setupStatus, setSetupStatus] = useState<string | null>(null);
+  const [isSettingUp, setIsSettingUp] = useState(false);
+
+  async function setupDisplayOrder() {
+    if (!confirm('This will add display_order columns to the database if they don\'t exist. Continue?')) return;
+    
+    setIsSettingUp(true);
+    setSetupStatus(null);
+
+    try {
+      const res = await fetch('/api/setup-order', {
+        method: 'POST',
+        credentials: 'same-origin',
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Setup failed');
+      }
+
+      const data = await res.json();
+      setSetupStatus(data.message || 'Setup completed successfully!');
+    } catch (err) {
+      setSetupStatus(err instanceof Error ? err.message : 'Setup failed');
+    } finally {
+      setIsSettingUp(false);
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow">
-        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        <div className="w-full px-4 py-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-900">CMS Dashboard</h1>
+          <button
+            onClick={setupDisplayOrder}
+            disabled={isSettingUp}
+            className="px-3 py-1.5 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200 disabled:opacity-50"
+          >
+            {isSettingUp ? 'Setting up...' : 'Setup Display Order'}
+          </button>
         </div>
       </header>
 
+      {setupStatus && (
+        <div className="w-full px-4 sm:px-6 lg:px-8 pt-4">
+          <div className="p-3 bg-blue-100 border border-blue-400 text-blue-700 rounded">
+            {setupStatus}
+          </div>
+        </div>
+      )}
+
       {/* Main Content */}
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <main className="w-full px-4 py-8 sm:px-6 lg:px-8">
         {/* Tabs */}
         <div className="border-b border-gray-200 mb-8">
           <div className="flex gap-8">
@@ -38,115 +82,9 @@ export default function AdminPage() {
 
         <div className="space-y-6">
           {activeTab === 'news' && <NewsAdminList />}
-          {activeTab === 'team' && <TeamListInline />}
+          {activeTab === 'team' && <TeamAdminList />}
         </div>
       </main>
-    </div>
-  );
-}
-
-function TeamListInline() {
-  const [items, setItems] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    fetchList();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  async function fetchList() {
-    setLoading(true);
-    try {
-      const res = await fetch('/api/team');
-      if (res.ok) setItems(await res.json());
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  function goNew() {
-    window.location.href = '/admin/team/new';
-  }
-
-  function goEdit(id: string) {
-    window.location.href = `/admin/team/${id}`;
-  }
-
-  async function handleDelete(id: string) {
-    if (!confirm('Delete this member?')) return;
-    setLoading(true);
-    try {
-      const res = await fetch(`/api/team/${id}`, { method: 'DELETE' });
-      if (!res.ok) throw new Error('Delete failed');
-      await fetchList();
-    } catch (err) {
-      console.error(err);
-      alert('Delete failed');
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  return (
-    <div className="max-w-4xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold">Team Members</h2>
-        <div>
-          <button onClick={goNew} className="btn-primary">Add New</button>
-        </div>
-      </div>
-
-      {loading && <div>Loading...</div>}
-
-      <div className="space-y-4">
-        {items.map((it) => (
-          <div key={it.id} className="glass-light p-4 rounded-lg flex items-center justify-between">
-            <div>
-              <div className="font-medium">{it.name} <span className="text-sm text-gray-500">({it.role || it.position || 'Staff'})</span></div>
-              <div className="text-sm text-gray-500">{it.bio}</div>
-            </div>
-            <div className="flex items-center gap-2">
-              <button className="btn-secondary" onClick={() => goEdit(it.id)}>Edit</button>
-              <button className="btn-secondary" onClick={() => handleDelete(it.id)}>Delete</button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function ContentSection({
-  title,
-  apiEndpoint,
-  fields,
-}: {
-  title: string;
-  apiEndpoint: string;
-  fields: string[];
-}) {
-  return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-bold text-gray-900">{title}</h2>
-        <a
-          href={`/admin/${apiEndpoint.split('/').pop()}/new`}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-        >
-          Add New
-        </a>
-      </div>
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <p className="text-sm text-blue-800">
-          API Endpoint: <code className="font-mono">{apiEndpoint}</code>
-        </p>
-      </div>
-      <div className="mt-4 text-gray-600">
-        <p>Manage {title.toLowerCase()} via API or database directly.</p>
-        <p className="text-sm mt-2">Fields: {fields.join(', ')}</p>
-      </div>
     </div>
   );
 }

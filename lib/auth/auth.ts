@@ -1,15 +1,37 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_change_this_in_production_min_32_chars_long_!@#$%^&*()';
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'hainescitydental';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'gATORRAID@422';
+const JWT_SECRET = process.env.JWT_SECRET;
+const ADMIN_USERNAME = process.env.CMS_ADMIN_USERNAME;
+const ADMIN_PASSWORD = process.env.CMS_ADMIN_PASSWORD;
 
-if (!JWT_SECRET || JWT_SECRET.length < 32) {
-  throw new Error('JWT_SECRET must be at least 32 characters long');
+// Validate critical env vars on module load
+if (!JWT_SECRET) {
+  console.error('❌ CRITICAL: JWT_SECRET not set in environment variables');
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('JWT_SECRET is required in production environment');
+  }
 }
 
+if (!ADMIN_USERNAME || !ADMIN_PASSWORD) {
+  console.error('❌ CRITICAL: CMS_ADMIN_USERNAME or CMS_ADMIN_PASSWORD not set in environment variables');
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('Admin credentials are required in production environment');
+  }
+}
+
+if (JWT_SECRET && JWT_SECRET.length < 32) {
+  console.error('❌ CRITICAL: JWT_SECRET must be at least 32 characters long for security');
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('JWT_SECRET must be at least 32 characters long');
+  }
+}
+
+
 export function generateToken(username: string, expiresIn: string = '24h'): string {
+  if (!JWT_SECRET) {
+    throw new Error('JWT_SECRET is not configured');
+  }
   return jwt.sign({ username }, JWT_SECRET as string, { expiresIn } as any);
 }
 

@@ -39,7 +39,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-900 via-slate-900 to-slate-950 text-white flex items-center justify-center px-4">
-      <div className="w-full max-w-md bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-8 shadow-2xl">
+      <div className="w-full bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-8 shadow-2xl">
         <div className="text-center mb-6">
           <p className="text-sm uppercase tracking-[0.2em] text-sky-200">Haines City Dental</p>
           <h1 className="text-2xl font-semibold mt-2">CMS Login</h1>
@@ -59,7 +59,7 @@ export default function AdminLoginPage() {
           </div>
 
           <div>
-            <label className="block text-sm font medium text-slate-100">Password</label>
+            <label className="block text-sm font-medium text-slate-100">Password</label>
             <input
               type="password"
               value={password}

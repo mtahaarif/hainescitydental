@@ -37,3 +37,7 @@ next-env.d.ts
 .vscode/
 *.swp
 *.swo
+
+# Ensure existing image folders are tracked in git
+!public/news/
+!public/team-2024/

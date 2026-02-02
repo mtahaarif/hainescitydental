@@ -28,7 +28,7 @@ function PatientInfoContent() {
   }, [searchParams]);
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="w-full">
       {/* Tabs */}
       <div className="flex flex-wrap justify-center gap-2 mb-8">
         {tabs.map((tab) => (
@@ -404,17 +404,17 @@ function SpecialsContent() {
 
 export default function PatientInfoPage() {
   return (
-    <div className="min-h-screen py-12 patient-page">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="-mx-4 sm:mx-0 px-4 sm:px-0 bg-dental-blue-50/90 border border-dental-blue-100 sm:rounded-3xl rounded-none p-6 md:p-8 shadow-sm">
+    <div className="min-h-screen patient-page">
+      <div className="w-full">
+        <div className="bg-dental-blue-50/90 border-y border-dental-blue-100 py-8 px-0 shadow-sm">
 
           <main>
             {/* Header */}
             <div className="mb-6 text-center">
-              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+              <h1 className="text-4xl sm:text-5xl font-bold text-dental-blue-600 mb-4">
                 Patient <span className="gradient-text">Information</span>
               </h1>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              <p className="text-xl text-gray-600">
                 Everything you need to know about becoming a patient at Haines City Dental
               </p>
             </div>

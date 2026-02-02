@@ -3,82 +3,150 @@ import { validateTokenString } from '@/lib/auth/auth';
 import { query } from '@/lib/mysql';
 import { randomUUID } from 'crypto';
 
-// GET - Fetch all published news
+// GET - Fetch news (public or admin)
 export async function GET(request: NextRequest) {
-  try {
-    // accept admin cookie or bearer header to return full list
-    const header = request.headers.get('authorization');
-    const cookieToken = request.cookies.get('cms_token')?.value;
-    const token = header?.startsWith('Bearer ') ? header.substring(7) : cookieToken || null;
-    const decoded = token ? validateTokenString(token) : null;
+	try {
+		const header = request.headers.get('authorization');
+		const cookieToken = request.cookies.get('cms_token')?.value;
+		const token = header?.startsWith('Bearer ') ? header.substring(7) : cookieToken || null;
+		const decoded = token ? validateTokenString(token) : null;
 
-    const rows: any = decoded
-      ? await query(
-          `SELECT id, title, category, description, content, images, date, slug, published, createdAt, updatedAt
-           FROM news ORDER BY date DESC LIMIT 200`
-        )
-      : await query(
-          `SELECT id, title, category, description, content, images, date, slug, published, createdAt, updatedAt
-           FROM news WHERE published = 1 ORDER BY date DESC LIMIT 50`
-        );
+		// Follow HostGator schema: id, title, DATE (uppercase), image, images (json), description
+		// Try to use display_order if it exists, fallback to DATE only
+		let sql = 'SELECT id, title, `DATE`, image, images, description FROM news ORDER BY `DATE` DESC LIMIT 50';
+		try {
+			// Check if display_order column exists
+			const checkCol = await query('SHOW COLUMNS FROM news LIKE "display_order"');
+			if (checkCol && checkCol.length > 0) {
+				sql = 'SELECT id, title, `DATE`, image, images, description, display_order FROM news ORDER BY display_order DESC, `DATE` DESC LIMIT 50';
+			}
+		} catch (err) {
+			console.log('[API/news GET] Could not check for display_order column, using fallback query');
+		}
+		console.log('[API/news GET] Executing SQL');
+		
+		let rows: any;
+		try {
+			rows = await query(sql);
+		} catch (dbErr) {
+			console.error('[API/news GET] Database error:', dbErr instanceof Error ? dbErr.message : String(dbErr));
+			return NextResponse.json({ error: 'Database error', details: String(dbErr) }, { status: 500 });
+		}
+		
+		console.log('[API/news GET] Rows returned:', rows?.length || 0);
 
-    const news = rows.map((r: any) => ({
-      ...r,
-      images: r.images ? JSON.parse(r.images) : [],
-    }));
+		const news = (rows || []).map((r: any) => {
+			let images: string[] = [];
+			if (r.images) {
+				if (Array.isArray(r.images)) {
+					images = r.images;
+				} else if (typeof r.images === 'string' && r.images.trim()) {
+					try {
+						const parsed = JSON.parse(r.images);
+						images = Array.isArray(parsed) ? parsed : [];
+					} catch {
+						images = [];
+					}
+				}
+			}
 
-    return NextResponse.json(news);
-  } catch (error) {
-    console.error('News fetch error:', error);
-    return NextResponse.json({ error: 'Failed to fetch news' }, { status: 500 });
-  }
+			return {
+				id: r.id,
+				title: r.title,
+				date: r.DATE || null,
+				image: r.image || null,
+				images,
+				description: r.description || null,
+			};
+		});
+
+		console.log('[API/news GET] Returning:', news.length, 'items');
+		return NextResponse.json({ news });
+	} catch (error) {
+		console.error('[API/news GET] Outer error:', error);
+		return NextResponse.json({ error: 'Failed to fetch news', details: String(error) }, { status: 500 });
+	}
 }
 
 // POST - Create new news (requires auth)
 export async function POST(request: NextRequest) {
-  try {
-    const header = request.headers.get('authorization');
-    const cookieToken = request.cookies.get('cms_token')?.value;
-    const token = header?.startsWith('Bearer ') ? header.substring(7) : cookieToken || null;
-    const decoded = token ? validateTokenString(token) : null;
-    if (!decoded) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+	try {
+		const header = request.headers.get('authorization');
+		const cookieToken = request.cookies.get('cms_token')?.value;
+		const token = header?.startsWith('Bearer ') ? header.substring(7) : cookieToken || null;
+		const decoded = token ? validateTokenString(token) : null;
+		if (!decoded) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const body = await request.json();
-    const { title, category, description, content: bodyContent, images, date, published } = body;
+		const body = await request.json();
+		const { title, description, images, date, image } = body;
 
-    if (!title?.trim() || !category || !description?.trim() || !bodyContent?.trim()) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-    }
+		if (!title?.trim() || !description?.trim()) {
+			return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+		}
 
-    const slug = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
-    const id = randomUUID();
-    const createdAt = new Date();
-    const updatedAt = createdAt;
+		const id = randomUUID();
+		const dateParam = date ? new Date(date) : null;
 
-    await query(
-      `INSERT INTO news (id, title, category, description, content, images, date, slug, published, createdAt, updatedAt)
-       VALUES (:id, :title, :category, :description, :content, :images, :date, :slug, :published, :createdAt, :updatedAt)`,
-      {
-        id,
-        title,
-        category,
-        description,
-        content: bodyContent,
-        images: JSON.stringify(images || []),
-        date: date ? new Date(date) : createdAt,
-        slug,
-        published: published ? 1 : 0,
-        createdAt,
-        updatedAt,
-      }
-    );
+		// Get current max display_order and add 1 so new items appear first
+		let displayOrder = 1;
+		try {
+			const maxResult = await query('SELECT MAX(display_order) as maxOrder FROM news');
+			if (maxResult && maxResult[0] && maxResult[0].maxOrder) {
+				displayOrder = maxResult[0].maxOrder + 1;
+			}
+		} catch (err) {
+			console.log('[API/news POST] Could not get max display_order, using 1');
+		}
 
-    const [created] = (await query('SELECT * FROM news WHERE id = ?', [id])) as any;
-    if (created) created.images = created.images ? JSON.parse(created.images) : [];
+		try {
+			await query(
+				'INSERT INTO news (id, title, `DATE`, image, images, description, display_order) VALUES (:id, :title, :DATE, :image, :images, :description, :displayOrder)',
+				{ id, title, DATE: dateParam, image: image || '', images: JSON.stringify(images || []), description, displayOrder }
+			);
+		} catch (dbErr) {
+			console.error('[API/news POST] Database error:', dbErr);
+			return NextResponse.json({ error: 'Database error', details: String(dbErr) }, { status: 500 });
+		}
 
-    return NextResponse.json(created, { status: 201 });
-  } catch (error) {
-    console.error('News create error:', error);
-    return NextResponse.json({ error: 'Failed to create news' }, { status: 500 });
-  }
+		let created: any;
+		try {
+			const results = await query('SELECT id, title, `DATE`, image, images, description, display_order FROM news WHERE id = ?', [id]);
+			created = results[0];
+		} catch (dbErr) {
+			console.error('[API/news POST] Failed to fetch created:', dbErr);
+			created = null;
+		}
+
+		let createdImages: string[] = [];
+		if (created?.images) {
+			if (Array.isArray(created.images)) {
+				createdImages = created.images;
+			} else if (typeof created.images === 'string' && created.images.trim()) {
+				try {
+					const parsed = JSON.parse(created.images);
+					createdImages = Array.isArray(parsed) ? parsed : [];
+				} catch {
+					createdImages = [];
+				}
+			}
+		}
+
+		const createdRow = created
+			? {
+				id: created.id,
+				title: created.title,
+				date: created.DATE || null,
+				image: created.image || null,
+				images: createdImages,
+				description: created.description || null,
+			}
+			: null;
+
+		return NextResponse.json({ news: [createdRow] }, { status: 201 });
+	} catch (error) {
+		console.error('[API/news POST] Error:', error);
+		return NextResponse.json({ error: 'Failed to create news', details: String(error) }, { status: 500 });
+	}
 }
+
+

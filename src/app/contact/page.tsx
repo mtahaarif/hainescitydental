@@ -52,9 +52,9 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className="min-h-screen py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="-mx-4 sm:mx-0 px-4 sm:px-0 bg-dental-blue-50/90 border border-dental-blue-100 sm:rounded-3xl rounded-none p-6 md:p-8 shadow-sm">
+    <div className="min-h-screen">
+      <div className="w-full">
+        <div className="bg-dental-blue-50/90 border-y border-dental-blue-100 py-8 px-0 shadow-sm">
 
           <main>
             {/* Header */}
@@ -62,7 +62,7 @@ export default function ContactPage() {
               <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
                 Contact <span className="gradient-text">Haines City Dental</span>
               </h1>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              <p className="text-xl text-gray-600">
                 We are here to help with appointments, questions, and directions to our office.
               </p>
             </div>

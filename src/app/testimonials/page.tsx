@@ -17,10 +17,10 @@ export default function TestimonialsPage() {
   }
 
   return (
-    <div className="min-h-screen py-12">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen">
+      <div className="w-full">
         {review ? (
-          <div className="bg-white rounded-2xl shadow p-6 md:p-10">
+          <div className="bg-white border-y shadow py-8 px-0">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
                 {review.avatar ? (

@@ -1,256 +1,195 @@
+"use client";
+
 import Image from 'next/image';
-import fs from 'fs';
-import path from 'path';
+import { useEffect, useState } from 'react';
 import { Calendar } from 'lucide-react';
-import { getAllContent } from '@/lib/content';
-import LightboxGallery from '@/components/LightboxGallery';
+import { Lightbox } from '@/components/Lightbox';
 
-const categoryConfig = {
-  training: { label: 'Training' },
-  community: { label: 'Community' },
-  conference: { label: 'Conference' },
-  mission: { label: 'Mission' },
-};
-
-interface NewsItem {
-  slug: string;
+type NewsItem = {
   id: string;
   title: string;
-  date: string;
-  category: 'training' | 'community' | 'conference' | 'mission';
+  date?: string | null;
+  image?: string | null;
   images?: string[];
-  description?: string;
-  content?: string;
-}
+  description?: string | null;
+};
 
-export default async function NewsPage() {
-  // Prefer the generated `src/data/news.json` extracted from WordPress
-  let sortedNews: NewsItem[] = [];
-  try {
-    const jsonPath = path.join(process.cwd(), 'src', 'data', 'news.json');
-    if (fs.existsSync(jsonPath)) {
-      const raw = fs.readFileSync(jsonPath, 'utf8');
-      // Try strict JSON parse first; fall back to a tolerant extractor when the
-      // JSON is malformed (some exported items contain unescaped double-quotes
-      // inside the HTML fields which breaks JSON.parse).
-      let parsed: any[] = [];
-      try {
-        parsed = JSON.parse(raw);
-      } catch (parseErr) {
-        // Fallback: extract top-level object text chunks from the array and
-        // pull the fields we care about (id, title, date, image, images,
-        // excerpt). We intentionally ignore the raw `html` field when it's
-        // malformed — the `images` array is sufficient to rebuild the page.
-        const objects: string[] = [];
-        const text = raw;
-        let inArray = false;
-        let depth = 0;
-        let start = -1;
-        for (let i = 0; i < text.length; i++) {
-          const ch = text[i];
-          if (!inArray) {
-            if (ch === '[') inArray = true;
-            continue;
-          }
-          if (ch === '{') {
-            if (depth === 0) start = i;
-            depth++;
-            continue;
-          }
-          if (ch === '}') {
-            depth--;
-            if (depth === 0 && start !== -1) {
-              objects.push(text.substring(start, i + 1));
-              start = -1;
-            }
-            continue;
-          }
-        }
-
-        for (const objStr of objects) {
-          const idMatch = objStr.match(/"id"\s*:\s*"((?:\\.|[^"\\])*)"/);
-          const titleMatch = objStr.match(/"title"\s*:\s*"((?:\\.|[^"\\])*)"/);
-          const dateMatch = objStr.match(/"date"\s*:\s*"((?:\\.|[^"\\])*)"/);
-          const imageMatch = objStr.match(/"image"\s*:\s*"((?:\\.|[^"\\])*)"/);
-          const excerptMatch = objStr.match(/"excerpt"\s*:\s*"((?:\\.|[^"\\])*)"/);
-          const imagesMatch = objStr.match(/"images"\s*:\s*\[([^\]]*)\]/s);
-
-          const imagesList: string[] = [];
-          if (imagesMatch && imagesMatch[1]) {
-            const g = imagesMatch[1].matchAll(/"([^\"]+)"/g);
-            for (const m of g) {
-              if (m && m[1]) imagesList.push(m[1]);
-            }
-          }
-
-          parsed.push({
-            id: idMatch ? idMatch[1] : undefined,
-            title: titleMatch ? titleMatch[1] : (idMatch ? idMatch[1] : undefined),
-            date: dateMatch ? dateMatch[1] : '',
-            image: imageMatch ? imageMatch[1] : '',
-            images: imagesList,
-            excerpt: excerptMatch ? excerptMatch[1] : '',
-            html: '',
-          });
-        }
-      }
-
-      // Map external shape to our NewsItem interface
-      const parsedItems: NewsItem[] = parsed.map((it: any, idx: number) => {
-        const images = it.images && it.images.length ? it.images : (it.image ? [it.image] : []);
-        return {
-          slug: it.slug || `news-${idx}`,
-          id: it.id || it.slug || `news-${idx}`,
-          title: it.title || it.name || `News ${idx + 1}`,
-          date: it.date || it.post_date || '',
-          category: (it.category && ['training','community','conference','mission'].includes(it.category)) ? it.category : 'community',
-          images,
-          description: it.excerpt || it.summary || '',
-          content: it.html || it.content || '',
-        } as NewsItem;
-      });
-
-
-
-      sortedNews = parsedItems;
-    } else {
-      // fallback to CMS loader if JSON not present
-      const newsItems = (await getAllContent('news')) as NewsItem[];
-      sortedNews = newsItems;
-    }
-  } catch (e) {
-    // on error, fallback to content loader
-    const newsItems = (await getAllContent('news')) as NewsItem[];
-    sortedNews = newsItems;
-  }
-
-  // Sort by date if available (newest first)
-  sortedNews = sortedNews.sort((a, b) => {
-    const ta = a.date ? new Date(a.date).getTime() : 0;
-    const tb = b.date ? new Date(b.date).getTime() : 0;
-    return tb - ta;
+export default function NewsPage() {
+  const [news, setNews] = useState<NewsItem[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [lightbox, setLightbox] = useState<{ isOpen: boolean; itemIndex: number; imageIndex: number }>({
+    isOpen: false,
+    itemIndex: 0,
+    imageIndex: 0,
   });
-  
-  return (
-    <div className="min-h-screen py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="-mx-4 sm:mx-0 px-4 sm:px-0 bg-dental-blue-50/90 border border-dental-blue-100 sm:rounded-3xl rounded-none p-6 md:p-8 shadow-sm">
 
+  useEffect(() => {
+    let mounted = true;
+    fetch('/api/news')
+      .then(res => res.json())
+      .then(data => {
+        if (!mounted) return;
+        // API returns { news: [...] }
+        setNews(Array.isArray(data.news) ? data.news : []);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        if (mounted) {
+          setError('Failed to load news');
+          setLoading(false);
+        }
+      });
+    return () => { mounted = false };
+  }, []);
+
+  const openLightbox = (itemIndex: number, imageIndex: number) => {
+    setLightbox({ isOpen: true, itemIndex, imageIndex });
+  };
+
+  const closeLightbox = () => {
+    setLightbox({ isOpen: false, itemIndex: 0, imageIndex: 0 });
+  };
+
+  return (
+    <div className="min-h-screen">
+      <div className="w-full">
+        <div className="bg-dental-blue-50/90 border-y border-dental-blue-100 py-8 px-0 shadow-sm">
+          {error && <div className="text-red-600 mb-6">{error}</div>}
           <main>
-            {/* Header */}
-            <div className="mb-6 text-center">
+            <div className="mb-12 text-center">
               <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
                 <span className="gradient-text">News</span>
               </h1>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              <p className="text-xl text-gray-600">
                 Highlights from our doctors, team, and community service events.
               </p>
             </div>
 
-            {/* News Grid */}
-            <div className="space-y-8">
-              {sortedNews.map((item, index) => {
-                return (
-                  <article
-                    key={item.id}
-                    className="glass-light p-6 sm:p-8 transition-all duration-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.25)] hover:-translate-y-1"
-                    style={{ animationDelay: `${index * 100}ms` }}
-                  >
-                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4">
-                      <div className="flex items-center gap-4">
-                        <div>
-                          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{item.title}</h2>
-                        </div>
+            {loading ? (
+              <div className="flex items-center justify-center py-20">
+                <div className="flex items-center gap-3 text-dental-blue-700">
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-dental-blue-600 border-t-transparent" />
+                  <span className="text-sm font-medium">Loading news...</span>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-12">
+                {news.map((item, itemIndex) => {
+                  const displayImages = item.images && item.images.length > 0 ? item.images : (item.image ? [item.image] : []);
+                  const hasMultipleImages = displayImages.length > 1;
+
+                  return (
+                    <article key={item.id} className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition">
+                      {/* Title + meta comes before images */}
+                      <div className="p-6">
+                        <h2 className="text-2xl sm:text-3xl font-bold mb-3">{item.title}</h2>
+
+                        {item.date && (
+                          <div className="text-sm text-dental-blue-700 mb-4 flex items-center gap-2">
+                            <Calendar className="w-4 h-4" />
+                            {String(item.date)}
+                          </div>
+                        )}
+
+                        {item.description && (
+                          <p className="text-gray-700 text-base leading-relaxed whitespace-pre-line">
+                            {item.description}
+                          </p>
+                        )}
                       </div>
-                      {item.date && (
-                        <div className="flex items-center gap-2 text-sm text-dental-blue-700">
-                          <Calendar className="w-4 h-4" />
-                          <span>{typeof item.date === 'string' ? item.date : new Date(item.date).toLocaleDateString()}</span>
+
+                      {/* Image Gallery Section */}
+                      {displayImages.length > 0 && (
+                        <div className="mb-6">
+                          {hasMultipleImages ? (
+                            <div className="grid grid-cols-2 gap-2 p-4 bg-gray-50">
+                              {displayImages.slice(0, 4).map((src, imgIndex) => (
+                                <button
+                                  key={imgIndex}
+                                  onClick={() => openLightbox(itemIndex, imgIndex)}
+                                  className="relative w-full aspect-square rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition group"
+                                >
+                                  <Image
+                                    src={src}
+                                    alt={`${item.title} - Image ${imgIndex + 1}`}
+                                    fill
+                                    className="object-cover group-hover:scale-105 transition"
+                                    sizes="(max-width: 640px) 50vw, 300px"
+                                  />
+                                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition flex items-center justify-center">
+                                    <span className="text-white opacity-0 group-hover:opacity-100 transition text-sm font-medium">
+                                      View Gallery
+                                    </span>
+                                  </div>
+                                </button>
+                              ))}
+                              {displayImages.length > 4 && (
+                                <div className="col-span-2 text-center py-4 bg-white border-t">
+                                  <p className="text-sm text-gray-600">
+                                    +{displayImages.length - 4} more {displayImages.length - 4 === 1 ? 'image' : 'images'}
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => openLightbox(itemIndex, 0)}
+                              className="relative w-full h-80 cursor-pointer hover:opacity-90 transition group overflow-hidden"
+                            >
+                              <Image
+                                src={displayImages[0]}
+                                alt={item.title}
+                                fill
+                                className="object-cover group-hover:scale-105 transition"
+                                sizes="(max-width: 640px) 100vw, 800px"
+                              />
+                              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition flex items-center justify-center">
+                                <span className="text-white opacity-0 group-hover:opacity-100 transition text-lg font-medium">
+                                  Click to Enlarge
+                                </span>
+                              </div>
+                            </button>
+                          )}
                         </div>
                       )}
-                    </div>
 
-                    {item.description && (
-                      <p className="text-gray-700 leading-relaxed mb-6">
-                        {item.description}
-                      </p>
-                    )}
-
-                    {item.content && (
-                      <div
-                        className="prose max-w-none mb-6"
-                        dangerouslySetInnerHTML={{ __html: item.content }}
-                      />
-                    )}
-
-                    {item.images && item.images.length > 0 && (() => {
-                      // Normalize and filter image paths on the server, then render the client-side lightbox gallery
-                      const imgs: string[] = [];
-                      const normalize = (s: string) => {
-                        if (!s) return '';
-                        if (/^https?:\/\//i.test(s)) return s;
-                        if (s.startsWith('/')) {
-                          const full = path.join(process.cwd(), 'public', s.replace(/^\//, ''));
-                          if (fs.existsSync(full)) return s;
-                          return '';
-                        }
-                        if (/\.(png|jpe?g|jpeg|webp)$/i.test(s)) {
-                          const candidate = s.startsWith('news/') ? `/${s}` : `/${s}`;
-                          const full = path.join(process.cwd(), 'public', candidate.replace(/^\//, ''));
-                          if (fs.existsSync(full)) return candidate;
-                          const alt = path.join(process.cwd(), 'public', 'news', path.basename(s));
-                          if (fs.existsSync(alt)) return `/news/${path.basename(s)}`;
-                        }
-
-                        const baseName = s.includes('/') ? s.split('/').pop() as string : s;
-                        const newsDir = path.join(process.cwd(), 'public', 'news');
-                        try {
-                          if (fs.existsSync(newsDir)) {
-                            const files = fs.readdirSync(newsDir);
-                            const match = files.find(f => f.toLowerCase().startsWith(baseName.toLowerCase()));
-                            if (match) return `/news/${match}`;
-                            const match2 = files.find(f => f.toLowerCase().includes(baseName.toLowerCase()));
-                            if (match2) return `/news/${match2}`;
-                          }
-                        } catch (e) {
-                          // ignore
-                        }
-
-                        return '';
-                      };
-
-                      for (const img of item.images) {
-                        const src = normalize(img);
-                        if (!src) continue;
-                        // ensure file exists for local images
-                        if (src.startsWith('/')) {
-                          const full = path.join(process.cwd(), 'public', src.replace(/^\//, ''));
-                          if (!fs.existsSync(full)) continue;
-                        }
-                        imgs.push(src);
-                      }
-
-                      if (imgs.length === 0) return null;
-
-                      return (
-                        <div>
-                          {/* LightboxGallery is a client component that handles opening images */}
-                          {/* Pass item metadata so the lightbox shows the right-side details panel */}
-                          <LightboxGallery
-                            images={imgs}
-                            alt={item.title}
-                            meta={{ title: item.title, date: item.date, description: item.description, content: item.content }}
-                          />
+                      {hasMultipleImages && (
+                        <div className="px-6 pb-6">
+                          <button
+                            onClick={() => openLightbox(itemIndex, 0)}
+                            className="inline-block px-4 py-2 bg-dental-blue-600 text-white rounded-lg hover:bg-dental-blue-700 transition"
+                          >
+                            View All {displayImages.length} Images
+                          </button>
                         </div>
-                      );
-                    })()}
-                  </article>
-                );
-              })}
-            </div>
+                      )}
+                    </article>
+                  );
+                })}
+
+                {news.length === 0 && !error && (
+                  <div className="text-center py-12">
+                    <p className="text-gray-500 text-lg">No news items available</p>
+                  </div>
+                )}
+              </div>
+            )}
           </main>
         </div>
       </div>
+
+      {/* Lightbox */}
+      {lightbox.isOpen && (
+        <Lightbox
+          images={news[lightbox.itemIndex]?.images || (news[lightbox.itemIndex]?.image ? [news[lightbox.itemIndex].image!] : [])}
+          title={news[lightbox.itemIndex]?.title || ''}
+          initialIndex={lightbox.imageIndex}
+          isOpen={lightbox.isOpen}
+          onClose={closeLightbox}
+        />
+      )}
     </div>
   );
 }

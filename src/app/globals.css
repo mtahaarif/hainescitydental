@@ -549,22 +549,13 @@ height: 35px;}
 
   /* Global content container and justified text for uniformity */
   .content-prose {
-    /* Wider line measure for desktop for a less congested layout */
-    max-width: 95ch;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: justify;
-    text-justify: inter-word;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    text-align: left;
     word-break: break-word;
     hyphens: auto;
     line-height: 1.7;
-  }
-
-  /* Extra-wide on large viewports to reduce cramped right-column look */
-  @media (min-width: 1280px) {
-    .content-prose {
-      max-width: 110ch;
-    }
   }
 
   /* Prevent long words from overflowing */
