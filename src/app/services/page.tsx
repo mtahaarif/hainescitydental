@@ -274,7 +274,7 @@ export default function ServicesPage() {
               <h1 className="text-4xl sm:text-5xl font-bold text-dental-blue-600 mb-4">
                 Comprehensive Dental Services
               </h1>
-              <p className="text-xl text-gray-600">
+              <p className="text-xl text-gray-600 text-center">
                 From routine care to advanced treatments, we offer a full spectrum of dental services.
               </p>
             </div>

@@ -62,7 +62,7 @@ export default function NewsPage() {
               <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
                 <span className="gradient-text">News</span>
               </h1>
-              <p className="text-xl text-gray-600">
+              <p className="text-xl text-gray-600 text-center">
                 Highlights from our doctors, team, and community service events.
               </p>
             </div>

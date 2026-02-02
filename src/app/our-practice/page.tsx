@@ -14,7 +14,7 @@ export default function OurPracticePage() {
               <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
                 <span className="gradient-text">Our Practice</span>
               </h1>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto text-center">
                 Providing exceptional dental care to our community.
               </p>
               <div className="mt-6 glass p-6 max-w-3xl mx-auto text-justify">

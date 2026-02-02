@@ -105,7 +105,7 @@ export default function FeaturedServices() {
 <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
             Comprehensive <span className="gradient-text">Dental Care</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto text-center">
             From routine check-ups to advanced procedures, we offer a full range of 
             dental services to keep your smile healthy and beautiful.
           </p>

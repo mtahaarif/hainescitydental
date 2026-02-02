@@ -11,7 +11,7 @@ export default function Hero() {
         <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
         <span className="gradient-text">Haines City Dental</span>
         </h1>
-        <p className="text-xl text-gray-600">
+        <p className="text-xl text-gray-600 text-center">
           Providing exceptional dental care to our community.
         </p>
         {/* Inserted Our Practice intro from the client's previous page */}

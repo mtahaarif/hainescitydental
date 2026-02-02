@@ -414,7 +414,7 @@ export default function PatientInfoPage() {
               <h1 className="text-4xl sm:text-5xl font-bold text-dental-blue-600 mb-4">
                 Patient <span className="gradient-text">Information</span>
               </h1>
-              <p className="text-xl text-gray-600">
+              <p className="text-xl text-gray-600 text-center">
                 Everything you need to know about becoming a patient at Haines City Dental
               </p>
             </div>
