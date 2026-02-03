@@ -18,6 +18,7 @@ export default function NewsPage() {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [retryCount, setRetryCount] = useState(0);
   const [lightbox, setLightbox] = useState<{ isOpen: boolean; itemIndex: number; imageIndex: number }>({
     isOpen: false,
     itemIndex: 0,
@@ -26,21 +27,38 @@ export default function NewsPage() {
 
   useEffect(() => {
     let mounted = true;
-    fetch('/api/news')
-      .then(res => res.json())
-      .then(data => {
+    
+    const fetchNews = async (attempt = 1) => {
+      try {
+        const res = await fetch('/api/news');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        
         if (!mounted) return;
         // API returns { news: [...] }
         setNews(Array.isArray(data.news) ? data.news : []);
         setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
-        if (mounted) {
-          setError('Failed to load news');
+        setError(null);
+      } catch (err) {
+        console.error(`[News] Fetch attempt ${attempt} failed:`, err);
+        
+        if (!mounted) return;
+        
+        // Retry up to 3 times with exponential backoff
+        if (attempt < 3) {
+          const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
+          console.log(`[News] Retrying in ${delay}ms...`);
+          setRetryCount(attempt);
+          setTimeout(() => fetchNews(attempt + 1), delay);
+        } else {
+          setError('Failed to load news. Please refresh the page.');
           setLoading(false);
         }
-      });
+      }
+    };
+    
+    fetchNews();
+    
     return () => { mounted = false };
   }, []);
 
@@ -71,7 +89,9 @@ export default function NewsPage() {
               <div className="flex items-center justify-center py-20">
                 <div className="flex items-center gap-3 text-dental-blue-700">
                   <div className="h-5 w-5 animate-spin rounded-full border-2 border-dental-blue-600 border-t-transparent" />
-                  <span className="text-sm font-medium">Loading news...</span>
+                  <span className="text-sm font-medium">
+                    {retryCount > 0 ? `Retrying connection (${retryCount}/2)...` : 'Loading news...'}
+                  </span>
                 </div>
               </div>
             ) : (

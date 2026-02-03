@@ -3,6 +3,20 @@ import { validateTokenString } from '@/lib/auth/auth';
 import { query } from '@/lib/mysql';
 import { randomUUID } from 'crypto';
 
+// Retry helper with exponential backoff
+async function queryWithRetry(sql: string, maxRetries = 3) {
+	for (let attempt = 1; attempt <= maxRetries; attempt++) {
+		try {
+			return await query(sql);
+		} catch (err) {
+			if (attempt === maxRetries) throw err;
+			const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000); // Max 5s
+			console.log(`[API/news] Retry ${attempt}/${maxRetries} after ${delay}ms`);
+			await new Promise(resolve => setTimeout(resolve, delay));
+		}
+	}
+}
+
 // GET - Fetch news (public or admin)
 export async function GET(request: NextRequest) {
 	try {
@@ -16,7 +30,7 @@ export async function GET(request: NextRequest) {
 		let sql = 'SELECT id, title, `DATE`, image, images, description FROM news ORDER BY `DATE` DESC LIMIT 50';
 		try {
 			// Check if display_order column exists
-			const checkCol = await query('SHOW COLUMNS FROM news LIKE "display_order"');
+			const checkCol = await queryWithRetry('SHOW COLUMNS FROM news LIKE "display_order"');
 			if (checkCol && checkCol.length > 0) {
 				sql = 'SELECT id, title, `DATE`, image, images, description, display_order FROM news ORDER BY display_order DESC, `DATE` DESC LIMIT 50';
 			}
@@ -27,9 +41,9 @@ export async function GET(request: NextRequest) {
 		
 		let rows: any;
 		try {
-			rows = await query(sql);
+			rows = await queryWithRetry(sql);
 		} catch (dbErr) {
-			console.error('[API/news GET] Database error:', dbErr instanceof Error ? dbErr.message : String(dbErr));
+			console.error('[API/news GET] Database error after retries:', dbErr instanceof Error ? dbErr.message : String(dbErr));
 			return NextResponse.json({ error: 'Database error', details: String(dbErr) }, { status: 500 });
 		}
 		

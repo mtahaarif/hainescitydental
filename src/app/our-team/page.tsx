@@ -16,23 +16,41 @@ export default function OurTeamPage() {
   const [team, setTeam] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     let mounted = true;
-    fetch('/api/team')
-      .then((res) => res.json())
-      .then((data) => {
+    
+    const fetchTeam = async (attempt = 1) => {
+      try {
+        const res = await fetch('/api/team');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        
         if (!mounted) return;
         setTeam(Array.isArray(data.team) ? data.team : []);
         setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        if (mounted) {
-          setError('Failed to load team');
+        setError(null);
+      } catch (err) {
+        console.error(`[Team] Fetch attempt ${attempt} failed:`, err);
+        
+        if (!mounted) return;
+        
+        // Retry up to 3 times with exponential backoff
+        if (attempt < 3) {
+          const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
+          console.log(`[Team] Retrying in ${delay}ms...`);
+          setRetryCount(attempt);
+          setTimeout(() => fetchTeam(attempt + 1), delay);
+        } else {
+          setError('Failed to load team. Please refresh the page.');
           setLoading(false);
         }
-      });
+      }
+    };
+    
+    fetchTeam();
+    
     return () => {
       mounted = false;
     };
@@ -59,7 +77,9 @@ export default function OurTeamPage() {
               <div className="flex items-center justify-center py-20">
                 <div className="flex items-center gap-3 text-dental-blue-700">
                   <div className="h-5 w-5 animate-spin rounded-full border-2 border-dental-blue-600 border-t-transparent" />
-                  <span className="text-sm font-medium">Loading team...</span>
+                  <span className="text-sm font-medium">
+                    {retryCount > 0 ? `Retrying connection (${retryCount}/2)...` : 'Loading team...'}
+                  </span>
                 </div>
               </div>
             ) : (

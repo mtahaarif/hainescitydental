@@ -3,6 +3,20 @@ import { query } from '@/lib/mysql';
 import { validateTokenString } from '@/lib/auth/auth';
 import { randomUUID } from 'crypto';
 
+// Retry helper with exponential backoff
+async function queryWithRetry(sql: string, maxRetries = 3) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await query(sql);
+    } catch (err) {
+      if (attempt === maxRetries) throw err;
+      const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000); // Max 5s
+      console.log(`[API/team] Retry ${attempt}/${maxRetries} after ${delay}ms`);
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+  }
+}
+
 // GET - fetch public team members
 export async function GET() {
   try {
@@ -10,7 +24,7 @@ export async function GET() {
     let sql = 'SELECT id, `NAME`, role, bio, department, image FROM staff ORDER BY department, `NAME`';
     try {
       // Check if display_order column exists
-      const checkCol = await query('SHOW COLUMNS FROM staff LIKE "display_order"');
+      const checkCol = await queryWithRetry('SHOW COLUMNS FROM staff LIKE "display_order"');
       if (checkCol && checkCol.length > 0) {
         sql = 'SELECT id, `NAME`, role, bio, department, image, display_order FROM staff ORDER BY display_order DESC, department, `NAME`';
       }
@@ -21,9 +35,9 @@ export async function GET() {
     
     let rows: any;
     try {
-      rows = await query(sql);
+      rows = await queryWithRetry(sql);
     } catch (dbErr) {
-      console.error('[API/team GET] Database error:', dbErr instanceof Error ? dbErr.message : String(dbErr));
+      console.error('[API/team GET] Database error after retries:', dbErr instanceof Error ? dbErr.message : String(dbErr));
       return NextResponse.json({ error: 'Database error', details: String(dbErr) }, { status: 500 });
     }
     
