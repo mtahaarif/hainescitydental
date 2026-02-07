@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 
@@ -14,6 +14,26 @@ interface LightboxProps {
 
 export function Lightbox({ images, title, initialIndex = 0, isOpen, onClose }: LightboxProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
+
+  // Preload adjacent images for faster navigation
+  useEffect(() => {
+    if (!isOpen || !images.length) return;
+    
+    const preloadImage = (src: string) => {
+      const img = new window.Image();
+      img.src = src;
+    };
+    
+    // Preload current, next, and previous images
+    const nextIndex = (currentIndex + 1) % images.length;
+    const prevIndex = (currentIndex - 1 + images.length) % images.length;
+    
+    preloadImage(images[currentIndex]);
+    if (images.length > 1) {
+      preloadImage(images[nextIndex]);
+      preloadImage(images[prevIndex]);
+    }
+  }, [currentIndex, images, isOpen]);
 
   if (!isOpen || !images.length) return null;
 
@@ -56,12 +76,14 @@ export function Lightbox({ images, title, initialIndex = 0, isOpen, onClose }: L
         {/* Main image */}
         <div className="relative w-full h-full max-w-5xl max-h-[90vh]">
           <Image
+            key={currentIndex}
             src={images[currentIndex]}
             alt={`${title} - Image ${currentIndex + 1} of ${images.length}`}
             fill
             className="object-contain"
             sizes="90vw"
             priority
+            unoptimized
           />
         </div>
 
