@@ -104,7 +104,7 @@ export default function OurTeamPage() {
                 </section>
 
                 <section>
-                  <h2 className="text-2xl font-bold mb-6 text-dental-blue-600 text-center">Staff</h2>
+                  <h2 className="text-2xl font-bold mb-6 text-black text-center">Meet Our Staff</h2>
                   <div className="flex flex-col gap-6">
                     {staff.map((s) => (
                       <div key={s.id} className="bg-white p-6 rounded-xl shadow flex flex-col items-center text-center">
