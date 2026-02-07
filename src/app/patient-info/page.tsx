@@ -73,6 +73,14 @@ function NewPatientsContent() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState('');
 
+  const openMailtoFallback = () => {
+    const subject = encodeURIComponent(`New Patient Appointment Request - ${formData.firstName} ${formData.lastName}`);
+    const body = encodeURIComponent(
+      `First Name: ${formData.firstName}\nLast Name: ${formData.lastName}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nPreferred Date: ${formData.preferredDate || 'Not specified'}\nPreferred Time: ${formData.preferredTime || 'Not specified'}\nHow they heard about us: ${formData.aboutUs || 'Not specified'}\n\nAdditional Information:\n${formData.additionalInfo || 'None provided'}`
+    );
+    window.location.href = `mailto:office@hainescitydental.com?subject=${subject}&body=${body}`;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -90,25 +98,45 @@ function NewPatientsContent() {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to send appointment request');
-      }
+      const data = await response.json();
 
-      setIsSubmitted(true);
-      setTimeout(() => {
-        setIsSubmitted(false);
-        setFormData({
-          firstName: '',
-          lastName: '',
-          email: '',
-          phone: '',
-          preferredDate: '',
-          preferredTime: '',
-          referredBy: '',
-          aboutUs: '',
-          additionalInfo: '',
-        });
-      }, 5000);
+      if (data.useMailto) {
+        // Email service not configured, use mailto fallback
+        openMailtoFallback();
+        setIsSubmitted(true);
+        setTimeout(() => {
+          setIsSubmitted(false);
+          setFormData({
+            firstName: '',
+            lastName: '',
+            email: '',
+            phone: '',
+            preferredDate: '',
+            preferredTime: '',
+            referredBy: '',
+            aboutUs: '',
+            additionalInfo: '',
+          });
+        }, 5000);
+      } else if (!response.ok) {
+        throw new Error('Failed to send appointment request');
+      } else {
+        setIsSubmitted(true);
+        setTimeout(() => {
+          setIsSubmitted(false);
+          setFormData({
+            firstName: '',
+            lastName: '',
+            email: '',
+            phone: '',
+            preferredDate: '',
+            preferredTime: '',
+            referredBy: '',
+            aboutUs: '',
+            additionalInfo: '',
+          });
+        }, 5000);
+      }
     } catch (err) {
       setError('Failed to submit request. Please try calling us directly at 1-877-288-3384.');
       console.error('Error submitting form:', err);

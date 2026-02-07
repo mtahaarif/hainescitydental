@@ -14,6 +14,14 @@ export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
+  const openMailtoFallback = () => {
+    const subject = encodeURIComponent(`Contact Form Submission from ${formData.name}`);
+    const body = encodeURIComponent(
+      `Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone || 'Not provided'}\n\nMessage:\n${formData.message}`
+    );
+    window.location.href = `mailto:office@hainescitydental.com?subject=${subject}&body=${body}`;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -36,15 +44,25 @@ export default function ContactPage() {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to send message');
-      }
+      const data = await response.json();
 
-      setIsSubmitted(true);
-      setTimeout(() => {
-        setIsSubmitted(false);
-        setFormData({ name: '', email: '', phone: '', message: '' });
-      }, 3000);
+      if (data.useMailto) {
+        // Email service not configured, use mailto fallback
+        openMailtoFallback();
+        setIsSubmitted(true);
+        setTimeout(() => {
+          setIsSubmitted(false);
+          setFormData({ name: '', email: '', phone: '', message: '' });
+        }, 3000);
+      } else if (!response.ok) {
+        throw new Error('Failed to send message');
+      } else {
+        setIsSubmitted(true);
+        setTimeout(() => {
+          setIsSubmitted(false);
+          setFormData({ name: '', email: '', phone: '', message: '' });
+        }, 3000);
+      }
     } catch (err) {
       setError('Failed to send message. Please try again or call us directly.');
       console.error('Error submitting form:', err);

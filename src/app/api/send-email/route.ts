@@ -6,8 +6,20 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { type, ...formData } = body;
 
+    // Check if SMTP is configured
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.warn('SMTP not configured, returning mailto fallback');
+      return NextResponse.json(
+        { 
+          message: 'Email service not configured',
+          useMailto: true,
+          formData: { type, ...formData }
+        },
+        { status: 200 }
+      );
+    }
+
     // Configure nodemailer transporter
-    // Note: You'll need to set these environment variables in your .env file
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || 'smtp.gmail.com',
       port: parseInt(process.env.SMTP_PORT || '587'),
@@ -64,8 +76,12 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error sending email:', error);
     return NextResponse.json(
-      { message: 'Failed to send email', error: String(error) },
-      { status: 500 }
+      { 
+        message: 'Failed to send email',
+        error: String(error),
+        useMailto: true
+      },
+      { status: 200 } // Return 200 to allow mailto fallback
     );
   }
 }
