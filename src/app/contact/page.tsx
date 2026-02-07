@@ -11,19 +11,46 @@ export default function ContactPage() {
     message: '',
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({ name: '', email: '', phone: '', message: '' });
-    }, 3000);
+    setIsSubmitting(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'contact',
+          ...formData,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+
+      setIsSubmitted(true);
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setFormData({ name: '', email: '', phone: '', message: '' });
+      }, 3000);
+    } catch (err) {
+      setError('Failed to send message. Please try again or call us directly.');
+      console.error('Error submitting form:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
@@ -122,7 +149,11 @@ export default function ContactPage() {
                         <p className="text-gray-600">We will get back to you soon.</p>
                       </div>
                     ) : (
-                      <>
+                      <>                        {error && (
+                          <div className="bg-red-50 text-red-600 p-4 rounded-2xl border border-red-200">
+                            {error}
+                          </div>
+                        )}
                         <div>
                           <label className="block text-gray-900 font-semibold mb-2">Name</label>
                           <input
@@ -176,9 +207,10 @@ export default function ContactPage() {
 
                         <button
                           type="submit"
-                          className="w-full btn-primary flex items-center justify-center gap-2 group hover:scale-[1.02] active:scale-[0.98] transition-transform"
+                          disabled={isSubmitting}
+                          className="w-full btn-primary flex items-center justify-center gap-2 group hover:scale-[1.02] active:scale-[0.98] transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          Send Message
+                          {isSubmitting ? 'Sending...' : 'Send Message'}
                           <Send className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                         </button>
                       </>

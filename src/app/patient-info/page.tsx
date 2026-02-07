@@ -69,10 +69,52 @@ function NewPatientsContent() {
     aboutUs: '',
     additionalInfo: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert('Thank you! We will contact you shortly to schedule your appointment.');
+    setIsSubmitting(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'appointment',
+          ...formData,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send appointment request');
+      }
+
+      setIsSubmitted(true);
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          phone: '',
+          preferredDate: '',
+          preferredTime: '',
+          referredBy: '',
+          aboutUs: '',
+          additionalInfo: '',
+        });
+      }, 5000);
+    } catch (err) {
+      setError('Failed to submit request. Please try calling us directly at 1-877-288-3384.');
+      console.error('Error submitting form:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -121,8 +163,26 @@ function NewPatientsContent() {
           Or, you can simply provide us with the following information and we will contact you shortly
           to schedule an appointment. We&apos;re looking forward to meeting you.
         </p>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        {isSubmitted ? (
+          <div className="text-center py-12">
+            <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
+              <svg className="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">Thank You!</h3>
+            <p className="text-gray-600">We will contact you shortly to schedule your appointment.</p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="bg-red-50 text-red-600 p-4 rounded-2xl border border-red-200">
+                {error}
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">First Name *</label>
               <input
@@ -225,11 +285,13 @@ function NewPatientsContent() {
 
           <button
             type="submit"
-            className="btn-primary w-full transition-transform hover:scale-[1.02] active:scale-[0.98]"
+            disabled={isSubmitting}
+            className="btn-primary w-full transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Submit Request
+            {isSubmitting ? 'Submitting...' : 'Submit Request'}
           </button>
         </form>
+        )}
       </div>
     </div>
   );
