@@ -78,10 +78,10 @@ export default function NewsPage() {
           {error && <div className="text-red-600 mb-6">{error}</div>}
           <main>
             <div className="mb-12 text-center">
-              <h1 className="text-base font-bold text-gray-900 mb-4">
+              <h1 className="text-2xl font-bold text-gray-900 mb-4">
                 <span className="gradient-text">News</span>
               </h1>
-              <p className="text-sm text-gray-600 text-center">
+              <p className="text-xl text-gray-600 text-center">
                 Highlights from our doctors, team, and community service events.
               </p>
             </div>
@@ -124,19 +124,19 @@ export default function NewsPage() {
                       {/* Image Gallery Section - Small Thumbnails */}
                       {displayImages.length > 0 && (
                         <div className="p-4">
-                          <div className="flex flex-wrap gap-2">
+                          <div className="grid grid-cols-4 md:grid-cols-8 gap-2">
                             {displayImages.map((src, imgIndex) => (
                               <button
                                 key={imgIndex}
                                 onClick={() => openLightbox(itemIndex, imgIndex)}
-                                className="relative w-20 h-20 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition group flex-shrink-0"
+                                className="relative w-full aspect-square rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition group"
                               >
                                 <Image
                                   src={src}
                                   alt={`${item.title} - Thumbnail ${imgIndex + 1}`}
                                   fill
                                   className="object-cover group-hover:scale-110 transition"
-                                  sizes="80px"
+                                  sizes="(max-width: 768px) 25vw, 12.5vw"
                                   loading={itemIndex < 2 && imgIndex < 3 ? "eager" : "lazy"}
                                   priority={itemIndex === 0 && imgIndex === 0}
                                 />

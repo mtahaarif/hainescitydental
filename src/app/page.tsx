@@ -22,8 +22,14 @@ export default function Home() {
 
             {/* Additional Info Images */}
             <div className="w-full mt-4 flex flex-col gap-4">
-              <Image src="/nitrousoxide.webp" alt="Nitrous Oxide Sedation" width={300} height={200} className="w-full h-auto rounded-xl shadow-md" />
-              <Image src="/snoring devices.webp" alt="Snoring & Sleep Apnea Solutions" width={300} height={200} className="w-full h-auto rounded-xl shadow-md" />
+              <div>
+                <Image src="/nitrousoxide.webp" alt="Nitrous Oxide Sedation" width={300} height={200} className="w-full h-auto rounded-xl shadow-md" />
+                <p className="text-sm text-center text-gray-700 mt-2 font-medium">Nitrous Oxide Sedation</p>
+              </div>
+              <div>
+                <Image src="/snoring devices.webp" alt="Snoring & Sleep Apnea Solutions" width={300} height={200} className="w-full h-auto rounded-xl shadow-md" />
+                <p className="text-sm text-center text-gray-700 mt-2 font-medium">Snoring Devices</p>
+              </div>
             </div>
 
             {/* Reviews carousel */}

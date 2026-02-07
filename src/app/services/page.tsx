@@ -171,7 +171,7 @@ function ServicesContent() {
       {/* Service Content */}
       <div className="w-full px-0">
         <div className="glass-strong p-4 sm:p-8 md:p-12 relative overflow-visible lg:overflow-hidden">
-          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-start">
+          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
             {/* Image */}
             <div className="relative h-48 sm:h-64 md:h-80 lg:h-[400px] rounded-2xl overflow-hidden transition-transform duration-300 hover:scale-[1.02]">
               <Image
@@ -179,15 +179,14 @@ function ServicesContent() {
                 alt={currentService.title}
                 fill
                 className="object-cover"
-                priority={activeIndex === 0}
-                loading={activeIndex === 0 ? "eager" : "lazy"}
+                priority
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
             </div>
 
             {/* Content */}
-            <div className="space-y-3 sm:space-y-4 md:space-y-6 pb-16 lg:pb-0">
+            <div className="space-y-3 sm:space-y-4 md:space-y-6 pb-16 lg:pb-0 min-h-[400px] flex flex-col justify-center">
               <div className="flex items-center gap-3 sm:gap-4">
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-dental-blue-400 to-dental-blue-600 flex items-center justify-center transition-transform hover:scale-110 hover:rotate-3 flex-shrink-0">
                   <Image 
@@ -273,7 +272,7 @@ export default function ServicesPage() {
           <main>
             {/* Header */}
             <div className="mb-8 text-center">
-              <h1 className="text-4xl sm:text-5xl font-bold text-dental-blue-600 mb-4">
+              <h1 className="text-2xl font-bold text-dental-blue-600 mb-4">
                 Comprehensive Dental Services
               </h1>
               <p className="text-xl text-gray-600 text-center">
