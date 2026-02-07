@@ -59,10 +59,10 @@ export default function ContactPage() {
           <main>
             {/* Header */}
             <div className="mb-6 text-center">
-              <h1 className="text-4xl sm:text-5xl font-bold text-dental-blue-600 mb-4">
+              <h1 className="text-base font-bold text-dental-blue-600 mb-4">
                 Contact Haines City Dental
               </h1>
-              <p className="text-xl text-gray-600 text-center">
+              <p className="text-sm text-gray-600 text-center">
                 We are here to help with appointments, questions, and directions to our office.
               </p>
             </div>

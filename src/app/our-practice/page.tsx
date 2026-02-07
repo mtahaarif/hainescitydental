@@ -11,10 +11,10 @@ export default function OurPracticePage() {
           <main className="md:col-span-3">
             {/* Header */}
             <div className="mb-8 text-center">
-              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+              <h1 className="text-base font-bold text-gray-900 mb-4">
                 <span className="gradient-text">Our Practice</span>
               </h1>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto text-center">
+              <p className="text-sm text-gray-600 max-w-2xl mx-auto text-center">
                 Providing exceptional dental care to our community.
               </p>
               <div className="mt-6 glass p-6 max-w-3xl mx-auto text-justify">
@@ -31,10 +31,7 @@ export default function OurPracticePage() {
                 <figcaption className="text-sm text-gray-600 mt-3">Welcoming reception and comfortable waiting area</figcaption>
               </figure>
 
-              <figure className="glass p-4 text-center">
-                <Image src="/our-practice-2.png" alt="Treatment room" width={1536} height={1024} className="w-full h-auto object-cover rounded" />
-                <figcaption className="text-sm text-gray-600 mt-3">State-of-the-art treatment rooms with modern equipment</figcaption>
-              </figure>
+
 
               <figure className="glass p-4 text-center">
                 <Image src="/our-practice-3-1536.jpg" alt="Team at work" width={1536} height={1024} className="w-full h-auto object-cover rounded" />

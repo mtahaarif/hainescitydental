@@ -26,7 +26,9 @@ export async function POST(request: NextRequest) {
     for (let i = 0; i < orderedIds.length; i++) {
       const id = orderedIds[i];
       const displayOrder = displayOrderStart - i; // First item gets highest order
-      await query('UPDATE news SET display_order = ? WHERE id = ?', [displayOrder, id]);
+      console.log(`[API/news/reorder] Setting ${id} to display_order ${displayOrder}`);
+      const updateSql = `UPDATE news SET display_order = ${displayOrder} WHERE id = '${id}'`;
+      await query(updateSql);
     }
 
     console.log('[API/news/reorder] Successfully reordered items');

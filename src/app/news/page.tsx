@@ -51,8 +51,9 @@ export default function NewsPage() {
           setRetryCount(attempt);
           setTimeout(() => fetchNews(attempt + 1), delay);
         } else {
-          setError('Failed to load news. Please refresh the page.');
-          setLoading(false);
+          console.log('[News] All retries exhausted, reloading page in 2s...');
+          setError('Unable to load news. Reloading page...');
+          setTimeout(() => window.location.reload(), 2000);
         }
       }
     };
@@ -77,10 +78,10 @@ export default function NewsPage() {
           {error && <div className="text-red-600 mb-6">{error}</div>}
           <main>
             <div className="mb-12 text-center">
-              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+              <h1 className="text-base font-bold text-gray-900 mb-4">
                 <span className="gradient-text">News</span>
               </h1>
-              <p className="text-xl text-gray-600 text-center">
+              <p className="text-sm text-gray-600 text-center">
                 Highlights from our doctors, team, and community service events.
               </p>
             </div>
@@ -120,69 +121,32 @@ export default function NewsPage() {
                         )}
                       </div>
 
-                      {/* Image Gallery Section */}
+                      {/* Image Gallery Section - Small Thumbnails */}
                       {displayImages.length > 0 && (
-                        <div className="mb-6">
-                          {hasMultipleImages ? (
-                            <div className="grid grid-cols-2 gap-2 p-4 bg-gray-50">
-                              {displayImages.slice(0, 4).map((src, imgIndex) => (
-                                <button
-                                  key={imgIndex}
-                                  onClick={() => openLightbox(itemIndex, imgIndex)}
-                                  className="relative w-full aspect-square rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition group"
-                                >
-                                  <Image
-                                    src={src}
-                                    alt={`${item.title} - Image ${imgIndex + 1}`}
-                                    fill
-                                    className="object-cover group-hover:scale-105 transition"
-                                    sizes="(max-width: 640px) 50vw, 300px"
-                                  />
-                                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition flex items-center justify-center">
-                                    <span className="text-white opacity-0 group-hover:opacity-100 transition text-sm font-medium">
-                                      View Gallery
-                                    </span>
-                                  </div>
-                                </button>
-                              ))}
-                              {displayImages.length > 4 && (
-                                <div className="col-span-2 text-center py-4 bg-white border-t">
-                                  <p className="text-sm text-gray-600">
-                                    +{displayImages.length - 4} more {displayImages.length - 4 === 1 ? 'image' : 'images'}
-                                  </p>
-                                </div>
-                              )}
-                            </div>
-                          ) : (
-                            <button
-                              onClick={() => openLightbox(itemIndex, 0)}
-                              className="relative w-full h-80 cursor-pointer hover:opacity-90 transition group overflow-hidden"
-                            >
-                              <Image
-                                src={displayImages[0]}
-                                alt={item.title}
-                                fill
-                                className="object-cover group-hover:scale-105 transition"
-                                sizes="(max-width: 640px) 100vw, 800px"
-                              />
-                              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition flex items-center justify-center">
-                                <span className="text-white opacity-0 group-hover:opacity-100 transition text-lg font-medium">
-                                  Click to Enlarge
-                                </span>
-                              </div>
-                            </button>
-                          )}
-                        </div>
-                      )}
-
-                      {hasMultipleImages && (
-                        <div className="px-6 pb-6">
-                          <button
-                            onClick={() => openLightbox(itemIndex, 0)}
-                            className="inline-block px-4 py-2 bg-dental-blue-600 text-white rounded-lg hover:bg-dental-blue-700 transition"
-                          >
-                            View All {displayImages.length} Images
-                          </button>
+                        <div className="p-4">
+                          <div className="flex flex-wrap gap-2">
+                            {displayImages.map((src, imgIndex) => (
+                              <button
+                                key={imgIndex}
+                                onClick={() => openLightbox(itemIndex, imgIndex)}
+                                className="relative w-20 h-20 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition group flex-shrink-0"
+                              >
+                                <Image
+                                  src={src}
+                                  alt={`${item.title} - Thumbnail ${imgIndex + 1}`}
+                                  fill
+                                  className="object-cover group-hover:scale-110 transition"
+                                  sizes="80px"
+                                  loading={itemIndex < 2 && imgIndex < 3 ? "eager" : "lazy"}
+                                  priority={itemIndex === 0 && imgIndex === 0}
+                                />
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition" />
+                              </button>
+                            ))}
+                          </div>
+                          <p className="text-xs text-gray-500 mt-2">
+                            Click thumbnails to view full size ({displayImages.length} {displayImages.length === 1 ? 'image' : 'images'})
+                          </p>
                         </div>
                       )}
                     </article>

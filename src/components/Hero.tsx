@@ -8,10 +8,10 @@ export default function Hero() {
     <div className="min-h-screen py-0">
       {/* Header */}
       <div className="w-full px-0 mb-16 text-center animate-fade-in">
-        <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+        <h1 className="text-base font-bold text-gray-900 mb-4">
         <span className="gradient-text">Haines City Dental</span>
         </h1>
-        <p className="text-xl text-gray-600 text-center">
+        <p className="text-sm text-gray-600 text-center">
           Providing exceptional dental care to our community.
         </p>
         {/* Inserted Our Practice intro from the client's previous page */}

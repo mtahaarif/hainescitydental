@@ -20,15 +20,15 @@ export default function Home() {
               Schedule an appointment
             </Link>
 
-            {/* Reviews carousel */}
-            <div className="w-full mt-4">
-              <TestimonialsCompact />
-            </div>
-
             {/* Additional Info Images */}
             <div className="w-full mt-4 flex flex-col gap-4">
-              <Image src="/images/nitrous.png" alt="Nitrous Oxide Sedation" width={300} height={200} className="w-full h-auto rounded-xl shadow-md" />
-              <Image src="/images/snoring.png" alt="Snoring & Sleep Apnea Solutions" width={300} height={200} className="w-full h-auto rounded-xl shadow-md" />
+              <Image src="/nitrousoxide.webp" alt="Nitrous Oxide Sedation" width={300} height={200} className="w-full h-auto rounded-xl shadow-md" />
+              <Image src="/snoring devices.webp" alt="Snoring & Sleep Apnea Solutions" width={300} height={200} className="w-full h-auto rounded-xl shadow-md" />
+            </div>
+
+            {/* Reviews carousel */}
+            <div className="w-full mt-8">
+              <TestimonialsCompact />
             </div>
           </aside>
         </div>

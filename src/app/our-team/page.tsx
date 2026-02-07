@@ -43,8 +43,9 @@ export default function OurTeamPage() {
           setRetryCount(attempt);
           setTimeout(() => fetchTeam(attempt + 1), delay);
         } else {
-          setError('Failed to load team. Please refresh the page.');
-          setLoading(false);
+          console.log('[Team] All retries exhausted, reloading page in 2s...');
+          setError('Unable to load team. Reloading page...');
+          setTimeout(() => window.location.reload(), 2000);
         }
       }
     };
@@ -68,7 +69,7 @@ export default function OurTeamPage() {
         <div className="bg-dental-blue-50/90 border-y border-dental-blue-100 py-8 px-0 shadow-sm">
           <main>
             <section className="text-center mb-6">
-              <h1 className="text-4xl sm:text-5xl font-bold text-dental-blue-600 text-center">Our Team</h1>
+              <h1 className="text-base font-bold text-dental-blue-600 text-center">Our Team</h1>
             </section>
 
             {error && <div className="text-red-600 mb-6 text-center">{error}</div>}
@@ -85,7 +86,7 @@ export default function OurTeamPage() {
             ) : (
               <div className="space-y-12">
                 <section>
-                  <h2 className="text-2xl font-bold mb-6 text-dental-blue-600 text-center">Doctors</h2>
+                  <h2 className="text-sm font-bold mb-6 text-black text-center">Meet the doctors</h2>
                   <div className="flex flex-col gap-6">
                     {doctors.map((d) => (
                       <div key={d.id} className="bg-white p-6 rounded-xl shadow flex flex-col items-center text-center">

@@ -7,16 +7,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter();
   const pathname = usePathname();
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const INACTIVITY_LIMIT_MS = 5 * 60 * 1000;
-
-  const sendLogoutRequest = useCallback(() => {
-    if (typeof navigator !== 'undefined' && 'sendBeacon' in navigator) {
-      const blob = new Blob([], { type: 'application/json' });
-      navigator.sendBeacon('/api/admin/logout', blob);
-      return;
-    }
-    fetch('/api/admin/logout', { method: 'POST', keepalive: true });
-  }, []);
+  const INACTIVITY_LIMIT_MS = 15 * 60 * 1000;
 
   const handleLogout = useCallback(() => {
     // navigate to login after server clears cookie
@@ -68,13 +59,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       }
     };
   }, [resetInactivityTimer, showLogout]);
-
-  useEffect(() => {
-    if (!showLogout) return;
-    return () => {
-      sendLogoutRequest();
-    };
-  }, [sendLogoutRequest, showLogout]);
 
   return (
     <div className="min-h-screen bg-slate-50">

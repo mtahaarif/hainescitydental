@@ -105,7 +105,7 @@ const categories: Category[] = [
       'Removable for oral hygiene and eating',
       'Options for fixed appliances when needed for complex cases',
     ],
-    image: '/orthodontics.webp',
+    image: '/orthodontics.jpg',
     iconSrc: '/service_icon6.png',
   },
   {
@@ -179,7 +179,9 @@ function ServicesContent() {
                 alt={currentService.title}
                 fill
                 className="object-cover"
-                priority
+                priority={activeIndex === 0}
+                loading={activeIndex === 0 ? "eager" : "lazy"}
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
             </div>
