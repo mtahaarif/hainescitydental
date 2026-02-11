@@ -1,7 +1,6 @@
 import Hero from '@/components/Hero';
 import Image from 'next/image';
 import Link from 'next/link';
-import TestimonialsCompact from '@/components/TestimonialsCompact';
 
 export default function Home() {
   return (
@@ -14,14 +13,14 @@ export default function Home() {
           </main>
 
           {/* Right appointment panel */}
-          <aside className="md:col-span-1 flex flex-col items-center text-center gap-4">
+          <aside className="md:col-span-1 flex flex-col items-start text-center gap-4 h-fit">
             <Image src="/images/call.jpg" alt="Call for Appointment" width={1200} height={800} className="w-full h-auto rounded-xl shadow-md" />
-            <Link href="/contact" className="inline-flex items-center justify-center bg-dental-blue-600 text-white px-6 py-3 rounded-full shadow-md hover:shadow-lg transition">
+            <Link href="/contact" className="w-full inline-flex items-center justify-center bg-dental-blue-600 text-white px-6 py-3 rounded-full shadow-md hover:shadow-lg transition">
               Schedule an appointment
             </Link>
 
             {/* Additional Info Images */}
-            <div className="w-full mt-4 flex flex-col gap-4">
+            <div className="w-full flex flex-col gap-4">
               <div>
                 <Image src="/nitrousoxide.webp" alt="Nitrous Oxide Sedation" width={300} height={200} className="w-full h-auto rounded-xl shadow-md" />
                 <p className="text-sm text-center text-gray-700 mt-2 font-medium">Nitrous Oxide Sedation</p>
@@ -32,9 +31,17 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Reviews carousel */}
-            <div className="w-full mt-8">
-              <TestimonialsCompact />
+            {/* Testimonials image */}
+            <div className="w-full">
+              <Link href="/testimonials">
+                <Image 
+                  src="/test1.png" 
+                  alt="Patient Testimonials" 
+                  width={400} 
+                  height={300} 
+                  className="w-full h-auto rounded-xl shadow-md hover:shadow-lg transition-shadow cursor-pointer" 
+                />
+              </Link>
             </div>
           </aside>
         </div>
