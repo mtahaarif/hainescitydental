@@ -5,10 +5,10 @@ export default function OurPracticePage() {
   return (
     <div className="min-h-screen text-justify">
       <div className="w-full">
-        <div className="bg-dental-blue-50/90 border-y border-dental-blue-100 py-8 px-0 shadow-sm grid md:grid-cols-4 gap-6">
+        <div className="bg-dental-blue-50/90 border-y border-dental-blue-100 py-8 px-0 shadow-sm grid md:grid-cols-5 gap-6 items-start">
 
           {/* Main content */}
-          <main className="md:col-span-3">
+          <main className="md:col-span-4">
             {/* Header */}
             <div className="mb-8 text-center">
               <h1 className="text-2xl font-bold text-gray-900 mb-4">
@@ -41,9 +41,9 @@ export default function OurPracticePage() {
           </main>
 
           {/* Right appointment panel (same as homepage) */}
-          <aside className="md:col-span-1 flex flex-col items-center text-center gap-4">
-            <Image src="/images/call.jpg" alt="Call for Appointment" width={1200} height={800} className="w-full h-auto rounded-xl shadow-md" />
-            <a href="/contact" className="inline-flex items-center justify-center bg-dental-blue-600 text-white px-6 py-3 rounded-full shadow-md hover:shadow-lg transition">
+          <aside className="md:col-span-1 flex flex-col items-start text-center gap-2.5">
+            <Image src="/images/call.jpg" alt="Call for Appointment" width={1200} height={800} className="w-full h-auto rounded-lg shadow-md" />
+            <a href="/contact" className="w-full inline-flex items-center justify-center bg-dental-blue-600 text-white px-3 py-2 rounded-full shadow-md hover:shadow-lg transition text-xs">
               Schedule an appointment
             </a>
           </aside>

@@ -6,13 +6,13 @@ export default function Home() {
   return (
     <div className="min-h-screen text-justify">
       <div className="w-full">
-        <div className="bg-dental-blue-50/90 border-y border-dental-blue-100 py-8 px-0 shadow-sm grid md:grid-cols-6 gap-6 items-start">
+        <div className="bg-dental-blue-50/90 border-y border-dental-blue-100 py-8 px-0 shadow-sm grid md:grid-cols-5 gap-6 items-start">
           {/* Main content (Hero + below) */}
-          <main className="md:col-span-5">
+          <main className="md:col-span-4">
             <Hero />
           </main>
 
-          {/* Right appointment panel - reduced width by 30% */}
+          {/* Right appointment panel */}
           <aside className="md:col-span-1 flex flex-col items-start text-center gap-2.5">
             <Image src="/images/call.jpg" alt="Call for Appointment" width={1200} height={800} className="w-full h-auto rounded-lg shadow-md" />
             <Link href="/contact" className="w-full inline-flex items-center justify-center bg-dental-blue-600 text-white px-3 py-2 rounded-full shadow-md hover:shadow-lg transition text-xs">
