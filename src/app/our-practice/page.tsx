@@ -27,23 +27,50 @@ export default function OurPracticePage() {
             {/* Additional Our Practice images (local copies) */}
             <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
               <figure className="glass p-4 text-center">
-                <Image src="/our-practice-1-1536.jpg" alt="Reception area" width={1536} height={1024} className="w-full h-auto object-cover rounded" />
+                <Image src="/our-practice-1-1536.jpg" alt="Reception area" width={1536} height={1024} className="w-full h-auto object-cover rounded" quality={90} />
                 <figcaption className="text-sm text-gray-600 mt-3">Welcoming reception and comfortable waiting area</figcaption>
               </figure>
 
-
-
               <figure className="glass p-4 text-center">
-                <Image src="/our-practice-3-1536.jpg" alt="Team at work" width={1536} height={1024} className="w-full h-auto object-cover rounded" />
+                <Image src="/our-practice-3-1536.jpg" alt="Team at work" width={1536} height={1024} className="w-full h-auto object-cover rounded" quality={90} />
                 <figcaption className="text-sm text-gray-600 mt-3">A friendly team dedicated to your comfort and care</figcaption>
               </figure>
+            </div>
+
+            {/* New Office Images */}
+            <div className="mt-8">
+              <h2 className="text-xl font-bold text-gray-900 mb-6 text-center">Our Dental Office</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <figure className="glass p-4 text-center">
+                  <Image src="/office1.jpg" alt="Office View 1" width={800} height={600} className="w-full h-auto object-cover rounded" quality={90} />
+                  <figcaption className="text-sm text-gray-600 mt-3">Modern dental facility</figcaption>
+                </figure>
+                <figure className="glass p-4 text-center">
+                  <Image src="/office2.jpg" alt="Office View 2" width={800} height={600} className="w-full h-auto object-cover rounded" quality={90} />
+                  <figcaption className="text-sm text-gray-600 mt-3">State-of-the-art equipment</figcaption>
+                </figure>
+                <figure className="glass p-4 text-center">
+                  <Image src="/office3.jpg" alt="Office View 3" width={800} height={600} className="w-full h-auto object-cover rounded" quality={90} />
+                  <figcaption className="text-sm text-gray-600 mt-3">Comfortable treatment rooms</figcaption>
+                </figure>
+                <figure className="glass p-4 text-center">
+                  <Image src="/office4.jpg" alt="Office View 4" width={800} height={600} className="w-full h-auto object-cover rounded" quality={90} />
+                  <figcaption className="text-sm text-gray-600 mt-3">Professional workspace</figcaption>
+                </figure>
+                <figure className="glass p-4 text-center">
+                  <Image src="/office5.jpg" alt="Office View 5" width={800} height={600} className="w-full h-auto object-cover rounded" quality={90} />
+                  <figcaption className="text-sm text-gray-600 mt-3">Welcoming environment</figcaption>
+                </figure>
+              </div>
             </div>
           </main>
 
           {/* Right appointment panel (same as homepage) */}
-          <aside className="md:col-span-1 flex flex-col items-start text-center gap-2.5">
-            <Image src="/images/call.jpg" alt="Call for Appointment" width={1200} height={800} className="w-full h-auto rounded-lg shadow-md" />
-            <a href="/contact" className="w-full inline-flex items-center justify-center bg-dental-blue-600 text-white px-3 py-2 rounded-full shadow-md hover:shadow-lg transition text-xs">
+          <aside className="md:col-span-1 flex flex-col items-center text-center gap-2.5">
+            <div className="w-4/5 md:w-4/5">
+              <Image src="/images/call.jpg" alt="Call for Appointment" width={600} height={400} className="w-full h-auto rounded-lg shadow-md" quality={90} />
+            </div>
+            <a href="/contact" className="w-4/5 md:w-4/5 inline-flex items-center justify-center bg-dental-blue-600 text-white px-3 py-2 rounded-full shadow-md hover:shadow-lg transition text-xs">
               Schedule an appointment
             </a>
           </aside>
