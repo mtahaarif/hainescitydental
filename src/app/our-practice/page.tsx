@@ -35,33 +35,31 @@ export default function OurPracticePage() {
                 <Image src="/our-practice-3-1536.jpg" alt="Team at work" width={1536} height={1024} className="w-full h-auto object-cover rounded" quality={90} />
                 <figcaption className="text-sm text-gray-600 mt-3">A friendly team dedicated to your comfort and care</figcaption>
               </figure>
-            </div>
 
-            {/* New Office Images */}
-            <div className="mt-8">
-              <h2 className="text-xl font-bold text-gray-900 mb-6 text-center">Our Dental Office</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <figure className="glass p-4 text-center">
-                  <Image src="/office1.jpg" alt="Office View 1" width={800} height={600} className="w-full h-auto object-cover rounded" quality={90} />
-                  <figcaption className="text-sm text-gray-600 mt-3">Modern dental facility</figcaption>
-                </figure>
-                <figure className="glass p-4 text-center">
-                  <Image src="/office2.jpg" alt="Office View 2" width={800} height={600} className="w-full h-auto object-cover rounded" quality={90} />
-                  <figcaption className="text-sm text-gray-600 mt-3">State-of-the-art equipment</figcaption>
-                </figure>
-                <figure className="glass p-4 text-center">
-                  <Image src="/office3.jpg" alt="Office View 3" width={800} height={600} className="w-full h-auto object-cover rounded" quality={90} />
-                  <figcaption className="text-sm text-gray-600 mt-3">Comfortable treatment rooms</figcaption>
-                </figure>
-                <figure className="glass p-4 text-center">
-                  <Image src="/office4.jpg" alt="Office View 4" width={800} height={600} className="w-full h-auto object-cover rounded" quality={90} />
-                  <figcaption className="text-sm text-gray-600 mt-3">Professional workspace</figcaption>
-                </figure>
-                <figure className="glass p-4 text-center">
-                  <Image src="/office5.jpg" alt="Office View 5" width={800} height={600} className="w-full h-auto object-cover rounded" quality={90} />
-                  <figcaption className="text-sm text-gray-600 mt-3">Welcoming environment</figcaption>
-                </figure>
-              </div>
+              <figure className="glass p-4 text-center">
+                <Image src="/office1.jpg" alt="Office View 1" width={800} height={600} className="w-full h-auto object-cover rounded" quality={90} />
+                <figcaption className="text-sm text-gray-600 mt-3">Modern dental facility</figcaption>
+              </figure>
+
+              <figure className="glass p-4 text-center">
+                <Image src="/office2.jpg" alt="Office View 2" width={800} height={600} className="w-full h-auto object-cover rounded" quality={90} />
+                <figcaption className="text-sm text-gray-600 mt-3">State-of-the-art equipment</figcaption>
+              </figure>
+
+              <figure className="glass p-4 text-center">
+                <Image src="/office3.jpg" alt="Office View 3" width={800} height={600} className="w-full h-auto object-cover rounded" quality={90} />
+                <figcaption className="text-sm text-gray-600 mt-3">Comfortable treatment rooms</figcaption>
+              </figure>
+
+              <figure className="glass p-4 text-center">
+                <Image src="/office4.jpg" alt="Office View 4" width={800} height={600} className="w-full h-auto object-cover rounded" quality={90} />
+                <figcaption className="text-sm text-gray-600 mt-3">Professional workspace</figcaption>
+              </figure>
+
+              <figure className="glass p-4 text-center">
+                <Image src="/office5.jpg" alt="Office View 5" width={800} height={600} className="w-full h-auto object-cover rounded" quality={90} />
+                <figcaption className="text-sm text-gray-600 mt-3">Welcoming environment</figcaption>
+              </figure>
             </div>
           </main>
 
