@@ -33,9 +33,9 @@ export default function Hero() {
       {/* Main Content */}
       <div className="w-full px-0">
 
-        <div className="mt-12">
-          <figure className="w-full">
-            <Image src="/images/55.jpg" alt="Christmas Party — Haines City Dental" width={1536} height={800} className="w-full h-auto rounded-2xl shadow-lg" />
+        <div className="mt-12 flex justify-center">
+          <figure className="max-w-4xl w-full">
+            <Image src="/images/55.jpg" alt="Christmas Party — Haines City Dental" width={1200} height={625} className="w-full h-auto rounded-2xl shadow-lg" quality={95} priority />
           </figure>
         </div>
       </div>
