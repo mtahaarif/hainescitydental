@@ -12,9 +12,16 @@ export default function middleware(request: NextRequest) {
   const isAdminApi = pathname.startsWith('/api/admin');
   const isAuthApi = pathname === '/api/admin/login' || pathname === '/api/admin/logout';
 
+  if (pathname === ADMIN_ROOT_PATH) {
+    const url = request.nextUrl.clone();
+    url.pathname = hasToken ? '/admin/news' : ADMIN_LOGIN_PATH;
+    url.search = hasToken ? '' : `?next=${encodeURIComponent(pathname + search)}`;
+    return NextResponse.redirect(url);
+  }
+
   if (isLoginRoute && hasToken) {
     const url = request.nextUrl.clone();
-    url.pathname = ADMIN_ROOT_PATH;
+    url.pathname = '/admin/news';
     url.search = '';
     return NextResponse.redirect(url);
   }

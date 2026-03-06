@@ -6,7 +6,8 @@ import { useState } from 'react';
 export default function AdminLoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const nextPath = searchParams.get('next') || '/admin';
+  const rawNextPath = searchParams.get('next');
+  const nextPath = rawNextPath && rawNextPath.startsWith('/admin') ? rawNextPath : '/admin/news';
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
