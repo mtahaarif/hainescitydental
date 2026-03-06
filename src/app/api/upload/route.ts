@@ -1,51 +1,48 @@
+import { handleUpload, type HandleUploadBody } from '@vercel/blob/client';
 import { NextRequest, NextResponse } from 'next/server';
 import { validateTokenString } from '@/lib/auth/auth';
-import { put } from '@vercel/blob';
 
 /**
- * Image upload endpoint using Vercel Blob storage.
- * Expects: POST /api/upload?filename=yourfile.jpg with raw body as the file bytes.
- * Returns: { url: string } (frontend expects a JSON object with `url`)
+ * Image upload endpoint using Vercel Blob client-side uploads.
+ * The browser uploads directly to Vercel Blob storage after obtaining
+ * a short-lived token from this route.
  */
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
-    // Verify admin token
-    const cookieToken = request.cookies.get('cms_token')?.value;
-    if (!cookieToken || !validateTokenString(cookieToken)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const body = (await request.json()) as HandleUploadBody;
 
-    // Filename provided via query param
-    const filename = request.nextUrl.searchParams.get('filename') || `upload-${Date.now()}`;
+    const jsonResponse = await handleUpload({
+      body,
+      request,
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+      onBeforeGenerateToken: async () => {
+        // Verify admin authentication before issuing an upload token
+        const cookieToken = request.cookies.get('cms_token')?.value;
+        if (!cookieToken || !validateTokenString(cookieToken)) {
+          throw new Error('Unauthorized');
+        }
+        return {
+          allowedContentTypes: [
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+            'image/webp',
+            'image/svg+xml',
+          ],
+          maximumSizeInBytes: 10 * 1024 * 1024, // 10 MB
+        };
+      },
+      onUploadCompleted: async ({ blob }) => {
+        console.log('[Upload] Completed:', blob.url);
+      },
+    });
 
-    const token = process.env.BLOB_READ_WRITE_TOKEN;
-    if (!token) {
-      console.error('[Upload] BLOB_READ_WRITE_TOKEN not configured');
-      return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 });
-    }
-
-    // Read raw request body as bytes
-    const arrayBuffer = await request.arrayBuffer();
-    const bytes = new Uint8Array(arrayBuffer);
-
-    // Upload to Vercel Blob
-    // Note: pass the token explicitly so the library can authenticate
-    // @ts-ignore - library types may be loose
-    const blob = await put(filename, bytes, { access: 'public', token });
-
-    // blob usually contains a url/publicUrl property; normalize response to { url }
-    const blobAny: any = blob;
-    const url = blobAny?.url ?? blobAny?.publicUrl ?? blobAny?.blobUrl ?? null;
-
-    if (!url) {
-      console.warn('[Upload] Unexpected blob response:', blob);
-      // Return the raw blob object as a fallback (stringified)
-      return NextResponse.json({ url: typeof blob === 'string' ? blob : JSON.stringify(blob) }, { status: 200 });
-    }
-
-    return NextResponse.json({ url }, { status: 200 });
+    return NextResponse.json(jsonResponse);
   } catch (error) {
-    console.error('[Upload] Error uploading to Vercel Blob:', error);
-    return NextResponse.json({ error: 'Failed to upload file' }, { status: 500 });
+    console.error('[Upload] Error:', error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Upload failed' },
+      { status: 400 },
+    );
   }
 }

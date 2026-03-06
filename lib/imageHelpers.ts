@@ -4,26 +4,14 @@
  */
 
 export async function uploadImage(file: File): Promise<string> {
-  // Send raw file bytes in the request body and pass filename in query
-  const filename = encodeURIComponent(file.name || `upload-${Date.now()}`);
+  const { upload } = await import('@vercel/blob/client');
 
-  const response = await fetch(`/api/upload?filename=${filename}`, {
-    method: 'POST',
-    // Use the File object directly as the body (raw bytes)
-    body: file,
-    // Set content-type to the file's MIME type when available
-    headers: {
-      'Content-Type': file.type || 'application/octet-stream',
-    },
+  const blob = await upload(file.name || `upload-${Date.now()}`, file, {
+    access: 'public',
+    handleUploadUrl: '/api/upload',
   });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Upload failed');
-  }
-
-  const data = await response.json();
-  return data.url;
+  return blob.url;
 }
 
 export function parseImagesArray(input: string | string[] | null): string[] {
