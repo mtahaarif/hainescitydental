@@ -67,8 +67,8 @@ export default function NewsAdminList() {
       // Revalidate public pages
       await triggerRevalidation(['/news', '/']);
 
-      // Refresh list
-      await fetchList();
+      // Redirect to main admin page
+      router.push('/admin');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Delete failed');
       console.error(err);
