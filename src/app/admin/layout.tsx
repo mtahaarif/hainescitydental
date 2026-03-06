@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -8,13 +8,30 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const INACTIVITY_LIMIT_MS = 15 * 60 * 1000;
+  const isLoginRoute = pathname === '/admin/login';
+  const [authChecked, setAuthChecked] = useState(false);
+
+  // Client-side auth guard: if Vercel CDN serves a cached static page
+  // and middleware doesn't run, this catches unauthenticated access.
+  useEffect(() => {
+    if (isLoginRoute) {
+      setAuthChecked(true);
+      return;
+    }
+    const hasCookie = document.cookie.split(';').some(c => c.trim().startsWith('cms_token='));
+    if (!hasCookie) {
+      router.replace(`/admin/login?next=${encodeURIComponent(pathname)}`);
+      return;
+    }
+    setAuthChecked(true);
+  }, [isLoginRoute, pathname, router]);
 
   const handleLogout = useCallback(() => {
     // navigate to login after server clears cookie
     fetch('/api/admin/logout', { method: 'POST' }).finally(() => router.push('/admin/login'));
   }, [router]);
 
-  const showLogout = pathname !== '/admin/login';
+  const showLogout = !isLoginRoute;
 
   const resetInactivityTimer = useCallback(() => {
     if (!showLogout) return;
@@ -59,6 +76,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       }
     };
   }, [resetInactivityTimer, showLogout]);
+
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <p className="text-gray-500">Verifying authentication...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50">
