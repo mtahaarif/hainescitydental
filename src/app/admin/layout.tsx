@@ -11,19 +11,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const isLoginRoute = pathname === '/admin/login';
   const [authChecked, setAuthChecked] = useState(false);
 
-  // Client-side auth guard: if Vercel CDN serves a cached static page
-  // and middleware doesn't run, this catches unauthenticated access.
+  // Client-side auth guard: verify auth via server since cms_token is httpOnly.
   useEffect(() => {
     if (isLoginRoute) {
       setAuthChecked(true);
       return;
     }
-    const hasCookie = document.cookie.split(';').some(c => c.trim().startsWith('cms_token='));
-    if (!hasCookie) {
-      router.replace(`/admin/login?next=${encodeURIComponent(pathname)}`);
-      return;
-    }
-    setAuthChecked(true);
+    fetch('/api/admin/check', { credentials: 'same-origin' })
+      .then(res => {
+        if (res.ok) {
+          setAuthChecked(true);
+        } else {
+          router.replace(`/admin/login?next=${encodeURIComponent(pathname)}`);
+        }
+      })
+      .catch(() => {
+        router.replace(`/admin/login?next=${encodeURIComponent(pathname)}`);
+      });
   }, [isLoginRoute, pathname, router]);
 
   const handleLogout = useCallback(() => {

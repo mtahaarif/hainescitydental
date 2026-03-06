@@ -9,7 +9,7 @@ export default function middleware(request: NextRequest) {
   const isLoginRoute = pathname === ADMIN_LOGIN_PATH;
   const isAdminRoute = pathname === '/admin' || pathname.startsWith('/admin/');
   const isAdminApi = pathname.startsWith('/api/admin');
-  const isAuthApi = pathname === '/api/admin/login' || pathname === '/api/admin/logout';
+  const isAuthApi = pathname === '/api/admin/login' || pathname === '/api/admin/logout' || pathname === '/api/admin/check';
 
   // --- Admin page routes ---
   if (isAdminRoute) {
