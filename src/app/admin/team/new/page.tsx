@@ -48,7 +48,7 @@ export default function TeamNewPage() {
       // Revalidate public pages
       await triggerRevalidation(['/team', '/our-team', '/']);
 
-      router.push('/admin');
+      router.push('/admin/team');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Network error');
       console.error(err);

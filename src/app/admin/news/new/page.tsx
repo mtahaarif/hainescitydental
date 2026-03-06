@@ -47,7 +47,7 @@ export default function NewsCreate() {
       // Revalidate public pages
       await triggerRevalidation(['/news', '/']);
 
-      router.push('/admin');
+      router.push('/admin/news');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Network error');
     } finally {
