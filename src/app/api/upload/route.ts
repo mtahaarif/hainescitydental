@@ -22,6 +22,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           throw new Error('Unauthorized');
         }
         return {
+          addRandomSuffix: true,
           allowedContentTypes: [
             'image/jpeg',
             'image/png',
