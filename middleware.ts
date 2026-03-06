@@ -13,23 +13,10 @@ export default function middleware(request: NextRequest) {
 
   // --- Admin page routes ---
   if (isAdminRoute) {
-    // Bare /admin always redirects to a concrete page
-    if (pathname === '/admin') {
-      const url = request.nextUrl.clone();
-      if (hasToken) {
-        url.pathname = '/admin/news';
-        url.search = '';
-      } else {
-        url.pathname = ADMIN_LOGIN_PATH;
-        url.search = `?next=${encodeURIComponent('/admin/news')}`;
-      }
-      return NextResponse.redirect(url, 308);
-    }
-
     // Already-authenticated user on login page → send to dashboard
     if (isLoginRoute && hasToken) {
       const url = request.nextUrl.clone();
-      url.pathname = '/admin/news';
+      url.pathname = '/admin';
       url.search = '';
       return NextResponse.redirect(url);
     }
@@ -42,7 +29,7 @@ export default function middleware(request: NextRequest) {
       return NextResponse.redirect(url);
     }
 
-    // Add cache-busting headers so Vercel CDN never caches admin pages
+    // Authenticated user on admin pages → pass through with no-cache headers
     const response = NextResponse.next();
     response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     response.headers.set('Pragma', 'no-cache');
@@ -62,6 +49,5 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Explicitly include bare /admin plus all sub-paths
   matcher: ['/admin', '/admin/:path*', '/api/admin/:path*'],
 };

@@ -7,7 +7,7 @@ export default function AdminLoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const rawNextPath = searchParams.get('next');
-  const nextPath = rawNextPath && rawNextPath.startsWith('/admin') ? rawNextPath : '/admin/news';
+  const nextPath = rawNextPath && rawNextPath.startsWith('/admin') ? rawNextPath : '/admin';
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
