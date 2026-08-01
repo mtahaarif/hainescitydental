@@ -1,237 +1,406 @@
-# Haines City Dental - Modern Dental Practice Website
+# Haines City Dental
 
-A high-performance website for Haines City Dental built with **Next.js 14**, **PostgreSQL**, **Prisma**, and **TypeScript**.
+This repository is the production website and CMS for Haines City Dental. It combines a public marketing site, a content management dashboard, contact and appointment workflows, image upload support, and several migration/utilities scripts that were used to move content from older systems into the current Next.js application.
 
-## 🚀 Features
+The project is intentionally hybrid. Public CMS content for news, team, and staff uses HostGator MySQL through `lib/mysql.ts`, while doctor records use Prisma against PostgreSQL through `lib/prisma.ts` and `prisma/schema.prisma`. The site also keeps markdown and JSON content collections under `content/` for reusable static content and migration-friendly data.
 
-- **Content Management**: REST API for news, doctors, staff, and team members
-- **JWT Authentication**: Secure admin access with 24-hour token expiry
-- **PostgreSQL Database**: Serverless database via Neon with auto-scaling
-- **Prisma ORM**: Type-safe database queries with auto-generated types
-- **Modern Tech Stack**: Next.js 14, React 18, TypeScript, Tailwind CSS
-- **High Performance**: Database indexes and optimized queries
-- **Responsive Design**: Mobile-first approach with smooth animations
-- **SEO Optimized**: Meta tags, sitemap, robots.txt
-- **Secure**: JWT + Bcrypt password hashing on all admin operations
+## What Is In The Project
 
-## 📦 Tech Stack
+- Public pages for home, services, news, contact, our practice, our team, team, patient information, testimonials, and privacy.
+- An admin CMS for managing news and team content, plus one-time database setup and ordering tools.
+- Authentication built around an httpOnly `cms_token` cookie and middleware-based route protection.
+- Contact and appointment forms with email delivery through SMTP when configured, plus a mailto fallback when it is not.
+- Direct-to-Vercel-Blob image uploads for CMS editing flows.
+- SEO support through `sitemap.ts`, `robots.ts`, metadata in the root layout, and image optimization in `next.config.js`.
 
-- **Framework**: Next.js 14.2.35 with App Router
-- **UI Library**: React 18.3.1
-- **Language**: TypeScript
-- **Database**: PostgreSQL (Neon serverless)
-- **ORM**: Prisma v5.22.0
-- **Styling**: Tailwind CSS + Custom Design System
-- **Auth**: JWT + Bcryptjs
-- **Animations**: Framer Motion
-- **Icons**: Lucide React
+## Architecture
 
-## 🛠️ Quick Start
-### Prerequisites
-- Node.js 18+
-- npm or yarn
-- PostgreSQL via Neon (free at https://neon.tech)
+```mermaid
+flowchart LR
+   Browser[Visitor Browser] --> NextApp[Next.js App Router]
+   NextApp --> Public[Public Pages]
+   NextApp --> Admin[Admin CMS]
+   Admin --> Auth[Admin Auth Cookie cms_token]
+   Admin --> Revalidate[Revalidation API]
+   Admin --> Blob[Vercel Blob Uploads]
+   Public --> MySQL[HostGator MySQL]
+   Public --> Prisma[Prisma + PostgreSQL]
+   Public --> Email[SMTP or mailto fallback]
+   Public --> Static[Public assets and content files]
+```
 
-### Installation
+## Technology Stack
+
+- Next.js 14 with the App Router.
+- React 18 and TypeScript.
+- Tailwind CSS with a custom dental-blue palette and legacy Medikan theme overrides.
+- Framer Motion for header and page motion.
+- Lucide React icons.
+- Prisma for doctor data.
+- mysql2 for the HostGator-backed CMS content.
+- bcryptjs and jsonwebtoken for authentication support.
+- nodemailer for contact and appointment email delivery.
+- @vercel/blob for image upload handling.
+
+## Key Runtime Files
+
+- [src/app/layout.tsx](src/app/layout.tsx) sets the global metadata, layout shell, header/footer, particle background, scroll progress, and page transition wrappers.
+- [middleware.ts](middleware.ts) protects `/admin` and `/api/admin/*` routes, redirects unauthenticated users to login, and sends no-cache headers for admin pages.
+- [src/app/admin/layout.tsx](src/app/admin/layout.tsx) performs client-side auth verification and auto-logs out inactive users after 15 minutes.
+- [src/app/api/admin/login/route.ts](src/app/api/admin/login/route.ts) issues the `cms_token` cookie.
+- [src/app/api/revalidate/route.ts](src/app/api/revalidate/route.ts) refreshes public paths after CMS updates.
+- [src/app/api/upload/route.ts](src/app/api/upload/route.ts) authorizes and brokers Vercel Blob uploads.
+- [src/app/api/send-email/route.ts](src/app/api/send-email/route.ts) sends contact and appointment messages.
+- [next.config.js](next.config.js) enables standalone output, image optimization, and security headers.
+- [src/app/robots.ts](src/app/robots.ts) and [src/app/sitemap.ts](src/app/sitemap.ts) provide crawl metadata.
+
+## Public Routes
+
+| Route | Purpose | Source |
+| --- | --- | --- |
+| `/` | Home page with hero content, appointment panel, and featured promos. | [src/app/page.tsx](src/app/page.tsx) |
+| `/services` | Interactive service catalog with tabbed categories and service navigation. | [src/app/services/page.tsx](src/app/services/page.tsx) |
+| `/news` | Public news feed with image galleries and lightbox viewing. | [src/app/news/page.tsx](src/app/news/page.tsx) |
+| `/contact` | Contact form, office details, and embedded map. | [src/app/contact/page.tsx](src/app/contact/page.tsx) |
+| `/our-practice` | Practice overview, office imagery, and appointment call-to-action. | [src/app/our-practice/page.tsx](src/app/our-practice/page.tsx) |
+| `/our-team` | Team directory split into doctors and staff. | [src/app/our-team/page.tsx](src/app/our-team/page.tsx) |
+| `/team` | Alternate team listing grouped into doctors, hygienists, and staff. | [src/app/team/page.tsx](src/app/team/page.tsx) |
+| `/patient-info` | New patient information, forms, and HIPAA resources. | [src/app/patient-info/page.tsx](src/app/patient-info/page.tsx) |
+| `/testimonials` | Testimonials page rendered through the shared testimonials component. | [src/app/testimonials/page.tsx](src/app/testimonials/page.tsx) |
+| `/privacy` | Redirects to the HIPAA privacy notice PDF. | [src/app/privacy/page.tsx](src/app/privacy/page.tsx) |
+| `/doctors` | Redirects to `/our-team` instead of serving a separate page. | [src/app/doctors/page.tsx](src/app/doctors/page.tsx) |
+
+Notes:
+
+- The current header navigation points to Home, Our Practice, Services, Our Team, Patient Information, News, and Contact Us.
+- There is no live `/staff` route file in the current tree; staff content is surfaced through `/our-team` and `/team`.
+- `GET /api/health` is a diagnostic endpoint, not a public content page.
+
+## Admin Routes
+
+| Route | Purpose | Source |
+| --- | --- | --- |
+| `/admin/login` | Credential form that sets the auth cookie. | [src/app/admin/login/page.tsx](src/app/admin/login/page.tsx) |
+| `/admin` | CMS dashboard with News and Our Team tabs plus display-order setup. | [src/app/admin/page.tsx](src/app/admin/page.tsx) |
+| `/admin/news` | News list, drag-to-reorder, edit, delete, and revalidation. | [src/app/admin/news/page.tsx](src/app/admin/news/page.tsx) |
+| `/admin/news/new` | Create news entries with gallery uploads. | [src/app/admin/news/new/page.tsx](src/app/admin/news/new/page.tsx) |
+| `/admin/news/[id]` | Edit news entries and gallery images. | [src/app/admin/news/[id]/page.tsx](src/app/admin/news/[id]/page.tsx) |
+| `/admin/team` | Team list, drag-to-reorder, edit, delete, and revalidation. | [src/app/admin/team/page.tsx](src/app/admin/team/page.tsx) |
+| `/admin/team/new` | Create team members with optional profile image. | [src/app/admin/team/new/page.tsx](src/app/admin/team/new/page.tsx) |
+| `/admin/team/[id]` | Edit team members. | [src/app/admin/team/[id]/page.tsx](src/app/admin/team/[id]/page.tsx) |
+
+## API Surface
+
+### Authentication and Security
+
+| Endpoint | Purpose |
+| --- | --- |
+| `POST /api/admin/login` | Validates `CMS_ADMIN_USERNAME` and `CMS_ADMIN_PASSWORD`, then sets the `cms_token` cookie. |
+| `GET /api/admin/check` | Verifies the admin session cookie. |
+| `POST /api/admin/logout` | Clears the admin session cookie. |
+| `POST /api/revalidate` | Revalidates specific public paths or tags after CMS updates. |
+| `POST /api/setup-order` | One-time setup for `display_order` columns in MySQL-backed tables. |
+
+### News
+
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /api/news` | Lists news items for public and admin views. |
+| `GET /api/news/[id]` | Fetches one news item. |
+| `POST /api/news` | Creates a news item. |
+| `PUT /api/news/[id]` | Updates a news item. |
+| `DELETE /api/news/[id]` | Deletes a news item. |
+| `POST /api/news/reorder` | Persists news ordering. |
+
+### Team and Staff
+
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /api/team` | Returns team members from MySQL. |
+| `GET /api/team/[id]` | Fetches one team member. |
+| `POST /api/team` | Creates a team member. |
+| `PUT /api/team/[id]` | Updates a team member. |
+| `DELETE /api/team/[id]` | Deletes a team member. |
+| `POST /api/team/reorder` | Persists team ordering. |
+| `GET /api/staff` | Returns active staff records. |
+| `GET /api/staff/[id]` | Fetches one staff member. |
+| `POST /api/staff` | Creates staff records. |
+| `PUT /api/staff/[id]` | Updates staff records. |
+| `DELETE /api/staff/[id]` | Deletes staff records. |
+
+### Doctors
+
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /api/doctors` | Lists active doctors from Prisma/PostgreSQL. |
+| `GET /api/doctors/[id]` | Fetches one doctor record. |
+| `POST /api/doctors` | Creates a doctor. |
+| `PUT /api/doctors/[id]` | Updates a doctor. |
+| `DELETE /api/doctors/[id]` | Deletes a doctor. |
+
+### Utilities and Integrations
+
+| Endpoint | Purpose |
+| --- | --- |
+| `POST /api/upload` | Issues a Blob upload token after auth verification. |
+| `POST /api/send-email` | Sends contact or appointment form mail, or returns a mailto fallback payload when SMTP is not configured. |
+| `GET /api/health` | Returns a simple environment diagnostic for HostGator variables. |
+
+## Data And Content Model
+
+### MySQL-backed CMS content
+
+The following content is stored through HostGator MySQL and accessed through `lib/mysql.ts`:
+
+- News items, including title, description, date, image(s), and display order.
+- Team members, including name, role, bio, image, department, and display order.
+- Staff records, including name, role, bio, image, department, experience, order, and active flag.
+
+The MySQL helpers use `mysql2/promise` and lazily create a connection pool from:
+
+- `HOSTGATOR_DB_HOST`
+- `HOSTGATOR_DB_USER`
+- `HOSTGATOR_DB_PASSWORD`
+- `HOSTGATOR_DB_NAME`
+- `HOSTGATOR_DB_PORT`
+
+The CMS includes one-time and maintenance helpers for these tables:
+
+- [src/app/api/setup-order/route.ts](src/app/api/setup-order/route.ts) adds and initializes `display_order` columns.
+- [src/app/api/news/reorder/route.ts](src/app/api/news/reorder/route.ts) saves news order.
+- [src/app/api/team/reorder/route.ts](src/app/api/team/reorder/route.ts) saves team order.
+
+### Prisma-backed doctor data
+
+Doctors use [prisma/schema.prisma](prisma/schema.prisma) and [lib/prisma.ts](lib/prisma.ts).
+
+Current Prisma models:
+
+- `News`
+- `Doctor`
+- `Staff`
+- `Team`
+
+Important implementation note: the current runtime routes for news, team, and staff use MySQL handlers, while doctors use Prisma. The schema still contains the other models, so the repository reflects both the current runtime and the migration history.
+
+Required variable:
+
+- `DATABASE_URL`
+
+### Markdown, JSON, and migration content
+
+The repository also stores content and migration source files outside the live database:
+
+- `content/doctors/` contains markdown profiles for doctors.
+- `content/news/` contains markdown news items.
+- `content/services/` contains service copy.
+- `content/staff/` contains markdown staff profiles.
+- `content/settings/` contains JSON settings for `about.json`, `contact.json`, and `hero.json`.
+- `lib/content.ts` reads markdown collections with frontmatter.
+- `wordpressnewspage.txt` and `scripts/news-source.html` are migration source artifacts.
+- `export/our-practice-wp-block.php` is a WordPress export artifact.
+
+Current markdown inventory:
+
+- 2 doctor profiles.
+- 8 news entries.
+- 7 service pages.
+- 10 staff profiles.
+
+## CMS Workflow
+
+### Authentication
+
+- Login is handled through `/admin/login` and `POST /api/admin/login`.
+- Successful login writes an httpOnly `cms_token` cookie.
+- Admin pages and write APIs verify the cookie server-side.
+- The admin layout also performs a client-side check against `/api/admin/check`.
+- Inactivity on admin pages triggers automatic logout after 15 minutes.
+
+### Revalidation and publishing
+
+- News and team writes call `/api/revalidate` after a successful create, update, delete, or reorder operation.
+- Revalidation currently targets pages such as `/`, `/news`, `/team`, and `/our-team`.
+- This keeps public pages in sync with CMS edits without full manual cache busting.
+
+### Images
+
+- CMS image uploads use [src/components/ImageGallery.tsx](src/components/ImageGallery.tsx).
+- The gallery uploads through `@vercel/blob/client` and the `/api/upload` broker route.
+- Image arrays can be entered, parsed, reordered, and removed in the admin UI.
+- News pages use [src/components/Lightbox.tsx](src/components/Lightbox.tsx) to view galleries on the public site.
+
+### Email
+
+- [src/app/contact/page.tsx](src/app/contact/page.tsx) submits contact messages to `/api/send-email`.
+- [src/app/patient-info/page.tsx](src/app/patient-info/page.tsx) submits appointment requests to the same endpoint.
+- If SMTP variables are missing, the API returns a `useMailto` payload and the UI opens a mailto fallback.
+
+## UI And Styling System
+
+The site uses a custom visual system rather than a stock component library:
+
+- [src/app/globals.css](src/app/globals.css) defines the core color palette, gradients, body background, typography defaults, and Medikan-derived overrides.
+- [tailwind.config.ts](tailwind.config.ts) and [tailwind.config.js](tailwind.config.js) both define the dental-blue palette and supporting theme tokens.
+- The root layout loads the Inter font, adds a skip link, and mounts the global header, footer, particle background, page transition wrapper, and scroll progress bar.
+- The header uses Framer Motion for animated dropdowns and mobile menu transitions.
+- The public site includes a persistent CTA-oriented header, rich card styling, and a lot of glassmorphism-inspired surfaces.
+
+### Shared components
+
+Core layout and navigation:
+
+- [src/components/Header.tsx](src/components/Header.tsx)
+- [src/components/Footer.tsx](src/components/Footer.tsx)
+- [src/components/PageTransition.tsx](src/components/PageTransition.tsx)
+- [src/components/ScrollProgress.tsx](src/components/ScrollProgress.tsx)
+- [src/components/SiteBannerZoomFade.tsx](src/components/SiteBannerZoomFade.tsx)
+- [src/components/ParticleBackground.tsx](src/components/ParticleBackground.tsx)
+
+Marketing and home-page blocks:
+
+- [src/components/Hero.tsx](src/components/Hero.tsx)
+- [src/components/FeaturedServices.tsx](src/components/FeaturedServices.tsx)
+- [src/components/WhyChooseUs.tsx](src/components/WhyChooseUs.tsx)
+- [src/components/CallToAction.tsx](src/components/CallToAction.tsx)
+- [src/components/NewsTicker.tsx](src/components/NewsTicker.tsx)
+- [src/components/MobileQuickActions.tsx](src/components/MobileQuickActions.tsx)
+- [src/components/ScheduleAppointmentBar.tsx](src/components/ScheduleAppointmentBar.tsx)
+
+Media and gallery helpers:
+
+- [src/components/ImageGallery.tsx](src/components/ImageGallery.tsx)
+- [src/components/Lightbox.tsx](src/components/Lightbox.tsx)
+- [src/components/LightboxGallery.tsx](src/components/LightboxGallery.tsx)
+- [src/components/UniversalSlider.tsx](src/components/UniversalSlider.tsx)
+
+Team and testimonials:
+
+- [src/components/Doctors.tsx](src/components/Doctors.tsx)
+- [src/components/Staff.tsx](src/components/Staff.tsx)
+- [src/components/TeamCarousel.tsx](src/components/TeamCarousel.tsx)
+- [src/components/TeamCarouselServer.tsx](src/components/TeamCarouselServer.tsx)
+- [src/components/Testimonials.tsx](src/components/Testimonials.tsx)
+- [src/components/TestimonialsCompact.tsx](src/components/TestimonialsCompact.tsx)
+
+## Environment Variables
+
+Use a local `.env.local` file. The current code reads the following variables:
+
+| Variable | Required | Used For |
+| --- | --- | --- |
+| `DATABASE_URL` | Yes for Prisma-backed doctor data | Prisma client and doctor routes. |
+| `HOSTGATOR_DB_HOST` | Yes for MySQL CMS content | MySQL connection pool. |
+| `HOSTGATOR_DB_USER` | Yes for MySQL CMS content | MySQL connection pool. |
+| `HOSTGATOR_DB_PASSWORD` | Yes for MySQL CMS content | MySQL connection pool. |
+| `HOSTGATOR_DB_NAME` | Yes for MySQL CMS content | MySQL connection pool. |
+| `HOSTGATOR_DB_PORT` | Optional | MySQL port override. |
+| `JWT_SECRET` | Yes | JWT signing and verification. Use at least 32 characters. |
+| `CMS_ADMIN_USERNAME` | Yes | Admin login username. |
+| `CMS_ADMIN_PASSWORD` | Yes | Admin login password. |
+| `BLOB_READ_WRITE_TOKEN` | Yes for image uploads | Vercel Blob upload broker route. |
+| `SMTP_HOST` | Optional | SMTP server host. |
+| `SMTP_PORT` | Optional | SMTP server port. |
+| `SMTP_SECURE` | Optional | SMTP TLS toggle. |
+| `SMTP_USER` | Optional but needed for mail delivery | SMTP auth user. |
+| `SMTP_PASS` | Optional but needed for mail delivery | SMTP auth password. |
+| `SMTP_FROM` | Optional | From address for outgoing email. |
+| `SMTP_TO` | Optional | Destination address for outgoing email. |
+
+If SMTP variables are missing, the forms still work by falling back to mailto links.
+
+## NPM Scripts
+
+Top-level scripts from [package.json](package.json):
 
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd hainescitydental1
-
-# Install dependencies
-npm install
-
-# Configure database
-# 1. Get connection string from Neon console
-# 2. Add to .env.local:
-#    DATABASE_URL="postgresql://..."
-
-# Create database tables
-npx prisma db push
-
-# Run development server
-npm run dev
+npm run dev      # Start the Next.js development server
+npm run build    # prisma generate && next build
+npm start        # Start the production server
+npm run lint     # Run Next.js ESLint
+npm run postinstall  # prisma generate after install
 ```
 
-Visit `http://localhost:3000` and admin panel at `/admin/login`
+The build and install flow is designed so the Prisma client is always generated before production compilation.
 
-## 📝 Available Scripts
+## Utility And Migration Scripts
 
-```bash
-npm run dev              # Start development server
-npm run build            # Create production build
-npm start                # Start production server
-npm run lint             # Run ESLint
-npx prisma db push      # Sync database schema
-npx prisma studio      # Open database UI (http://localhost:5555)
+The `scripts/` directory contains one-off maintenance tools and import helpers:
+
+- `import-from-txt.js` and `import-news.js` for content imports.
+- `import-local-news-images.js` for image attachment work.
+- `populate-images-from-html.js` for extracting image references from source HTML.
+- `copy-hero-image.js` for homepage hero asset handling.
+- `convert-to-webp.js`, `generate-webp.js`, `optimize-images.js`, and `optimize_public_images.js` for image conversion and compression.
+- `remove_duplicate_public_images.js` and `move_bak_files.js` for cleanup tasks.
+- `scan_sizes.js` and `check_missing_news_images.js` for validation.
+- `fix-2019-item.js`, `fix-2020-item.js`, `fix-2021-item.js`, `fix-2024-item.js`, `fix-halloween-2017-item.js`, and `fix-woundedwarrior-item.js` for targeted content corrections.
+- `ssh_tunnel.ps1` and `docs/hostgator-remote-mysql.md` for remote database access work.
+
+## Local Setup
+
+1. Install dependencies with `npm install`.
+2. Create `.env.local` and set the required variables listed above.
+3. Make sure the MySQL schema exists for news/team/staff if you intend to use the CMS.
+4. Run `npm run dev`.
+5. Visit `http://localhost:3000` for the public site and `http://localhost:3000/admin/login` for the CMS.
+
+If you are working with the HostGator database locally, review [db/LOCAL_IMPORT.md](db/LOCAL_IMPORT.md), [db/hostgator_schema.sql](db/hostgator_schema.sql), [db/schema_and_sample_inserts.sql](db/schema_and_sample_inserts.sql), and [docs/hostgator-remote-mysql.md](docs/hostgator-remote-mysql.md).
+
+## Deployment
+
+The project is configured for Vercel, but it still depends on external services and environment variables:
+
+- Add the environment variables from the table above in the Vercel project settings.
+- Ensure the Blob token is set if you want CMS image uploads to work.
+- Ensure SMTP variables are set if you want email delivery instead of mailto fallback.
+- Ensure the HostGator MySQL database is reachable from the deployment environment.
+- `next.config.js` already configures `output: 'standalone'` and image remote patterns for local, production, and Vercel Blob hosts.
+
+For deployment checklists and operational notes, also read:
+
+- [VERCEL_DEPLOYMENT_GUIDE.md](VERCEL_DEPLOYMENT_GUIDE.md)
+- [VERCEL_ENV_VARS.md](VERCEL_ENV_VARS.md)
+- [PRE_DEPLOYMENT_CHECKLIST.md](PRE_DEPLOYMENT_CHECKLIST.md)
+- [DEPLOYMENT_AUDIT.md](DEPLOYMENT_AUDIT.md)
+- [PRODUCTION_DEPLOYMENT_SUMMARY.md](PRODUCTION_DEPLOYMENT_SUMMARY.md)
+
+## Repository Layout
+
+```text
+content/        Markdown and JSON content collections
+db/             SQL schema files and import notes
+docs/           Database and remote access documentation
+export/         WordPress export artifacts
+lib/            Shared helpers for auth, content, MySQL, Prisma, and image handling
+prisma/         Prisma schema
+public/         Static assets, office images, PDFs, and upload targets
+scripts/        Import, repair, conversion, and optimization utilities
+src/app/        App Router pages, layouts, API routes, and metadata
+src/components/ Shared UI and interaction components
 ```
 
-## 🔐 Admin Access
+## Documentation Map
 
-**Login at**: `/admin/login`
+If you need deeper operational details, start with [DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md). The most useful supporting docs are:
 
-**Credentials**:
-- Username: `hainescitydental`
-- Password: `gATORRAID@422`
+- [QUICK_START.md](QUICK_START.md) for fast setup and verification.
+- [CMS_USER_GUIDE.md](CMS_USER_GUIDE.md) for admin usage.
+- [ADDING_GOOGLE_REVIEWS.md](ADDING_GOOGLE_REVIEWS.md) for review-related content work.
+- [PROJECT_COMPLETION_SUMMARY.md](PROJECT_COMPLETION_SUMMARY.md) for the broader migration summary.
+- [STATUS_DASHBOARD.md](STATUS_DASHBOARD.md) and [FINAL_COMPLETENESS_ASSESSMENT.md](FINAL_COMPLETENESS_ASSESSMENT.md) for project status.
+- [VERCEL_DEPLOYMENT_GUIDE.md](VERCEL_DEPLOYMENT_GUIDE.md) and [VERCEL_ENV_VARS.md](VERCEL_ENV_VARS.md) for production setup.
+- [db/LOCAL_IMPORT.md](db/LOCAL_IMPORT.md) and [docs/hostgator-remote-mysql.md](docs/hostgator-remote-mysql.md) for MySQL access details.
 
-**After login**: JWT token stored in localStorage, automatically sent with API requests
+## Implementation Notes And Caveats
 
-## 📂 Project Structure
+- [src/app/doctors/page.tsx](src/app/doctors/page.tsx) is a redirect, not a standalone page.
+- [src/app/privacy/page.tsx](src/app/privacy/page.tsx) redirects to the HIPAA PDF in `public/forms/`.
+- [src/app/sitemap.ts](src/app/sitemap.ts) still includes `/about` as a legacy sitemap entry even though the active practice page is `/our-practice`.
+- `src/components/ScheduleAppointmentBar.tsx` and `src/components/MobileQuickActions.tsx` still exist, but the root layout comments note they were removed from the active shell.
+- The Prisma schema still includes `News`, `Staff`, and `Team` models even though the live routes for those collections are implemented with MySQL handlers.
+- The repository keeps both `tailwind.config.ts` and `tailwind.config.js` because the codebase has been migrated over time and both theme definitions are still present.
 
-```
-hainescitydental1/
-├── prisma/
-│   └── schema.prisma              # Database models
-├── lib/
-│   ├── prisma.ts                  # Prisma client
-│   └── auth/                      # Authentication
-├── app/
-│   ├── api/                       # REST API endpoints
-│   │   ├── auth/                  # Login
-│   │   ├── news/                  # News CRUD
-│   │   ├── doctors/               # Doctors CRUD
-│   │   ├── staff/                 # Staff CRUD
-│   │   ├── team/                  # Team CRUD
-│   │   └── upload/                # Image uploads
-│   └── admin/                     # Admin dashboard
-├── src/
-│   ├── components/                # React components
-│   └── assets/                    # Images, fonts
-├── public/                        # Static files
-└── next.config.js                 # Next.js config
-```
+## License
 
-## 🗄️ API Endpoints
-
-All endpoints require Bearer token from `/api/auth` for write operations.
-
-**News**
-- `GET /api/news` - List published articles
-- `GET /api/news/[id]` - Get article
-- `POST /api/news` - Create article (auth required)
-- `PUT /api/news/[id]` - Update article (auth required)
-- `DELETE /api/news/[id]` - Delete article (auth required)
-
-**Doctors**
-- `GET /api/doctors` - List active doctors
-- `GET /api/doctors/[id]` - Get doctor
-- `POST /api/doctors` - Create doctor (auth required)
-- `PUT /api/doctors/[id]` - Update doctor (auth required)
-- `DELETE /api/doctors/[id]` - Delete doctor (auth required)
-
-**Staff**
-- `GET /api/staff` - List staff
-- `GET /api/staff/[id]` - Get staff member
-- `POST /api/staff` - Create staff (auth required)
-- `PUT /api/staff/[id]` - Update staff (auth required)
-- `DELETE /api/staff/[id]` - Delete staff (auth required)
-
-**Team**
-- `GET /api/team` - List team members
-- `GET /api/team/[id]` - Get team member
-- `POST /api/team` - Create team member (auth required)
-- `PUT /api/team/[id]` - Update team member (auth required)
-- `DELETE /api/team/[id]` - Delete team member (auth required)
-
-**Authentication**
-- `POST /api/auth` - Login and token verification
-
-See [QUICK_START.md](QUICK_START.md) for API testing examples.
-
-## 🗄️ Database Models
-
-**News**
-- Title, category, description, content, images
-- Slug for URL-friendly links
-- Published status and date
-
-**Doctor**
-- Name, credentials, bio, image
-- Specializations, experience, education
-- Active status
-
-**Staff**
-- Name, role, bio, image
-- Department, display order
-- Active status
-
-**Team**
-- Name, position, bio, image
-- Display order
-- Active status
-
-See [POSTGRESQL_MIGRATION_GUIDE.md](POSTGRESQL_MIGRATION_GUIDE.md) for detailed schema.
-
-## 📚 Documentation
-
-- [QUICK_START.md](QUICK_START.md) - 5-minute setup guide
-- [SETUP_COMPLETE.md](SETUP_COMPLETE.md) - Full testing guide
-- [POSTGRESQL_MIGRATION_GUIDE.md](POSTGRESQL_MIGRATION_GUIDE.md) - Database setup
-- [ACTION_ITEMS.md](ACTION_ITEMS.md) - Next steps checklist
-- [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) - File structure
-- [FINAL_SUMMARY.md](FINAL_SUMMARY.md) - Migration details
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-1. Push code to GitHub
-2. Import repo in Vercel
-3. Add environment variables:
-   - `DATABASE_URL` - Neon connection string
-   - `JWT_SECRET` - 32+ character secret
-   - `ADMIN_USERNAME` - Admin username
-   - `ADMIN_PASSWORD` - Admin password
-4. Deploy!
-
-### Environment Variables (.env.local)
-```env
-# Database (from Neon console)
-DATABASE_URL="postgresql://user:password@host.neon.tech/db?sslmode=require"
-
-# JWT Secret (min 32 chars)
-JWT_SECRET="your_random_secret_key_here_min_32_chars_long"
-
-# Admin
-ADMIN_USERNAME=hainescitydental
-ADMIN_PASSWORD=gATORRAID@422
-
-# Optional: Cloudinary
-NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=
-CLOUDINARY_API_KEY=
-CLOUDINARY_API_SECRET=
-
-# App
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-```
-
-## 🔒 Security
-
-- ✅ JWT authentication with 24-hour expiry
-- ✅ Bcrypt password hashing
-- ✅ Bearer token validation on write operations
-- ✅ SQL injection protection via Prisma
-- ✅ CORS headers configured
-- ✅ Environment variables for secrets
-
-## 📊 Performance
-
-- ✅ Database indexes on frequently queried fields
-- ✅ Prisma serverless connection pooling
-- ✅ Result limiting (max 50 items)
-- ✅ Efficient query selection
-- ✅ TypeScript for compile-time safety
-
-## 🆘 Troubleshooting
-
-**Connection issues?** → Check [SETUP_COMPLETE.md#troubleshooting](SETUP_COMPLETE.md)
-**API not working?** → See [ACTION_ITEMS.md#if-something-goes-wrong](ACTION_ITEMS.md)
-**Need to rollback?** → `git checkout backup-mongodb-cms`
-
-## 📝 License
-
-Copyright © 2024-2026 Haines City Dental. All rights reserved.
-
----
-
-Built with ❤️ using Next.js and modern web technologies.
+Copyright 2024-2026 Haines City Dental. All rights reserved.
