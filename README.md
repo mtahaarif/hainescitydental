@@ -1,6 +1,6 @@
 # Haines City Dental
 
-This repository is the production website and CMS for Haines City Dental. It combines a public marketing site, a content management dashboard, contact and appointment workflows, image upload support, and several migration/utilities scripts that were used to move content from older systems into the current Next.js application.
+This repository is the production website and CMS for Haines City Dental. It combines a public marketing site, a content management dashboard, contact and appointment workflows, image upload support, and several migration/utilities scripts that were used to move content from older systems into the current Next.js application
 
 The project is intentionally hybrid. Public CMS content for news, team, and staff uses HostGator MySQL through `lib/mysql.ts`, while doctor records use Prisma against PostgreSQL through `lib/prisma.ts` and `prisma/schema.prisma`. The site also keeps markdown and JSON content collections under `content/` for reusable static content and migration-friendly data.
 
