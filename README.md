@@ -76,6 +76,76 @@ Notes:
 - There is no live `/staff` route file in the current tree; staff content is surfaced through `/our-team` and `/team`.
 - `GET /api/health` is a diagnostic endpoint, not a public content page.
 
+## Page-By-Page Walkthrough (Public Site)
+
+This section documents what actually renders on each public route, field-by-field, so the behavior does not have to be reverse-engineered from the components.
+
+### `/` — Home ([src/app/page.tsx](src/app/page.tsx))
+
+- Server component. Renders [Hero](src/components/Hero.tsx) as the main content in a 4-column area.
+- A 1-column right-hand `aside` panel (desktop) shows: a "Call for Appointment" image linking visually to scheduling, a "Schedule an appointment" button that links to `/contact`, two promo images (Nitrous Oxide Sedation, Snoring & Sleep Apnea/Snoring Devices), and a patient-testimonials teaser image that links to `/testimonials`.
+- All imagery is served through `next/image` with explicit width/height and `quality={90}`.
+
+### `/services` — Services ([src/app/services/page.tsx](src/app/services/page.tsx))
+
+- Client component wrapped in `Suspense`, reads a `?tab=<id>` query param on mount to pre-select a category (used for deep-linking from the header/footer).
+- A hard-coded array of 7 service categories drives the whole page: **Cosmetic Dentistry, General Dentistry, Implant Dentistry, Periodontal Therapy, Sedation Dentistry, Orthodontics, Snoring & Sleep Apnea**. Each entry has an id, title, subtitle, a paragraph description, 4 bullet points, a hero image, and an icon.
+- UI is a pill-tab selector across the top plus a large two-column "active category" card (image left, copy + bullets + "Schedule Consultation" `tel:` link right), with left/right chevron buttons and dot indicators to step through categories without using the tabs.
+- This content is fully static/in-component — it is not sourced from `content/services/*.md` even though those markdown files exist in the repo (see Implementation Notes).
+
+### `/news` — News ([src/app/news/page.tsx](src/app/news/page.tsx))
+
+- Client component. Fetches `GET /api/news` on mount with retry logic: up to 3 attempts with exponential backoff (1s, 2s, capped at 5s); if all retries fail it shows an error message and force-reloads the page after 2 seconds.
+- Renders each news item as a card: title, date (with a calendar icon), description, and a thumbnail grid (4 columns on mobile, 8 on desktop) built from the item's `images[]` array (falling back to a single `image` field).
+- Clicking a thumbnail opens [Lightbox](src/components/Lightbox.tsx), a full-screen image viewer seeded with that item's image list and the clicked index.
+- Shows an empty state ("No news items available") when the feed returns zero items.
+
+### `/contact` — Contact ([src/app/contact/page.tsx](src/app/contact/page.tsx))
+
+- Client component with a two-column layout: office/contact info cards on the left, a contact form on the right, and an embedded Google Maps iframe below both.
+- Left column cards: address (35914 Highway 27 South, Suite 2B, Haines City, FL 33844), phone numbers (1-877-288-3384 and 863-422-8338, both `tel:` links), hours (Monday–Thursday, 7:00 AM–3:00 PM), and email (office@hainescitydental.com, a `mailto:` link).
+- Form fields: Name, Email, Phone (optional), Message. On submit it `POST`s to `/api/send-email` with `type: 'contact'`. If the API reports SMTP isn't configured (`useMailto: true`), the page opens the visitor's mail client via a pre-filled `mailto:` link instead. A success state and inline error banner are both handled client-side.
+- The map is a static Google Maps embed (`output=embed`) pointed at the practice address, lazy-loaded.
+
+### `/our-practice` — Our Practice ([src/app/our-practice/page.tsx](src/app/our-practice/page.tsx))
+
+- Server component, same 4/1 column shell as the home page (main content + appointment aside).
+- A single intro paragraph about the practice's philosophy (prevention, restorative and cosmetic care, patient communication, a "relaxing environment").
+- A 6-image gallery grid with captions: reception area, team-at-work, and four generic office photos (`office1.jpg`–`office5.jpg`), each captioned (e.g. "Modern dental facility," "State-of-the-art equipment").
+- Shares the same right-hand appointment aside as the home page (call image + "Schedule an appointment" button to `/contact`).
+
+### `/our-team` — Our Team ([src/app/our-team/page.tsx](src/app/our-team/page.tsx))
+
+- Client component. Fetches `GET /api/team` with the same retry/backoff/reload pattern as `/news`.
+- Splits the flat team list into two sections by inspecting each member's `department` string: any department containing "doctor" → **Meet Our Doctors**; everything else → **Meet Our Staff**.
+- Each member renders as a stacked card: photo (if present), name, role, and bio (whitespace-preserved, justified text).
+- This is the page the header/footer actually link to for team content.
+
+### `/team` — Team (alternate listing) ([src/app/team/page.tsx](src/app/team/page.tsx))
+
+- Client component. Also fetches `GET /api/team`, but splits members into three groups by an **exact** (not substring) match on `department`: `doctors`, `hygienist`, and `staff`/`assistant`. Members whose department doesn't match any of these three exactly are silently omitted from this page (unlike `/our-team`, which buckets everyone).
+- Renders Doctors as large horizontal cards, Hygienists and Staff as 2–3 column photo-card grids.
+- No retry/backoff logic here — a single failed fetch just shows an error banner. This route is not in the primary header navigation; `/our-team` is the actively promoted team page.
+
+### `/patient-info` — Patient Information ([src/app/patient-info/page.tsx](src/app/patient-info/page.tsx))
+
+- Client component wrapped in `Suspense`, also supports `?tab=` deep-linking. Three visible tabs: **New Patients**, **New Patient Forms**, **HIPAA Forms**. (A fourth `SpecialsContent` component with promotional pricing exists in the file but is not wired into the `tabs` array or rendered — see Implementation Notes.)
+- **New Patients tab**: welcome copy ("Ages 12 years old to 112 years," comprehensive dentistry, emergencies welcome), two `tel:` call buttons (1-877-288-3384 and 863-422-8338), and a full appointment-request form (First/Last Name, Email, Phone, Preferred Date, Preferred Time dropdown, "How did you hear about us?" dropdown, Additional Information). Submits to `/api/send-email` with `type: 'appointment'`, with the same mailto-fallback behavior as the contact form.
+- **New Patient Forms tab**: download cards for the New Patient Registration, Medical History, and Dental History PDFs (`public/forms/*.pdf`), each opening in a new tab.
+- **HIPAA Forms tab**: download cards for the HIPAA Privacy Notice and HIPAA Authorization Form PDFs.
+
+### `/testimonials` — Testimonials ([src/app/testimonials/page.tsx](src/app/testimonials/page.tsx))
+
+- Thin wrapper page; all rendering is delegated to the shared [Testimonials](src/components/Testimonials.tsx) component (also used in a compact form elsewhere via [TestimonialsCompact](src/components/TestimonialsCompact.tsx)).
+
+### `/privacy` — Privacy
+
+- Not a page in the traditional sense: a server-side `redirect()` straight to `/forms/hipaa-privacy-notice.pdf`. No HTML is rendered at this route.
+
+### `/doctors` — Doctors
+
+- Also a pure redirect, forwarding to `/our-team`. Kept only so old links/bookmarks to `/doctors` don't 404.
+
 ## Admin Routes
 
 | Route | Purpose | Source |
@@ -88,6 +158,49 @@ Notes:
 | `/admin/team` | Team list, drag-to-reorder, edit, delete, and revalidation. | [src/app/admin/team/page.tsx](src/app/admin/team/page.tsx) |
 | `/admin/team/new` | Create team members with optional profile image. | [src/app/admin/team/new/page.tsx](src/app/admin/team/new/page.tsx) |
 | `/admin/team/[id]` | Edit team members. | [src/app/admin/team/[id]/page.tsx](src/app/admin/team/[id]/page.tsx) |
+
+## Page-By-Page Walkthrough (Admin CMS)
+
+### `/admin/login` — CMS Login ([src/app/admin/login/page.tsx](src/app/admin/login/page.tsx))
+
+- Dark gradient full-screen card with Username/Password fields. Submits `POST /api/admin/login`; on success it pushes the client to whatever `?next=` path was captured (constrained to paths starting with `/admin`, defaulting to `/admin`), otherwise shows "Invalid username or password."
+- If a visitor with a valid `cms_token` cookie lands here directly, [middleware.ts](middleware.ts) redirects them straight to `/admin` before this page ever renders.
+
+### `/admin/*` shell ([src/app/admin/layout.tsx](src/app/admin/layout.tsx))
+
+- Every admin route (except `/admin/login`) is wrapped by a client-side auth guard: on mount it calls `GET /api/admin/check`, and redirects to `/admin/login?next=<path>` if that check fails. This is a *belt-and-braces* check — `middleware.ts` already blocks unauthenticated requests at the edge, but this catches the case where a stale page is rendered in the browser after the cookie has already expired.
+- Renders a persistent header with an "Admin Console" title and a Logout button (calls `POST /api/admin/logout`, then routes to `/admin/login`).
+- Tracks user activity (`mousemove`, `mousedown`, `keydown`, `touchstart`, `scroll`, `wheel`, `focus`) and auto-logs-out after **15 minutes** of inactivity by calling the same logout flow.
+
+### `/admin` — CMS Dashboard ([src/app/admin/page.tsx](src/app/admin/page.tsx))
+
+- A tabbed dashboard with **News** and **Our Team** tabs; each tab renders the corresponding admin list component directly (it reuses `NewsAdminList` from `/admin/news/page.tsx` and `TeamAdminList` from `/admin/team/page.tsx` as embedded components, so the dashboard and the standalone `/admin/news` / `/admin/team` routes share the exact same list UI).
+- A "Setup Display Order" button in the header calls `POST /api/setup-order` after a confirm() prompt — a one-time maintenance action that adds/initializes `display_order` columns on the MySQL tables. Shows a status banner with the result.
+
+### `/admin/news` — News List ([src/app/admin/news/page.tsx](src/app/admin/news/page.tsx))
+
+- Fetches `GET /api/news` and lists every item with title, formatted date, and a one-line description preview.
+- Each row is HTML5-draggable; dragging reorders the in-memory list live, and dropping calls `POST /api/news/reorder` with the new `orderedIds` array, then triggers revalidation of `/news` and `/`. A failed save reverts by refetching the list.
+- Per-row **Edit** navigates to `/admin/news/[id]`; **Delete** confirms, calls `DELETE /api/news/[id]`, revalidates `/news` and `/`, then refreshes the list.
+- A **+ New** button routes to `/admin/news/new`.
+
+### `/admin/news/new` — Create News ([src/app/admin/news/new/page.tsx](src/app/admin/news/new/page.tsx))
+
+- Form fields: Title (required), Description (optional), Date. Two separate [ImageGallery](src/components/ImageGallery.tsx) instances — one capped at 1 image for the "Primary Image," one capped at 20 for "Gallery Images" — both upload through Vercel Blob via `/api/upload`.
+- On submit, the primary image (if set) is prepended to the gallery array before `POST /api/news`, then the app revalidates `/news` and `/` and routes back to `/admin/news`.
+
+### `/admin/news/[id]` — Edit News ([src/app/admin/news/[id]/page.tsx](src/app/admin/news/[id]/page.tsx))
+
+- Same form shape as create, pre-populated by fetching `GET /api/news/[id]`. Submits `PUT /api/news/[id]`, revalidates the same public paths, and returns to the list.
+
+### `/admin/team` — Team List ([src/app/admin/team/page.tsx](src/app/admin/team/page.tsx))
+
+- Mirrors the News list exactly (drag-to-reorder via `POST /api/team/reorder`, Edit/Delete per row), but rows show name plus department/role, and revalidation targets `/team`, `/our-team`, and `/`.
+- **+ Add New** routes to `/admin/team/new`.
+
+### `/admin/team/new` and `/admin/team/[id]` — Create/Edit Team Member
+
+- Forms capture name, role, bio, department, and an optional single profile image (uploaded through the same Blob/`ImageGallery` flow). Writes go to `POST /api/team` or `PUT /api/team/[id]`; both revalidate `/team`, `/our-team`, and `/` afterward.
 
 ## API Surface
 
@@ -399,6 +512,9 @@ If you need deeper operational details, start with [DOCUMENTATION_INDEX.md](DOCU
 - [src/app/sitemap.ts](src/app/sitemap.ts) still includes `/about` as a legacy sitemap entry even though the active practice page is `/our-practice`.
 - `src/components/ScheduleAppointmentBar.tsx` and `src/components/MobileQuickActions.tsx` still exist, but the root layout comments note they were removed from the active shell.
 - The Prisma schema still includes `News`, `Staff`, and `Team` models even though the live routes for those collections are implemented with MySQL handlers.
+- [src/app/services/page.tsx](src/app/services/page.tsx) renders its 7 service categories from a hard-coded in-component array, not from `content/services/*.md`; the markdown files exist but nothing currently reads them into that page.
+- [src/app/patient-info/page.tsx](src/app/patient-info/page.tsx) defines a `SpecialsContent` component with promotional pricing, but it is not included in the page's `tabs` array or rendered anywhere — it is dead code kept in the file.
+- `/team` ([src/app/team/page.tsx](src/app/team/page.tsx)) buckets members by an exact match on `department` (`doctors`, `hygienist`, `staff`/`assistant`), so any member whose department string doesn't match one of those exactly is silently dropped from that page. `/our-team` uses a looser substring match (`department` containing "doctor") and shows everyone else under Staff, so the two team pages can disagree on membership for the same underlying data.
 - The repository keeps both `tailwind.config.ts` and `tailwind.config.js` because the codebase has been migrated over time and both theme definitions are still present.
 
 ## License
