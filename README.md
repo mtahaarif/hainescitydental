@@ -4,6 +4,8 @@ This repository is the production website and CMS for Haines City Dental. It com
 
 The project is intentionally hybrid. Public CMS content for news, team, and staff uses HostGator MySQL through `lib/mysql.ts`, while doctor records use Prisma against PostgreSQL through `lib/prisma.ts` and `prisma/schema.prisma`. The site also keeps markdown and JSON content collections under `content/` for reusable static content and migration-friendly data.
 
+---
+
 ## What Is In The Project
 
 - Public pages for home, services, news, contact, our practice, our team, team, patient information, testimonials, and privacy.
